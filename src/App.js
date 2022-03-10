@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import { AuthProvider } from './context/AuthContext';
+
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
+
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import Notfound from './pages/Notfound';
 
 function App() {
+  // const [data, setData] = useState();
+  // useEffect(() => {
+  //   fetchTest();
+  // }, []);
+  // const fetchTest = async () => {
+  //   const response = await fetch(
+  //     'https://nutri-track-nick.herokuapp.com/api/v1/users/login'
+  //   );
+  //   const data2 = await response.json();
+  //   setData(data2);
+  //   console.log(data2);
+  // };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/*' element={<Notfound />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </AuthProvider>
   );
 }
 
