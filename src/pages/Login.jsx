@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import AuthContext from './../context/AuthContext';
+import Card from '../components/layout/Card';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -17,35 +18,45 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    loginUser({email, password});
+    loginUser({ email, password });
+    setEmail('');
+    setPassword('');
   };
 
   return (
-    <div>
-      <div className='container'>
+    <>
+      <Card>
+        <h1 className='display-1 text-center'>NutriTrack</h1>
         <form onSubmit={handleSubmit}>
-          <label htmlFor='email'>Email:</label>
-          <input
-            id='email'
-            type='text'
-            className='w-100'
-            placeholder='Enter email'
-            onChange={handleChangeEmail}
-          />
-          <label htmlFor='password'>Password:</label>
-          <input
-            id='password'
-            type='text'
-            className='w-100'
-            placeholder='Enter password'
-            onChange={handleChangePassword}
-          />
-          <button type='submit' className='btn btn-primary'>
+          <div className='form-group'>
+            <label htmlFor='email'>Email</label>
+            <input
+              type='email'
+              className='form-control mb-3'
+              id='email'
+              aria-describedby='emailHelp'
+              placeholder='Enter email'
+              value={email}
+              onChange={handleChangeEmail}
+            />
+          </div>
+          <div className='form-group'>
+            <label htmlFor='password'>Password</label>
+            <input
+              type='password'
+              className='form-control'
+              id='password'
+              placeholder='Enter password'
+              value={password}
+              onChange={handleChangePassword}
+            />
+          </div>
+          <button type='submit' className='btn login-btn'>
             Login
           </button>
         </form>
-      </div>
-    </div>
+      </Card>
+    </>
   );
 }
 

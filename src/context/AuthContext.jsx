@@ -8,12 +8,12 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const AuthProvider = ({ children }) => {
   const initialState = {
     email: '',
-    password: '',
+    token: '',
   };
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  //Get search results
+  //Login user
   const loginUser = async (userObj) => {
     const response = await fetch(`${BACKEND_URL}/users/login`, {
       method: 'POST',
@@ -22,23 +22,29 @@ export const AuthProvider = ({ children }) => {
       },
       body: JSON.stringify(userObj),
     });
+    console.log(response);
+    const currentUser = await response.json();
 
-    const user = await response.json();
-    console.log(user);
+    dispatch({ type: 'LOGIN', payload: currentUser });
 
-    const users = await fetch(`${BACKEND_URL}/patients`, {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
-    console.log(users.json());
-    // dispatch({ type: 'LOGIN', payload: user });
+    // const users = await fetch(`${BACKEND_URL}/patients`, {
+    //   headers: {
+    //     Authorization: `Bearer ${currentUser.token}`,
+    //   },
+    // });
+    // console.log(users.json());
+  };
+
+  const logoutUser = () => {
+    dispatch({ type: 'LOGOUT' });
   };
 
   return (
     <AuthContext.Provider
       value={{
         loginUser,
+        logoutUser,
+        token: state.token,
       }}
     >
       {children}
