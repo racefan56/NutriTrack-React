@@ -1,7 +1,7 @@
-
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/Auth/AuthContext';
+import { PatientProvider } from './context/Patients/PatientsContext';
 
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
@@ -11,29 +11,19 @@ import Login from './pages/Login';
 import Notfound from './pages/Notfound';
 
 function App() {
-  // const [data, setData] = useState();
-  // useEffect(() => {
-  //   fetchTest();
-  // }, []);
-  // const fetchTest = async () => {
-  //   const response = await fetch(
-  //     'https://nutri-track-nick.herokuapp.com/api/v1/users/login'
-  //   );
-  //   const data2 = await response.json();
-  //   setData(data2);
-  //   console.log(data2);
-  // };
   return (
     <AuthProvider>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/*' element={<Notfound />} />
-        </Routes>
-        <Footer />
-      </Router>
+      <PatientProvider>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Login />} />
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/*' element={<Notfound />} />
+          </Routes>
+          <Footer />
+        </Router>
+      </PatientProvider>
     </AuthProvider>
   );
 }

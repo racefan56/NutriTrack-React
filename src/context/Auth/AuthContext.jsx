@@ -3,19 +3,19 @@ import AuthReducer from './AuthReducer';
 
 const AuthContext = createContext();
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const SERVER = process.env.REACT_APP_SERVER;
 
 export const AuthProvider = ({ children }) => {
   const initialState = {
     email: '',
-    token: '',
+    token: null,
   };
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
   //Login user
   const loginUser = async (userObj) => {
-    const response = await fetch(`${BACKEND_URL}/users/login`, {
+    const response = await fetch(`${SERVER}/users/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,13 +26,6 @@ export const AuthProvider = ({ children }) => {
     const currentUser = await response.json();
 
     dispatch({ type: 'LOGIN', payload: currentUser });
-
-    // const users = await fetch(`${BACKEND_URL}/patients`, {
-    //   headers: {
-    //     Authorization: `Bearer ${currentUser.token}`,
-    //   },
-    // });
-    // console.log(users.json());
   };
 
   const logoutUser = () => {
@@ -45,6 +38,7 @@ export const AuthProvider = ({ children }) => {
         loginUser,
         logoutUser,
         token: state.token,
+        SERVER,
       }}
     >
       {children}

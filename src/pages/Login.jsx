@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import AuthContext from './../context/AuthContext';
+import AuthContext from './../context/Auth/AuthContext';
 import Card from '../components/layout/Card';
 
 function Login() {
