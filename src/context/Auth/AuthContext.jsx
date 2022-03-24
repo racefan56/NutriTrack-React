@@ -9,12 +9,16 @@ export const AuthProvider = ({ children }) => {
   const initialState = {
     email: '',
     token: null,
+    loading: false,
+    userRole: null,
+    loggedIn: false,
   };
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
   //Login user
   const loginUser = async (userObj) => {
+    dispatch({ type: 'LOADING' });
     const response = await fetch(`${SERVER}/users/login`, {
       method: 'POST',
       headers: {
@@ -22,7 +26,7 @@ export const AuthProvider = ({ children }) => {
       },
       body: JSON.stringify(userObj),
     });
-    console.log(response);
+
     const currentUser = await response.json();
 
     dispatch({ type: 'LOGIN', payload: currentUser });
@@ -38,6 +42,9 @@ export const AuthProvider = ({ children }) => {
         loginUser,
         logoutUser,
         token: state.token,
+        loading: state.loading,
+        userRole: state.userRole,
+        loggedIn: state.loggedIn,
         SERVER,
       }}
     >

@@ -2,33 +2,58 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AuthContext from '../../context/Auth/AuthContext';
+import Brand from '../Brand';
 
 function Navbar({ title }) {
-  const { logoutUser, token } = useContext(AuthContext);
+  const { logoutUser, loggedIn, userRole } = useContext(AuthContext);
 
-  //Only display navbar if user is logged in
-  if (token === '') {
+  //Only display navbar links if user is logged in
+  //Display links based on user role
+  if (loggedIn) {
     return (
-      <nav className='nav-links d-flex justify-content-between p-3 mb-3'>
-        <Link to='/dashboard'>{title}</Link>
-
+      <nav className='d-flex nav-container'>
+        <Brand />
+        <div className='d-flex container justify-content-between'>
+          {userRole === 'admin' ? (
+            <Link className='navbar-link' to='/control-panel'>
+              Control Panel
+            </Link>
+          ) : (
+            <></>
+          )}
+          {userRole === 'admin' || 'nurse' ? (
+            <Link className='navbar-link' to='/'>
+              Patients
+            </Link>
+          ) : (
+            <></>
+          )}
+          {userRole === 'admin' || 'nca' || 'nca-lead' ? (
+            <Link className='navbar-link' to='/'>
+              Patients
+            </Link>
+          ) : (
+            <></>
+          )}
+          <Link className='navbar-link' to='/'>
+            Patient Orders
+          </Link>
+          <Link className='navbar-link' to='/'>
+            Census
+          </Link>
+          <Link className='navbar-link' to='/' onClick={logoutUser}>
+            Logout
+          </Link>
+        </div>
       </nav>
     );
   } else {
-    return (
-      <nav className='nav-links d-flex justify-content-between p-3 mb-3'>
-        <Link to='/dashboard'>{title}</Link>
-        <Link to='/dashboard'>Dashboard</Link>
-        <Link to='/' onClick={logoutUser}>
-          Logout
-        </Link>
-      </nav>
-    );
+    return <></>;
   }
 }
 
 Navbar.defaultProps = {
-  title: 'NutriTrack',
+  title: 'NutriTrack ',
 };
 
 Navbar.propTypes = {

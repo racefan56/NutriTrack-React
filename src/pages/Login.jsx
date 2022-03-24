@@ -1,12 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import AuthContext from './../context/Auth/AuthContext';
 import Card from '../components/layout/Card';
+import Brand from '../components/Brand';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { loginUser } = useContext(AuthContext);
+  const { loginUser, loggedIn } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate('/home');
+    }
+  }, [loggedIn, navigate]);
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -21,12 +31,16 @@ function Login() {
     loginUser({ email, password });
     setEmail('');
     setPassword('');
+
+    navigate('/home');
   };
 
   return (
-    <>
+    <div className='d-flex justify-content-center'>
       <Card>
-        <h1 className='display-1 text-center'>NutriTrack</h1>
+        <div className='d-flex display-1 mb-3 justify-content-center'>
+          <Brand />
+        </div>
         <form onSubmit={handleSubmit}>
           <div className='form-group'>
             <label htmlFor='email'>Email</label>
@@ -56,7 +70,7 @@ function Login() {
           </button>
         </form>
       </Card>
-    </>
+    </div>
   );
 }
 

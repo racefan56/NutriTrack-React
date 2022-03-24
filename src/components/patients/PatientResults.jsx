@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import PatientItem from './PatientItem';
 import PatientContext from '../../context/Patients/PatientsContext';
+import Spinner from '../Spinner';
 
 function PatientResults() {
   const { patients, isLoading, getPatients } = useContext(PatientContext);
@@ -14,11 +15,7 @@ function PatientResults() {
   };
 
   if (isLoading) {
-    return (
-      <div>
-        <p>Loading...</p>
-      </div>
-    );
+    return <Spinner />;
   } else {
     return (
       <>
