@@ -1,16 +1,21 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
+import PatientReducer from './PatientReducer';
 import AuthContext from '../Auth/AuthContext';
 
 const PatientContext = createContext();
 
 export const PatientProvider = ({ children }) => {
-  const [patients, setPatients] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const initialState = {
+    patients: [],
+    loading: false,
+  };
+
+  const [state, dispatch] = useReducer(PatientReducer, initialState);
 
   const { token, SERVER } = useContext(AuthContext);
 
   const getPatients = async (queryString) => {
-    setIsLoading(true);
+    dispatch({ type: 'LOADING' });
     const response = await fetch(
       `${SERVER}/patients?${queryString ? queryString : ''}`,
       {
@@ -20,13 +25,16 @@ export const PatientProvider = ({ children }) => {
       }
     );
     const { data } = await response.json();
-    setPatients(data.data);
-    setIsLoading(false)
+    dispatch({ type: 'SET_PATIENTS', payload: data.data });
   };
 
   return (
     <PatientContext.Provider
-      value={{ getPatients, setIsLoading, patients, isLoading }}
+      value={{
+        getPatients,
+        loading: state.loading,
+        patients: state.patients,
+      }}
     >
       {children}
     </PatientContext.Provider>

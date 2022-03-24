@@ -4,7 +4,7 @@ import PatientContext from '../../context/Patients/PatientsContext';
 import Spinner from '../Spinner';
 
 function PatientResults() {
-  const { patients, isLoading, getPatients } = useContext(PatientContext);
+  const { patients, loading, getPatients } = useContext(PatientContext);
 
   useEffect(() => {
     getPatients();
@@ -14,7 +14,7 @@ function PatientResults() {
     getPatients();
   };
 
-  if (isLoading) {
+  if (loading) {
     return <Spinner />;
   } else {
     return (

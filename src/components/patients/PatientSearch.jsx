@@ -1,14 +1,13 @@
-import React, { useContext } from 'react';
-import PatientContext from '../../context/Patients/PatientsContext';
-import PatientItem from './PatientItem';
+// import React, { useContext } from 'react';
+// import PatientContext from '../../context/Patients/PatientsContext';
 
-function PatientSearch(queryString) {
-  const { getPatients } = useContext(PatientContext);
+// function PatientSearch(queryString) {
+//   const { getPatients } = useContext(PatientContext);
 
-  //Get patients
-  getPatients(queryString);
+//   //Get patients
+//   getPatients(queryString);
 
-  return <></>;
-}
+//   return <></>;
+// }
 
-export default PatientSearch;
+// export default PatientSearch;

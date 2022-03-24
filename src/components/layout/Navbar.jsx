@@ -21,25 +21,29 @@ function Navbar({ title }) {
           ) : (
             <></>
           )}
+          {userRole === 'admin' || 'nca-lead' ? (
+            <Link className='navbar-link' to='/alerts'>
+              Alerts
+            </Link>
+          ) : (
+            <></>
+          )}
           {userRole === 'admin' || 'nurse' ? (
-            <Link className='navbar-link' to='/'>
+            <Link className='navbar-link' to='/patients'>
               Patients
             </Link>
           ) : (
             <></>
           )}
-          {userRole === 'admin' || 'nca' || 'nca-lead' ? (
-            <Link className='navbar-link' to='/'>
-              Patients
+          {userRole === 'admin' || 'nca-lead' ? (
+            <Link className='navbar-link' to='/census'>
+              Census
             </Link>
           ) : (
             <></>
           )}
-          <Link className='navbar-link' to='/'>
+          <Link className='navbar-link' to='/patient-orders'>
             Patient Orders
-          </Link>
-          <Link className='navbar-link' to='/'>
-            Census
           </Link>
           <Link className='navbar-link' to='/' onClick={logoutUser}>
             Logout

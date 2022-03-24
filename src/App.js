@@ -6,9 +6,13 @@ import { PatientProvider } from './context/Patients/PatientsContext';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/layout/Navbar';
 
-import Home from './pages/Home';
 import Login from './pages/Login';
+import Home from './pages/Home';
 import ControlPanel from './pages/ControlPanel';
+import Census from './pages/Census';
+import Alerts from './pages/Alerts';
+import Patients from './pages/Patients';
+import PatientOrders from './pages/PatientOrders';
 import Notfound from './pages/Notfound';
 
 function App() {
@@ -27,6 +31,30 @@ function App() {
               element={<PrivateRoute validRoles={['admin']} />}
             >
               <Route path='/control-panel' element={<ControlPanel />} />
+            </Route>
+            <Route
+              path='/census'
+              element={<PrivateRoute validRoles={['admin']} />}
+            >
+              <Route path='/census' element={<Census />} />
+            </Route>
+            <Route
+              path='/alerts'
+              element={<PrivateRoute validRoles={['admin']} />}
+            >
+              <Route path='/alerts' element={<Alerts />} />
+            </Route>
+            <Route
+              path='/patients'
+              element={<PrivateRoute validRoles={['admin']} />}
+            >
+              <Route path='/patients' element={<Patients />} />
+            </Route>
+            <Route
+              path='/patient-orders'
+              element={<PrivateRoute validRoles={['admin']} />}
+            >
+              <Route path='/patient-orders' element={<PatientOrders />} />
             </Route>
             <Route path='/*' element={<Notfound />} />
           </Routes>
