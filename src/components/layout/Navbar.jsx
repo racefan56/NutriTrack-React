@@ -1,11 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { logout } from './../../features/auth/authSlice';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import AuthContext from '../../context/Auth/AuthContext';
 import Brand from '../Brand';
 
 function Navbar({ title }) {
-  const { logoutUser, loggedIn, userRole } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const { loggedIn, userRole } = useSelector((state) => state.auth);
 
   //Only display navbar links if user is logged in
   //Display links based on user role
@@ -45,7 +47,7 @@ function Navbar({ title }) {
           <Link className='navbar-link' to='/patient-orders'>
             Patient Orders
           </Link>
-          <Link className='navbar-link' to='/' onClick={logoutUser}>
+          <Link className='navbar-link' to='/' onClick={dispatch(logout)}>
             Logout
           </Link>
         </div>

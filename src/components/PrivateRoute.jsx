@@ -1,10 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
-import AuthContext from '../context/Auth/AuthContext';
 import Spinner from './Spinner';
 
 const PrivateRoute = (props) => {
-  const { loggedIn, loading, userRole } = useContext(AuthContext);
+
+  const { loading, loggedIn, userRole } = useSelector((state) => state.auth);
+
   if (loading) {
     return <Spinner />;
   }

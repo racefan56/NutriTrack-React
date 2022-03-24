@@ -1,8 +1,10 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useReducer } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PatientReducer from './PatientReducer';
-import AuthContext from '../Auth/AuthContext';
 
 const PatientContext = createContext();
+
+const SERVER = process.env.REACT_APP_SERVER;
 
 export const PatientProvider = ({ children }) => {
   const initialState = {
@@ -12,7 +14,8 @@ export const PatientProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(PatientReducer, initialState);
 
-  const { token, SERVER } = useContext(AuthContext);
+  
+  const { token } = useSelector((state) => state.auth);
 
   const getPatients = async (queryString) => {
     dispatch({ type: 'LOADING' });

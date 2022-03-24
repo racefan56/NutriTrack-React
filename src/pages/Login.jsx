@@ -1,5 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
-import AuthContext from './../context/Auth/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { login } from './../features/auth/authSlice';
+import React, { useState, useEffect } from 'react';
 import Card from '../components/layout/Card';
 import Brand from '../components/Brand';
 import { useNavigate } from 'react-router-dom';
@@ -8,9 +9,10 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { loginUser, loggedIn } = useContext(AuthContext);
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { loggedIn } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (loggedIn) {
@@ -28,7 +30,8 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    loginUser({ email, password });
+    dispatch(login({ email, password }));
+    // loginUser({ email, password });
     setEmail('');
     setPassword('');
 
