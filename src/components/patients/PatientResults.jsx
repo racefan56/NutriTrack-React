@@ -1,17 +1,21 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { getPatients } from './../../features/patient/patientSlice';
+import { useSelector, useDispatch } from 'react-redux';
 import PatientItem from './PatientItem';
-import PatientContext from '../../context/Patients/PatientsContext';
 import Spinner from '../Spinner';
 
 function PatientResults() {
-  const { patients, loading, getPatients } = useContext(PatientContext);
+
+  const dispatch = useDispatch();
+
+  const { patients, loading } = useSelector((state) => state.patient);
 
   useEffect(() => {
-    getPatients();
+    dispatch(getPatients());
   }, []);
 
   const handleRefresh = () => {
-    getPatients();
+    dispatch(getPatients());
   };
 
   if (loading) {

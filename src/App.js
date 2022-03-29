@@ -1,8 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { AuthProvider } from './context/Auth/AuthContext';
-import { PatientProvider } from './context/Patients/PatientsContext';
-
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/layout/Navbar';
 
@@ -13,54 +10,51 @@ import Census from './pages/Census';
 import Alerts from './pages/Alerts';
 import Patients from './pages/Patients';
 import PatientOrders from './pages/PatientOrders';
+import MyAccount from './pages/MyAccount';
 import Notfound from './pages/Notfound';
 
 function App() {
   return (
-    <AuthProvider>
-      <PatientProvider>
-        <Router>
-          <Navbar />
-          <Routes>
-            <Route path='/' element={<Login />} />
-            <Route path='/home' element={<PrivateRoute />}>
-              <Route path='/home' element={<Home />} />
-            </Route>
-            <Route
-              path='/control-panel'
-              element={<PrivateRoute validRoles={['admin']} />}
-            >
-              <Route path='/control-panel' element={<ControlPanel />} />
-            </Route>
-            <Route
-              path='/census'
-              element={<PrivateRoute validRoles={['admin']} />}
-            >
-              <Route path='/census' element={<Census />} />
-            </Route>
-            <Route
-              path='/alerts'
-              element={<PrivateRoute validRoles={['admin']} />}
-            >
-              <Route path='/alerts' element={<Alerts />} />
-            </Route>
-            <Route
-              path='/patients'
-              element={<PrivateRoute validRoles={['admin']} />}
-            >
-              <Route path='/patients' element={<Patients />} />
-            </Route>
-            <Route
-              path='/patient-orders'
-              element={<PrivateRoute validRoles={['admin']} />}
-            >
-              <Route path='/patient-orders' element={<PatientOrders />} />
-            </Route>
-            <Route path='/*' element={<Notfound />} />
-          </Routes>
-        </Router>
-      </PatientProvider>
-    </AuthProvider>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Login />} />
+        <Route path='/home' element={<PrivateRoute />}>
+          <Route path='/home' element={<Home />} />
+        </Route>
+        <Route
+          path='/control-panel'
+          element={<PrivateRoute validRoles={['admin']} />}
+        >
+          <Route path='/control-panel' element={<ControlPanel />} />
+        </Route>
+        <Route
+          path='/my-account'
+          element={<PrivateRoute validRoles={['admin']} />}
+        >
+          <Route path='/my-account' element={<MyAccount />} />
+        </Route>
+        <Route path='/census' element={<PrivateRoute validRoles={['admin']} />}>
+          <Route path='/census' element={<Census />} />
+        </Route>
+        <Route path='/alerts' element={<PrivateRoute validRoles={['admin']} />}>
+          <Route path='/alerts' element={<Alerts />} />
+        </Route>
+        <Route
+          path='/patients'
+          element={<PrivateRoute validRoles={['admin']} />}
+        >
+          <Route path='/patients' element={<Patients />} />
+        </Route>
+        <Route
+          path='/patient-orders'
+          element={<PrivateRoute validRoles={['admin']} />}
+        >
+          <Route path='/patient-orders' element={<PatientOrders />} />
+        </Route>
+        <Route path='/*' element={<Notfound />} />
+      </Routes>
+    </Router>
   );
 }
 

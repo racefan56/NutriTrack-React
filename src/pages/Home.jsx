@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Card from '../components/layout/Card';
+import Card from '../components/layout/Card/Card';
 import PatientResults from '../components/patients/PatientResults';
 import Spinner from '../components/Spinner';
 
@@ -12,7 +12,7 @@ function Home() {
   }
 
   return (
-    <Card>
+    <Card className={'card-main'}>
       <PatientResults />
     </Card>
   );

@@ -1,0 +1,14 @@
+.control-panel-link {
+  display: flex;
+  height: 40px;
+  width: 100%;
+  align-items: center;
+  background-color: #ffff;
+  color: #1971c2;
+  font-weight: 600;
+}
+
+.control-panel-link:hover {
+  color: #1971c2;
+  background-color: #e7f5ff;
+}

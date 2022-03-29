@@ -5,6 +5,7 @@ const initialState = {
   email: '',
   token: null,
   loading: false,
+  isSuccess: true,
   userRole: null,
   loggedIn: false,
 };
@@ -35,13 +36,8 @@ export const authSlice = createSlice({
     reset: (state) => {
       state.loading = false;
     },
-    logout: (state) => {
-      state.loading = true;
-      state.isSuccess = true;
-      state.loggedIn = false;
-      state.token = null;
-      state.email = '';
-      state.userRole = null;
+    logout: () => {
+      return initialState;
     },
   },
   extraReducers: (builder) => {

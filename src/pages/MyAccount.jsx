@@ -4,15 +4,15 @@ import Spinner from '../components/Spinner';
 import { Link } from 'react-router-dom';
 import ControlPanelSideNav from './../components/layout/ControlPanelSideNav/ControlPanelSideNav';
 
-function ControlPanel() {
+function MyAccount() {
   return (
     <>
       <ControlPanelSideNav />
       <Card className={'card-main-control-panel'}>
-        <h1>Admin Control Panel</h1>
+        <h1>My Account</h1>
       </Card>
     </>
   );
 }
 
-export default ControlPanel;
+export default MyAccount;

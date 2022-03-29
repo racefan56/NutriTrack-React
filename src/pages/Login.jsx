@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from './../features/auth/authSlice';
 import React, { useState, useEffect } from 'react';
-import Card from '../components/layout/Card';
-import Brand from '../components/Brand';
+import Card from '../components/layout/Card/Card';
+import Brand from '../components/layout//Brand/Brand';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -31,7 +31,6 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login({ email, password }));
-    // loginUser({ email, password });
     setEmail('');
     setPassword('');
 
@@ -39,8 +38,8 @@ function Login() {
   };
 
   return (
-    <div className='d-flex justify-content-center'>
-      <Card>
+    <div className='container min-vh-100 d-flex align-items-center'>
+      <Card className={'card-login'}>
         <div className='d-flex display-1 mb-3 justify-content-center'>
           <Brand />
         </div>
