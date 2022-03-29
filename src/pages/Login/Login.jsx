@@ -1,9 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { login } from './../features/auth/authSlice';
+import { login } from '../../features/auth/authSlice';
 import React, { useState, useEffect } from 'react';
-import Card from '../components/layout/Card/Card';
-import Brand from '../components/layout//Brand/Brand';
+import Card from '../../components/layout/Card/Card';
+import Brand from '../../components/layout/Brand/Brand';
 import { useNavigate } from 'react-router-dom';
+
+import classes from './Login.module.css';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -16,7 +18,7 @@ function Login() {
 
   useEffect(() => {
     if (loggedIn) {
-      navigate('/home');
+      navigate('/patients');
     }
   }, [loggedIn, navigate]);
 
@@ -34,14 +36,14 @@ function Login() {
     setEmail('');
     setPassword('');
 
-    navigate('/home');
+    navigate('/patients');
   };
 
   return (
     <div className='container min-vh-100 d-flex align-items-center'>
-      <Card className={'card-login'}>
+      <Card className={classes['card-login']}>
         <div className='d-flex display-1 mb-3 justify-content-center'>
-          <Brand />
+          <Brand className={classes['brand-login']} />
         </div>
         <form onSubmit={handleSubmit}>
           <div className='form-group'>
@@ -67,7 +69,7 @@ function Login() {
               onChange={handleChangePassword}
             />
           </div>
-          <button type='submit' className='btn login-btn'>
+          <button type='submit' className={`btn ${classes['login-btn']}`}>
             Login
           </button>
         </form>

@@ -1,0 +1,21 @@
+.card-main {
+  margin-top: 80px;
+  margin-bottom: 32px;
+  padding: 32px;
+  box-shadow: 0 3px 10px rgba(49, 50, 57, 0.2);
+}
+
+.main-btn {
+  color: #e7f5ff;
+  width: 100%;
+  font-weight: 600;
+  background-color: #1971c2;
+  border: 2px solid #1971c2;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.main-btn:hover {
+  background-color: #ffff;
+  color: #1971c2;
+}

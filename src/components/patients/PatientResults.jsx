@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { getPatients } from './../../features/patient/patientSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import PatientItem from './PatientItem';
-import Spinner from '../Spinner';
+import Spinner from '../Spinner/Spinner';
 
 function PatientResults() {
 

@@ -1,17 +1,16 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import PrivateRoute from './components/PrivateRoute';
-import Navbar from './components/layout/Navbar';
+import Navbar from './components/layout/Navbar/Navbar';
 
-import Login from './pages/Login';
-import Home from './pages/Home';
-import ControlPanel from './pages/ControlPanel';
+import Login from './pages/Login/Login';
+import ControlPanel from './pages/ControlPanel/ControlPanel';
 import Census from './pages/Census';
 import Alerts from './pages/Alerts';
-import Patients from './pages/Patients';
+import Patients from './pages/Patients/Patients';
 import PatientOrders from './pages/PatientOrders';
-import MyAccount from './pages/MyAccount';
-import Notfound from './pages/Notfound';
+import MyAccount from './pages/MyAccount/MyAccount';
+import Notfound from './pages/NotFound/Notfound';
 
 function App() {
   return (
@@ -19,9 +18,6 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Login />} />
-        <Route path='/home' element={<PrivateRoute />}>
-          <Route path='/home' element={<Home />} />
-        </Route>
         <Route
           path='/control-panel'
           element={<PrivateRoute validRoles={['admin']} />}
