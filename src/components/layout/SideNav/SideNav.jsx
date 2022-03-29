@@ -1,11 +1,11 @@
 import React from 'react';
-import classes from './ControlPanelSideNav.module.css';
+import classes from './SideNav.module.css';
 import Card from '../Card/Card';
 
 import MenuLink from '../LinkSection/MenuLink/MenuLink';
 import LinkSubSection from '../LinkSection/LinkSubSection/LinkSubSection';
 
-const ControlPanelSideNav = () => {
+const SideNav = () => {
   const path = window.location.pathname;
 
   if (path.startsWith('/control-panel')) {
@@ -61,4 +61,4 @@ const ControlPanelSideNav = () => {
   }
 };
 
-export default ControlPanelSideNav;
+export default SideNav;

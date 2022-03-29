@@ -1,18 +1,18 @@
 import React from 'react';
-import Card from '../../components/layout/Card/Card';
+import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
 import Spinner from '../../components/Spinner/Spinner';
 import { Link } from 'react-router-dom';
-import ControlPanelSideNav from '../../components/layout/ControlPanelSideNav/ControlPanelSideNav';
+import SideNav from '../../components/layout/SideNav/SideNav';
 
 import classes from './ControlPanel.module.css';
 
 function ControlPanel() {
   return (
     <>
-      <ControlPanelSideNav />
-      <Card className={classes['card-main-control-panel']}>
+      <SideNav />
+      <ContainerSideNav>
         <h1>Admin Control Panel</h1>
-      </Card>
+      </ContainerSideNav>
     </>
   );
 }

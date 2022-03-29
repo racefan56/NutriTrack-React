@@ -1,18 +1,20 @@
 import React from 'react';
-import Card from '../../components/layout/Card/Card';
+import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
 import Spinner from '../../components/Spinner/Spinner';
 import { Link } from 'react-router-dom';
-import ControlPanelSideNav from '../../components/layout/ControlPanelSideNav/ControlPanelSideNav';
+import SideNav from '../../components/layout/SideNav/SideNav';
+import PatientResults from '../../components/patients/PatientResults/PatientResults';
 
 import classes from './Patients.module.css';
 
 function Patients() {
   return (
     <>
-      <ControlPanelSideNav />
-      <Card className={classes['card-main-control-panel']}>
+      <SideNav />
+      <ContainerSideNav>
         <h1>Patients control panel</h1>
-      </Card>
+        <PatientResults />
+      </ContainerSideNav>
     </>
   );
 }

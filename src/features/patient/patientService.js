@@ -19,8 +19,26 @@ const getPatients = async (queryString, token) => {
   return patients;
 };
 
+//get patient
+const getPatient = async (patientId, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.get(
+    `${SERVER}/patients/${patientId ? patientId : ''}`,
+    config
+  );
+
+  const patient = await response.data;
+  return patient;
+};
+
 const patientService = {
   getPatients,
+  getPatient,
 };
 
 export default patientService;

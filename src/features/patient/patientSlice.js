@@ -4,16 +4,37 @@ import { logout } from './../auth/authSlice';
 
 const initialState = {
   patients: [],
+  patient: [],
   loading: false,
 };
 
-// Login user
+//Get all patients
 export const getPatients = createAsyncThunk(
   'patient/getPatients',
   async (queryString, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
       return await patientService.getPatients(queryString, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+//Get one patient
+export const getPatient = createAsyncThunk(
+  'patient/getPatient',
+  async (patientId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await patientService.getPatient(patientId, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -47,6 +68,17 @@ export const patientSlice = createSlice({
       .addCase(getPatients.rejected, (state) => {
         state.loading = false;
         state.patients = [];
+      })
+      .addCase(getPatient.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getPatient.fulfilled, (state, action) => {
+        state.loading = false;
+        state.patient = action.payload.data.data;
+      })
+      .addCase(getPatient.rejected, (state) => {
+        state.loading = false;
+        state.patient = [];
       })
       // Return state to defaults on user logout
       .addCase(logout, () => {
