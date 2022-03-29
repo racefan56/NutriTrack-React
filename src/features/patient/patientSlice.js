@@ -4,7 +4,7 @@ import { logout } from './../auth/authSlice';
 
 const initialState = {
   patients: [],
-  patient: [],
+  patient: {},
   loading: false,
 };
 
