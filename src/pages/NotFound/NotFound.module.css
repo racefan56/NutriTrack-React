@@ -9,13 +9,13 @@
   color: #e7f5ff;
   width: 100%;
   font-weight: 600;
-  background-color: #1971c2;
-  border: 2px solid #1971c2;
+  background-color: #228be6;
+  border: 2px solid #228be6;
   margin-top: 16px;
   margin-bottom: 16px;
 }
 
 .main-btn:hover {
   background-color: #ffff;
-  color: #1971c2;
+  color: #228be6;
 }

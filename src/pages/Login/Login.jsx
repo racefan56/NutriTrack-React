@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../../features/auth/authSlice';
+import { setPathname } from '../../features/navigation/navigationSlice';
 import React, { useState, useEffect } from 'react';
 import Card from '../../components/layout/Card/Card';
 import Brand from '../../components/layout/Brand/Brand';
@@ -19,8 +20,9 @@ function Login() {
   useEffect(() => {
     if (loggedIn) {
       navigate('/patients');
+      dispatch(setPathname('/patients'));
     }
-  }, [loggedIn, navigate]);
+  }, [loggedIn, navigate, dispatch]);
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -37,6 +39,7 @@ function Login() {
     setPassword('');
 
     navigate('/patients');
+    dispatch(setPathname('/patients'));
   };
 
   return (

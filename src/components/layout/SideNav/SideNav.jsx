@@ -9,6 +9,7 @@ import LinkSubSection from '../LinkSection/LinkSubSection/LinkSubSection';
 
 const SideNav = () => {
   const path = window.location.pathname;
+  console.log(path);
 
   if (path.startsWith('/control-panel')) {
     return (

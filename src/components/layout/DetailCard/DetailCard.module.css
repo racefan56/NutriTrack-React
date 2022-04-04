@@ -1,0 +1,90 @@
+.DetailCardContainer {
+  margin-top: 3rem;
+  /* position: relative; */
+}
+
+.heading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+
+  padding: 8px;
+
+  background-color: #228be6;
+  border-radius: 0.25rem;
+
+  width: 100%;
+
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.altHeading {
+  text-align: center;
+
+  padding: 8px;
+
+  border-bottom: 2px solid #f1f3f5;
+
+  width: 100%;
+
+  color: #343a40;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.categoryTitleDiv {
+  display: flex;
+  justify-content: flex-start;
+  font-weight: 600;
+  font-size: 24px;
+  color: #ffff;
+}
+
+.categoryTitleDivAlt {
+  display: flex;
+  justify-content: flex-start;
+  font-weight: 600;
+  font-size: 18px;
+  color: #343a40;
+}
+
+.categorySpan {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-right: 2px solid #e7f5ff;
+}
+
+.titleSpan {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.statusTag {
+  position: absolute;
+  z-index: 1;
+  top: 5px;
+  right: 5px;
+  text-align: center;
+
+  width: 15%;
+  padding: 3px;
+
+  border-radius: 0.25rem;
+  outline: 2px solid #ffff;
+
+  background-color: #74c0fc;
+
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.eating {
+  background-color: #8ce99a;
+}
+
+.npo {
+  background-color: #ff6b6b;
+  color: #ffff;
+}

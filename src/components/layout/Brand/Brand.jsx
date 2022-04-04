@@ -10,7 +10,7 @@ function Brand({ className }) {
   return (
     <div className='d-flex'>
       <Link
-        className={`${className ? className : ''}`}
+        className={`${classes.brand} ${className ? className : ''}`}
         to={loggedIn ? '/patients' : '/'}
       >
         NutriTrack

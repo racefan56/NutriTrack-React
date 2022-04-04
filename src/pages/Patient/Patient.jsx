@@ -3,12 +3,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getPatient } from './../../features/patient/patientSlice';
 
+import formatDate from '../../components/helperFunctions/formatDate';
+
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
 import SideNav from '../../components/layout/SideNav/SideNav';
-import FormGroup from '../../components/layout/FormGroup/FormGroup';
+import DetailCard from '../../components/layout/DetailCard/DetailCard';
+import DetailCardGroup from '../../components/layout/DetailCard/DetailCardGroup/DetailCardGroup';
 
 import classes from './Patient.module.css';
+import MealResults from '../../components/meal/MealResults/MealResults';
 
 const Patient = (props) => {
   const dispatch = useDispatch();
@@ -20,85 +24,59 @@ const Patient = (props) => {
 
   const { patient, loading } = useSelector((state) => state.patient);
 
-  console.log(patient);
-
   if (loading) {
     return <Spinner />;
   }
 
   if (patient.roomNumber) {
+    console.log(patient);
+
+    const unitRoom = `${patient.unit} ${patient.roomNumber.roomNumber}`;
+
+    const patientName = `${patient.firstName} ${patient.lastName}`;
+
     return (
       <>
         <SideNav />
         <ContainerSideNav>
-          <form>
-            <FormGroup
-              id='unit'
-              label='Unit'
-              type='text'
-              value={patient.unit}
+          <DetailCard
+            status={patient.status}
+            category={unitRoom}
+            title={patientName}
+          >
+            <DetailCardGroup
+              label='DOB'
+              data={formatDate(patient.dob, { dateOnly: true })}
             />
-            <FormGroup
-              id='roomNumber'
-              label='Room Number'
-              type='number'
-              value={patient.roomNumber.roomNumber}
+            <DetailCardGroup label='Diet' data={patient.currentDiet.name} />
+            <DetailCardGroup
+              label='Allergies'
+              data={patient.knownAllergies.toString()}
             />
-            <FormGroup
-              id='firstName'
-              label='First Name'
-              type='text'
-              value={patient.firstName}
-            />
-            <FormGroup
-              id='lastName'
-              label='Last Name'
-              type='text'
-              value={patient.lastName}
-            />
-            <FormGroup
-              id='currentDiet'
-              label='Diet'
-              type='text'
-              value={patient.currentDiet.name}
-            />
-            <FormGroup
-              id='status'
-              label='Status'
-              type='text'
-              value={patient.status}
-            />
-            <FormGroup
-              id='knownAllergies'
-              label='Known Allergies'
-              type='text'
-              value={patient.knownAllergies.toString()}
-            />
-            <FormGroup
-              id='supplements'
+            <DetailCardGroup
               label='Supplements'
-              type='text'
-              value={patient.supplements.toString()}
+              data={patient.supplements.toString()}
             />
-            <FormGroup
-              id='isHighRisk'
-              label='High Risk'
-              type='text'
-              value={patient.isHighRisk}
-            />
-            <FormGroup
-              id='createdAt'
+            <DetailCardGroup
               label='Created'
-              type='text'
-              value={patient.createdAt}
+              data={formatDate(patient.createdAt)}
             />
-            <FormGroup
-              id='updatedAt'
-              label='Last Updated'
-              type='text'
-              value={patient.updatedAt}
+            <DetailCardGroup
+              label='Updated'
+              data={formatDate(patient.updatedAt)}
             />
-          </form>
+            <DetailCardGroup
+              label='High Risk'
+              data={patient.isHighRisk.toString().toUpperCase()}
+            />
+          </DetailCard>
+          <DetailCard title='Meal Orders' altHeading='true'>
+            {patient.mealOrders.length > 0 ? (
+              <MealResults meals={patient.mealOrders} />
+            ) : (
+              <p className={classes.noMeals}>This patient has no meal orders</p>
+            )}
+          </DetailCard>
         </ContainerSideNav>
       </>
     );
