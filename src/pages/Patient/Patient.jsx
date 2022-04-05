@@ -45,38 +45,51 @@ const Patient = (props) => {
             title={patientName}
           >
             <DetailCardGroup
+              className='col-4'
               label='DOB'
               data={formatDate(patient.dob, { dateOnly: true })}
             />
-            <DetailCardGroup label='Diet' data={patient.currentDiet.name} />
             <DetailCardGroup
+              className='col-4'
+              label='Diet'
+              data={patient.currentDiet.name}
+            />
+            <DetailCardGroup
+              className='col-4'
+              label='High Risk'
+              data={patient.isHighRisk.toString().toUpperCase()}
+            />
+            <DetailCardGroup
+              className='col-6'
               label='Allergies'
               data={patient.knownAllergies.toString()}
             />
             <DetailCardGroup
+              className='col-6'
               label='Supplements'
               data={patient.supplements.toString()}
             />
             <DetailCardGroup
+              className='col-6'
               label='Created'
               data={formatDate(patient.createdAt)}
             />
             <DetailCardGroup
+              className='col-6'
               label='Updated'
               data={formatDate(patient.updatedAt)}
             />
-            <DetailCardGroup
-              label='High Risk'
-              data={patient.isHighRisk.toString().toUpperCase()}
-            />
           </DetailCard>
-          <DetailCard title='Meal Orders' altHeading='true'>
-            {patient.mealOrders.length > 0 ? (
+
+          {patient.mealOrders.length > 0 ? (
+            <DetailCard title='Meal Orders' altHeading='true'>
               <MealResults meals={patient.mealOrders} />
-            ) : (
+            </DetailCard>
+          ) : (
+            <DetailCard altHeading='true'>
               <p className={classes.noMeals}>This patient has no meal orders</p>
-            )}
-          </DetailCard>
+            </DetailCard>
+          )}
         </ContainerSideNav>
       </>
     );

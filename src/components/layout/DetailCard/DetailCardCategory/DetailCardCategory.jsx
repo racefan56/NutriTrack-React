@@ -4,7 +4,7 @@ import classes from './DetailCardCategory.module.css';
 const DetailCardCategory = ({ children, title }) => {
   return (
     <>
-      <h1>{title}</h1>
+      <h3 className={classes.title}>{title}</h3>
       {children}
     </>
   );

@@ -1,0 +1,52 @@
+.dayHeading {
+  display: flex;
+  justify-content: space-between;
+
+  background-color: #228be6;
+
+  color: #ffff;
+  font-weight: 600;
+  font-size: 18px;
+
+  outline: 2px solid #343a40;
+  border-radius: 0.25rem;
+
+  padding: 1rem;
+}
+
+.dayContainer {
+  outline: 2px solid #343a40;
+  border-radius: 0.25rem;
+
+  padding: 0;
+
+  margin-bottom: 2rem;
+}
+
+.iconCheck {
+  font-size: 1.5rem;
+}
+
+.iconX {
+  font-size: 1.5rem;
+}
+
+.mealCheckSpan {
+  margin-right: 1rem;
+  padding: 0.5rem;
+
+  background-color: #8ce99a;
+
+  border: 1px solid #ffff;
+  border-radius: 0.25rem;
+}
+
+.mealXSpan {
+  margin-right: 1rem;
+  padding: 0.5rem;
+
+  background-color: #ff6b6b;
+
+  border: 1px solid #ffff;
+  border-radius: 0.25rem;
+}

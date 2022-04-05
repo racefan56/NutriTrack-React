@@ -1,11 +1,19 @@
 .groupContainer {
   color: #343a40;
   border-radius: 0.25rem;
+  margin: 0.5rem 0.5rem;
+  padding: 0.5rem;
+  outline: 2px solid #228be6;
 }
 
 .groupLabel {
   font-weight: 600;
 }
 
-.groupData {
+.portion {
+  padding: 1rem;
+}
+
+.groupData div:nth-child(2n) {
+  background-color: #343a40;
 }

@@ -4,18 +4,15 @@ import DetailCardGroup from '../../layout/DetailCard/DetailCardGroup/DetailCardG
 import DetailCardCategory from '../../layout/DetailCard/DetailCardCategory/DetailCardCategory';
 import MealItem from './../MealItem/MealItem';
 
-import formatDate from '../../helperFunctions/formatDate';
+import { v4 as uuidv4 } from 'uuid';
 
 import classes from './Meal.module.css';
 
 const Meal = ({ meal }) => {
   return (
     <>
-      <DetailCardCategory
-        title={`${formatDate(meal.mealDate, { dateOnly: true })} ${
-          meal.mealPeriod
-        }`}
-      >
+      <DetailCardCategory key={uuidv4()} title={meal.mealPeriod}>
+        {/* <DetailCardGroup data={meal.sides} /> */}
         <MealItem key={meal._id} meal={meal} />
       </DetailCardCategory>
     </>
