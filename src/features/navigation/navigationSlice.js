@@ -10,7 +10,6 @@ export const navigationSlice = createSlice({
   reducers: {
     setPathname: (state, action) => {
       state.pathname = action.payload;
-      console.log(state.pathname);
     },
   },
 });

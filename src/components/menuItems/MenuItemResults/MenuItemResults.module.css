@@ -1,0 +1,10 @@
+.heading {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.headingContainer {
+  align-items: center;
+  border-bottom: 2px solid;
+  margin-bottom: 3rem;
+}

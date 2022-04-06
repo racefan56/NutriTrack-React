@@ -32,7 +32,7 @@ function DetailCard({ children, status, category, title, altHeading }) {
         </div>
       </div>
 
-      <div className='row'>{children}</div>
+      <div className='row m-0'>{children}</div>
     </div>
   );
 }

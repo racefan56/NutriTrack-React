@@ -12,6 +12,8 @@ import Patient from './pages/Patient/Patient';
 import PatientOrders from './pages/PatientOrders';
 import MyAccount from './pages/MyAccount/MyAccount';
 import Notfound from './pages/NotFound/Notfound';
+import MenuItems from './pages/MenuItems/MenuItems';
+import MenuItemPage from './pages/MenuItemPage/MenuItemPage';
 
 function App() {
   return (
@@ -57,6 +59,34 @@ function App() {
           element={<PrivateRoute validRoles={['admin']} />}
         >
           <Route path='/patient-orders' element={<PatientOrders />} />
+        </Route>
+
+        {/* MENU ITEM ROUTES */}
+        <Route
+          path='/control-panel/menu-items'
+          element={<PrivateRoute validRoles={['admin']} />}
+        >
+          <Route path='/control-panel/menu-items' element={<MenuItems />} />
+        </Route>
+
+        <Route
+          path='/control-panel/menu-items/:menuItemId'
+          element={<PrivateRoute validRoles={['admin']} />}
+        >
+          <Route
+            path='/control-panel/menu-items/:menuItemId'
+            element={<MenuItemPage />}
+          />
+        </Route>
+
+        <Route
+          path='/control-panel/menu-items/:menuItemId/edit'
+          element={<PrivateRoute validRoles={['admin']} />}
+        >
+          <Route
+            path='/control-panel/menu-items/:menuItemId/edit'
+            element={<MenuItemPage />}
+          />
         </Route>
 
         {/* PAGE NOT FOUND ROUTE */}

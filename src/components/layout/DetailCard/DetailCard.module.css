@@ -11,8 +11,11 @@
 
   padding: 8px;
 
-  background-color: #228be6;
+  background-color: #74c0fc;
   border-radius: 0.25rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 2px solid;
 
   width: 100%;
 

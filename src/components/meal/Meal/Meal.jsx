@@ -6,13 +6,14 @@ import MealItem from './../MealItem/MealItem';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import classes from './Meal.module.css';
-
 const Meal = ({ meal }) => {
   return (
     <>
-      <DetailCardCategory key={uuidv4()} title={meal.mealPeriod}>
-        {/* <DetailCardGroup data={meal.sides} /> */}
+      <DetailCardCategory
+        key={uuidv4()}
+        title={meal.mealPeriod}
+        className='col-md-12 col-lg-6 col-xl-4'
+      >
         <MealItem key={meal._id} meal={meal} />
       </DetailCardCategory>
     </>

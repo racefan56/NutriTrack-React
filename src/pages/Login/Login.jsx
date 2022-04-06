@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Card from '../../components/layout/Card/Card';
 import Brand from '../../components/layout/Brand/Brand';
 import { useNavigate } from 'react-router-dom';
+import ButtomMain from '../../components/layout/Button/ButtonMain/ButtomMain';
 
 import classes from './Login.module.css';
 
@@ -72,9 +73,7 @@ function Login() {
               onChange={handleChangePassword}
             />
           </div>
-          <button type='submit' className={`btn ${classes['login-btn']}`}>
-            Login
-          </button>
+          <ButtomMain type='submit' text='Login' />
         </form>
       </Card>
     </div>

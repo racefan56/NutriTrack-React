@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getPatient } from './../../features/patient/patientSlice';
 
-import formatDate from '../../components/helperFunctions/formatDate';
+import { formatDate } from '../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
@@ -18,23 +18,21 @@ const Patient = (props) => {
   const dispatch = useDispatch();
   const { patientId } = useParams();
 
+  const [firstRender, setfirstRender] = useState(true);
+
   useEffect(() => {
+    setfirstRender(false);
     dispatch(getPatient(patientId));
   }, [dispatch, patientId]);
 
   const { patient, loading } = useSelector((state) => state.patient);
 
-  if (loading) {
+  if (loading || firstRender) {
     return <Spinner />;
-  }
-
-  if (patient.roomNumber) {
-    console.log(patient);
-
+  } else {
     const unitRoom = `${patient.unit} ${patient.roomNumber.roomNumber}`;
 
     const patientName = `${patient.firstName} ${patient.lastName}`;
-
     return (
       <>
         <SideNav />
@@ -93,8 +91,6 @@ const Patient = (props) => {
         </ContainerSideNav>
       </>
     );
-  } else {
-    return <></>;
   }
 };
 

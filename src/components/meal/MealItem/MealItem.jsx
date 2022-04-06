@@ -27,13 +27,13 @@ const MealItem = ({ meal }) => {
       )}
       <DetailCardGroup
         className='col-6'
-        label='Carb Total'
-        data={meal.totalMealCarbCount + ' G'}
+        label='Carbs'
+        data={meal.totalMealCarbCount + 'G'}
       />
       <DetailCardGroup
         className='col-6'
-        label='Sodium Total'
-        data={meal.totalMealSodiumCount + ' MG'}
+        label='Sodium'
+        data={meal.totalMealSodiumCount + 'MG'}
       />
     </div>
   );

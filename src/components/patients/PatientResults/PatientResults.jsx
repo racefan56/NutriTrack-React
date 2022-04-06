@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { getPatients } from '../../../features/patient/patientSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import PatientItem from '../PatientItem/PatientItem';
+import Table from '../../layout/Table/Table';
+import TableDataItem from '../../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../../Spinner/Spinner';
+import ButtonMain from '../../layout/Button/ButtonMain/ButtomMain';
 
 import classes from './PatientResults.module.css';
 
@@ -24,28 +26,22 @@ function PatientResults() {
   } else {
     return (
       <>
-        <button
-          className={`btn ${classes['main-btn']}`}
-          onClick={handleRefresh}
-        >
-          Refresh
-        </button>
-        <table className='table'>
-          <thead>
-            <tr>
-              <th scope='col'>Room Number</th>
-              <th scope='col'>First</th>
-              <th scope='col'>Last</th>
-              <th scope='col'>Diet</th>
-              <th scope='col'>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {patients.map((patient) => (
-              <PatientItem key={patient.id} patient={patient} />
-            ))}
-          </tbody>
-        </table>
+        <ButtonMain text='Refresh' onClick={handleRefresh} />
+        <Table headers={['Room', 'First', 'Last', 'Diet', 'Status']}>
+          {patients.map((patient) => (
+            <TableDataItem
+              key={patient._id}
+              navigatePath={`/patients/${patient._id}`}
+              dataPoints={[
+                patient.unit + ' ' + patient.roomNumber.roomNumber,
+                patient.firstName,
+                patient.lastName,
+                patient.currentDiet.name,
+                patient.status,
+              ]}
+            />
+          ))}
+        </Table>
       </>
     );
   }

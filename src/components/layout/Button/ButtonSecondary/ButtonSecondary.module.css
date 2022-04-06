@@ -1,0 +1,9 @@
+.btnSecondary,
+.btnSecondary:hover {
+  color: #228be6;
+  width: 100%;
+  font-weight: 600;
+  background-color: #ffff;
+  border: 2px solid #228be6;
+  padding: 0rem 0.375rem;
+}

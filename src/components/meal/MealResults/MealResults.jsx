@@ -3,7 +3,7 @@ import { BiCheckCircle, BiXCircle } from 'react-icons/bi';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import formatDate from '../../helperFunctions/formatDate';
+import { formatDate } from '../../helperFunctions/helperFunctions';
 import Meal from '../Meal/Meal';
 
 import classes from './MealResults.module.css';
@@ -69,15 +69,15 @@ const MealResults = ({ meals }) => {
           className={classes.dayHeading}
           key={uuidv4()}
         >
-          <span>{day}</span>
-          <span>
+          <div className={classes.orderDate}>{day}</div>
+          <div className={classes.orderTakenContainer}>
             {isOrderTaken(day, 'Breakfast')}
             {isOrderTaken(day, 'Lunch')}
             {isOrderTaken(day, 'Dinner')}
-          </span>
+          </div>
         </div>
         <div hidden id={day} className='allDays'>
-          {mealsFilteredByDay[index]}
+          <div className='row'>{mealsFilteredByDay[index]}</div>
         </div>
       </div>
     );
