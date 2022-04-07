@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { getMenuItem } from '../../features/menuItem/menuItemSlice';
 
@@ -20,10 +20,7 @@ import classes from './MenuItemPage.module.css';
 
 const MenuItem = (props) => {
   const dispatch = useDispatch();
-  const [searchParams] = useSearchParams({});
   const [firstRender, setfirstRender] = useState(true);
-
-  console.log(searchParams.get('edit'));
 
   const { menuItemId } = useParams();
 
@@ -46,50 +43,90 @@ const MenuItem = (props) => {
             title={titleCase(menuItem.name)}
           >
             <FormGroup
-              className='col-12'
-              label='Description'
-              data={menuItem.description}
+              inputType='text'
+              className='col-sm-12 col-md-6 col-xl-4'
+              label='Category'
+              data={menuItem.category}
+              editable
             />
             <FormGroup
+              inputType='text'
+              className='col-sm-12 col-md-6 col-xl-4'
+              label='Production Area'
+              data={menuItem.productionArea.areaName}
+              editable
+            />
+            <FormGroup
+              inputType='text'
+              className='col-sm-12 col-md-6 col-xl-4'
+              label='Name'
+              data={menuItem.name}
+              editable
+            />
+            <FormGroup
+              inputType='text'
               className='col-sm-12 col-md-6 col-xl-4'
               label='Diet Availability'
               data={menuItem.dietAvailability
                 .map((diet) => diet.name)
                 .join(', ')}
+              editable
             />
             <FormGroup
-              className='col-sm-12 col-md-6 col-xl-4'
-              label='Production Area'
-              data={menuItem.productionArea.areaName}
+              inputType='number'
+              className='col-sm-6 col-md-3 col-xl-2'
+              label='Portion Size'
+              data={menuItem.portionSize}
+              editable
             />
             <FormGroup
-              className='col-sm-12 col-md-6 col-xl-4'
-              label='Portion'
-              data={menuItem.portionSize + ' ' + menuItem.portionUnit}
+              inputType='text'
+              className='col-sm-6 col-md-3 col-xl-2'
+              label='Portion Unit'
+              data={menuItem.portionUnit}
+              editable
             />
             <FormGroup
+              inputType='radio'
+              radioName='isLiquid'
+              radioOptions={['True', 'False']}
               className='col-sm-12 col-md-6 col-xl-4'
-              label='Carbs'
-              data={menuItem.carbsInGrams + 'G'}
-            />
-
-            <FormGroup
-              className='col-sm-12 col-md-6 col-xl-4'
-              label='Liquid'
-              data={menuItem.isLiquid.toString().toUpperCase()}
+              label='Is Liquid?'
+              data={capitalizeWord(menuItem.isLiquid)}
+              editable
             />
             <FormGroup
               className='col-sm-12 col-md-6 col-xl-4'
               label='Major Allergens'
+              inputType='text'
               data={menuItem.majorAllergens.join(', ')}
+              editable
             />
             <FormGroup
               className='col-sm-12 col-md-6 col-xl-4'
-              label='Sodium'
-              data={menuItem.sodiumInMG + 'MG'}
+              label='Carbs (grams)'
+              inputType='number'
+              step={10}
+              data={menuItem.carbsInGrams}
+              editable
             />
-
             <FormGroup
+              className='col-sm-12 col-md-6 col-xl-4'
+              label='Sodium (miligrams)'
+              inputType='number'
+              step={100}
+              data={menuItem.sodiumInMG}
+              editable
+            />
+            <FormGroup
+              className='col-12'
+              label='Description'
+              data={menuItem.description}
+              editable
+              textarea
+            />
+            <FormGroup
+              inputType='text'
               className='col-sm-12 col-md-6 col-xl-4'
               label='Created'
               data={formatDate(menuItem.createdOn)}

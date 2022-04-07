@@ -5,6 +5,16 @@ import FormGroup from '../../layout/Form/FormGroup/FormGroup';
 import classes from './MealItem.module.css';
 
 const MealItem = ({ meal }) => {
+  //Convert an array of menu item objects to a usable data string
+  const objArrToString = (item) => {
+    let string = '';
+    item.forEach((el) => {
+      string += el.name;
+    });
+    console.log(string);
+    return string;
+  };
+
   return (
     <div className={`row ${classes.mealContainer}`}>
       {meal.drinks.length > 0 && (
@@ -13,6 +23,12 @@ const MealItem = ({ meal }) => {
       {meal.entree && <FormGroup label='Entree' mealItemObj={meal.entree} />}
       {meal.sides.length > 0 && (
         <FormGroup mealItemArr={meal.sides} label='Sides' />
+      )}
+      {meal.sides.length > 0 && (
+        <FormGroup
+          data={objArrToString(meal.sides)}
+          label='Sides'
+        />
       )}
       {meal.condiments.length > 0 && (
         <FormGroup mealItemArr={meal.condiments} label='Condiments' />

@@ -28,7 +28,6 @@ const MenuItemResults = (props) => {
   };
 
   const editMenuItem = (menuItemId) => {
-    console.log(menuItemId);
     return navigate({
       pathname: `${menuItemId}`,
       search: createSearchParams({ edit: 'true' }).toString(),

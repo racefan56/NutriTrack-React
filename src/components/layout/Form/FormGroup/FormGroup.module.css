@@ -10,6 +10,12 @@
 
 .groupLabel {
   font-weight: 600;
+  padding: 8px;
+}
+
+.radioLabel {
+  font-weight: 400;
+  width: 25%;
 }
 
 .groupData {
@@ -19,4 +25,21 @@
 
 .portion {
   padding: 1rem;
+}
+
+.input {
+  background-color: #ffff;
+  border: 2px solid #343a40;
+  border-radius: 0.25rem;
+  width: 100%;
+  padding: 8px;
+}
+
+.radioInput {
+  width: 1rem;
+}
+
+.input:disabled {
+  background-color: transparent;
+  border: 0;
 }

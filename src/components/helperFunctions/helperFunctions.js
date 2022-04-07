@@ -1,5 +1,9 @@
 export function capitalizeWord(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  //Convert to string if not already a string, then capitalize only the first letter
+  return (
+    string.toString().charAt(0).toUpperCase() +
+    string.toString().slice(1).toLowerCase()
+  );
 }
 
 export function titleCase(string) {
@@ -31,9 +35,7 @@ export const formatDate = (date, dateOnly) => {
 
   const formatedDateTime = `${month}/${day}/${year} ${
     hours > 12 ? hours - 12 : hours
-  }:${minutes}:${seconds} ${
-    hours > 12 ? 'PM' : 'AM'
-  }`;
+  }:${minutes}:${seconds} ${hours > 12 ? 'PM' : 'AM'}`;
 
   return formatedDateTime;
 };
