@@ -80,11 +80,11 @@ function App() {
         </Route>
 
         <Route
-          path='/control-panel/menu-items/:menuItemId/edit'
+          path='/control-panel/menu-items/:menuItemId'
           element={<PrivateRoute validRoles={['admin']} />}
         >
           <Route
-            path='/control-panel/menu-items/:menuItemId/edit'
+            path='/control-panel/menu-items/:menuItemId'
             element={<MenuItemPage />}
           />
         </Route>

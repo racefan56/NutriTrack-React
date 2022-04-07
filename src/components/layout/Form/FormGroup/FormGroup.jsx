@@ -1,22 +1,26 @@
 import React from 'react';
-import classes from './DetailCardGroup.module.css';
+import classes from './FormGroup.module.css';
 
 import { v4 as uuidv4 } from 'uuid';
 
-const DetailCardGroup = ({
-  label,
-  data,
-  mealItemArr,
-  mealItemObj,
-  className,
-}) => {
+const FormGroup = ({ label, data, mealItemArr, mealItemObj, className }) => {
   return (
     <div className={`${className ? className : ''}`}>
       <div className={classes.groupContainer}>
         {data ? (
           <>
-            <span className={classes.groupLabel}>{label}: </span>
-            <span className={classes.groupData}>{data}</span>
+            <label
+              htmlFor={label.replace(/\s+/g, '')}
+              className={classes.groupLabel}
+            >
+              {label}:{' '}
+            </label>
+            <input
+              id={label.replace(/\s+/g, '')}
+              className={classes.groupData}
+              disabled
+              value={data}
+            />
           </>
         ) : mealItemArr ? (
           mealItemArr.map((item, index) => {
@@ -52,4 +56,4 @@ const DetailCardGroup = ({
   );
 };
 
-export default DetailCardGroup;
+export default FormGroup;

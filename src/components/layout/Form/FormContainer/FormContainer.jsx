@@ -1,10 +1,9 @@
 import React from 'react';
+import classes from './FormContainer.module.css';
 
-import classes from './DetailCard.module.css';
-
-function DetailCard({ children, status, category, title, altHeading }) {
+const FormContainer = ({ children, status, category, title, altHeading }) => {
   return (
-    <div className={classes.DetailCardContainer}>
+    <div className={classes.formContainer}>
       <div className={altHeading ? classes.altHeading : classes.heading}>
         {status ? (
           <div
@@ -32,9 +31,9 @@ function DetailCard({ children, status, category, title, altHeading }) {
         </div>
       </div>
 
-      <div className='row m-0'>{children}</div>
+      <form className='row m-0'>{children}</form>
     </div>
   );
-}
+};
 
-export default DetailCard;
+export default FormContainer;

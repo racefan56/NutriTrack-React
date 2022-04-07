@@ -7,3 +7,15 @@
   border: 2px solid #343a40;
   border-radius: 0.25rem;
 }
+
+.heading {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.headingContainer {
+  align-items: center;
+  border-bottom: 2px solid;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+}

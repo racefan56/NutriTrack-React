@@ -3,7 +3,7 @@ import classes from './ButtonSecondary.module.css';
 
 import { Link } from 'react-router-dom';
 
-const ButtonSecondary = ({ type, text, onClick, path }) => {
+const ButtonSecondary = ({ type, text, onClick, path, className }) => {
   if (type === 'Link') {
     return (
       <Link className={`btn ${classes.btnSecondary}`} to={path}>
@@ -12,7 +12,11 @@ const ButtonSecondary = ({ type, text, onClick, path }) => {
     );
   }
   return (
-    <button type={type} onClick={onClick} className={`btn ${classes.btnMain}`}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={`btn ${classes.btnSecondary} ${className ? className : ''}`}
+    >
       {text}
     </button>
   );

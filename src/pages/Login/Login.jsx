@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Card from '../../components/layout/Card/Card';
 import Brand from '../../components/layout/Brand/Brand';
 import { useNavigate } from 'react-router-dom';
-import ButtomMain from '../../components/layout/Button/ButtonMain/ButtomMain';
+import ButtomMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 
 import classes from './Login.module.css';
 

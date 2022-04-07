@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import { getMenuItem } from '../../features/menuItem/menuItemSlice';
 
@@ -13,16 +13,17 @@ import {
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
 import SideNav from '../../components/layout/SideNav/SideNav';
-import DetailCard from '../../components/layout/DetailCard/DetailCard';
-import DetailCardGroup from '../../components/layout/DetailCard/DetailCardGroup/DetailCardGroup';
+import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
+import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
 
 import classes from './MenuItemPage.module.css';
 
 const MenuItem = (props) => {
-  console.log(window.location.pathname);
   const dispatch = useDispatch();
-
+  const [searchParams] = useSearchParams({});
   const [firstRender, setfirstRender] = useState(true);
+
+  console.log(searchParams.get('edit'));
 
   const { menuItemId } = useParams();
 
@@ -40,60 +41,60 @@ const MenuItem = (props) => {
       <>
         <SideNav />
         <ContainerSideNav>
-          <DetailCard
+          <FormContainer
             category={capitalizeWord(menuItem.category)}
             title={titleCase(menuItem.name)}
           >
-            <DetailCardGroup
+            <FormGroup
               className='col-12'
               label='Description'
               data={menuItem.description}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-sm-12 col-md-6 col-xl-4'
               label='Diet Availability'
               data={menuItem.dietAvailability
                 .map((diet) => diet.name)
                 .join(', ')}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-sm-12 col-md-6 col-xl-4'
               label='Production Area'
               data={menuItem.productionArea.areaName}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-sm-12 col-md-6 col-xl-4'
               label='Portion'
               data={menuItem.portionSize + ' ' + menuItem.portionUnit}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-sm-12 col-md-6 col-xl-4'
               label='Carbs'
               data={menuItem.carbsInGrams + 'G'}
             />
 
-            <DetailCardGroup
+            <FormGroup
               className='col-sm-12 col-md-6 col-xl-4'
               label='Liquid'
               data={menuItem.isLiquid.toString().toUpperCase()}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-sm-12 col-md-6 col-xl-4'
               label='Major Allergens'
               data={menuItem.majorAllergens.join(', ')}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-sm-12 col-md-6 col-xl-4'
               label='Sodium'
               data={menuItem.sodiumInMG + 'MG'}
             />
 
-            <DetailCardGroup
+            <FormGroup
               className='col-sm-12 col-md-6 col-xl-4'
               label='Created'
               data={formatDate(menuItem.createdOn)}
             />
-          </DetailCard>
+          </FormContainer>
         </ContainerSideNav>
       </>
     );

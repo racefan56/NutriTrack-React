@@ -8,11 +8,12 @@ import { formatDate } from '../../components/helperFunctions/helperFunctions';
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
 import SideNav from '../../components/layout/SideNav/SideNav';
-import DetailCard from '../../components/layout/DetailCard/DetailCard';
-import DetailCardGroup from '../../components/layout/DetailCard/DetailCardGroup/DetailCardGroup';
+import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
+import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
 
 import classes from './Patient.module.css';
 import MealResults from '../../components/meal/MealResults/MealResults';
+import { Form } from 'react-bootstrap';
 
 const Patient = (props) => {
   const dispatch = useDispatch();
@@ -37,56 +38,56 @@ const Patient = (props) => {
       <>
         <SideNav />
         <ContainerSideNav>
-          <DetailCard
+          <FormContainer
             status={patient.status}
             category={unitRoom}
             title={patientName}
           >
-            <DetailCardGroup
+            <FormGroup
               className='col-4'
               label='DOB'
               data={formatDate(patient.dob, { dateOnly: true })}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-4'
               label='Diet'
               data={patient.currentDiet.name}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-4'
               label='High Risk'
               data={patient.isHighRisk.toString().toUpperCase()}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-6'
               label='Allergies'
               data={patient.knownAllergies.toString()}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-6'
               label='Supplements'
               data={patient.supplements.toString()}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-6'
               label='Created'
               data={formatDate(patient.createdAt)}
             />
-            <DetailCardGroup
+            <FormGroup
               className='col-6'
               label='Updated'
               data={formatDate(patient.updatedAt)}
             />
-          </DetailCard>
+          </FormContainer>
 
           {patient.mealOrders.length > 0 ? (
-            <DetailCard title='Meal Orders' altHeading='true'>
+            <FormContainer title='Meal Orders' altHeading='true'>
               <MealResults meals={patient.mealOrders} />
-            </DetailCard>
+            </FormContainer>
           ) : (
-            <DetailCard altHeading='true'>
+            <FormContainer altHeading='true'>
               <p className={classes.noMeals}>This patient has no meal orders</p>
-            </DetailCard>
+            </FormContainer>
           )}
         </ContainerSideNav>
       </>

@@ -12,7 +12,6 @@ function Patients() {
     <>
       <SideNav />
       <ContainerSideNav>
-        <h1>Patients control panel</h1>
         <PatientResults />
       </ContainerSideNav>
     </>

@@ -3,7 +3,7 @@ import classes from './ButtonMain.module.css';
 
 import { Link } from 'react-router-dom';
 
-const ButtomMain = ({ type, text, onClick, path, className }) => {
+const ButtonMain = ({ type, text, onClick, path, className }) => {
   if (type === 'Link') {
     return (
       <Link
@@ -25,4 +25,4 @@ const ButtomMain = ({ type, text, onClick, path, className }) => {
   );
 };
 
-export default ButtomMain;
+export default ButtonMain;

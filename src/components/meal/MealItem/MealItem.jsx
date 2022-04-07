@@ -1,6 +1,6 @@
 import React from 'react';
 
-import DetailCardGroup from '../../layout/DetailCard/DetailCardGroup/DetailCardGroup';
+import FormGroup from '../../layout/Form/FormGroup/FormGroup';
 
 import classes from './MealItem.module.css';
 
@@ -8,29 +8,27 @@ const MealItem = ({ meal }) => {
   return (
     <div className={`row ${classes.mealContainer}`}>
       {meal.drinks.length > 0 && (
-        <DetailCardGroup mealItemArr={meal.drinks} label='Drinks' />
+        <FormGroup mealItemArr={meal.drinks} label='Drinks' />
       )}
-      {meal.entree && (
-        <DetailCardGroup label='Entree' mealItemObj={meal.entree} />
-      )}
+      {meal.entree && <FormGroup label='Entree' mealItemObj={meal.entree} />}
       {meal.sides.length > 0 && (
-        <DetailCardGroup mealItemArr={meal.sides} label='Sides' />
+        <FormGroup mealItemArr={meal.sides} label='Sides' />
       )}
       {meal.condiments.length > 0 && (
-        <DetailCardGroup mealItemArr={meal.condiments} label='Condiments' />
+        <FormGroup mealItemArr={meal.condiments} label='Condiments' />
       )}
       {meal.dessert.length > 0 && (
-        <DetailCardGroup mealItemArr={meal.dessert} label='Dessert' />
+        <FormGroup mealItemArr={meal.dessert} label='Dessert' />
       )}
       {meal.supplements.length > 0 && (
-        <DetailCardGroup mealItemArr={meal.supplements} label='Supplements' />
+        <FormGroup mealItemArr={meal.supplements} label='Supplements' />
       )}
-      <DetailCardGroup
+      <FormGroup
         className='col-6'
         label='Carbs'
         data={meal.totalMealCarbCount + 'G'}
       />
-      <DetailCardGroup
+      <FormGroup
         className='col-6'
         label='Sodium'
         data={meal.totalMealSodiumCount + 'MG'}

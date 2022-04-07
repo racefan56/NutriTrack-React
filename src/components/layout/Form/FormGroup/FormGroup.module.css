@@ -12,6 +12,11 @@
   font-weight: 600;
 }
 
+.groupData {
+  border: 0;
+  background-color: transparent;
+}
+
 .portion {
   padding: 1rem;
 }

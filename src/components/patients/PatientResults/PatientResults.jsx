@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import Table from '../../layout/Table/Table';
 import TableDataItem from '../../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../../Spinner/Spinner';
-import ButtonMain from '../../layout/Button/ButtonMain/ButtomMain';
 
 import classes from './PatientResults.module.css';
 
@@ -26,8 +25,11 @@ function PatientResults() {
   } else {
     return (
       <>
-        <ButtonMain text='Refresh' onClick={handleRefresh} />
-        <Table headers={['Room', 'First', 'Last', 'Diet', 'Status']}>
+        <Table
+          headers={['Room', 'First', 'Last', 'Diet', 'Status']}
+          heading='Patients'
+          refresh={handleRefresh}
+        >
           {patients.map((patient) => (
             <TableDataItem
               key={patient._id}
