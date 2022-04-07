@@ -18,33 +18,50 @@ const MealItem = ({ meal }) => {
   return (
     <div className={`row ${classes.mealContainer}`}>
       {meal.drinks.length > 0 && (
-        <FormGroup mealItemArr={meal.drinks} label='Drinks' />
+        <FormGroup inputType='text' mealItemArr={meal.drinks} label='Drinks' />
       )}
-      {meal.entree && <FormGroup label='Entree' mealItemObj={meal.entree} />}
+      {meal.entree && (
+        <FormGroup inputType='text' label='Entree' mealItemObj={meal.entree} />
+      )}
       {meal.sides.length > 0 && (
-        <FormGroup mealItemArr={meal.sides} label='Sides' />
+        <FormGroup inputType='text' mealItemArr={meal.sides} label='Sides' />
       )}
       {meal.sides.length > 0 && (
         <FormGroup
+          inputType='text'
           data={objArrToString(meal.sides)}
           label='Sides'
         />
       )}
       {meal.condiments.length > 0 && (
-        <FormGroup mealItemArr={meal.condiments} label='Condiments' />
+        <FormGroup
+          inputType='text'
+          mealItemArr={meal.condiments}
+          label='Condiments'
+        />
       )}
       {meal.dessert.length > 0 && (
-        <FormGroup mealItemArr={meal.dessert} label='Dessert' />
+        <FormGroup
+          inputType='text'
+          mealItemArr={meal.dessert}
+          label='Dessert'
+        />
       )}
       {meal.supplements.length > 0 && (
-        <FormGroup mealItemArr={meal.supplements} label='Supplements' />
+        <FormGroup
+          inputType='text'
+          mealItemArr={meal.supplements}
+          label='Supplements'
+        />
       )}
       <FormGroup
+        inputType='text'
         className='col-6'
         label='Carbs'
         data={meal.totalMealCarbCount + 'G'}
       />
       <FormGroup
+        inputType='text'
         className='col-6'
         label='Sodium'
         data={meal.totalMealSodiumCount + 'MG'}

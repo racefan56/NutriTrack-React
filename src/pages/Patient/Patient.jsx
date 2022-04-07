@@ -13,7 +13,6 @@ import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
 
 import classes from './Patient.module.css';
 import MealResults from '../../components/meal/MealResults/MealResults';
-import { Form } from 'react-bootstrap';
 
 const Patient = (props) => {
   const dispatch = useDispatch();
@@ -44,36 +43,43 @@ const Patient = (props) => {
             title={patientName}
           >
             <FormGroup
+              inputType='text'
               className='col-4'
               label='DOB'
               data={formatDate(patient.dob, { dateOnly: true })}
             />
             <FormGroup
+              inputType='text'
               className='col-4'
               label='Diet'
               data={patient.currentDiet.name}
             />
             <FormGroup
+              inputType='text'
               className='col-4'
               label='High Risk'
               data={patient.isHighRisk.toString().toUpperCase()}
             />
             <FormGroup
+              inputType='text'
               className='col-6'
               label='Allergies'
               data={patient.knownAllergies.toString()}
             />
             <FormGroup
+              inputType='text'
               className='col-6'
               label='Supplements'
               data={patient.supplements.toString()}
             />
             <FormGroup
+              inputType='text'
               className='col-6'
               label='Created'
               data={formatDate(patient.createdAt)}
             />
             <FormGroup
+              inputType='text'
               className='col-6'
               label='Updated'
               data={formatDate(patient.updatedAt)}
