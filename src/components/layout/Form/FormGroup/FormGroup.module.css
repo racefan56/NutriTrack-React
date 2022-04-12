@@ -9,13 +9,21 @@
 }
 
 .groupLabel {
+  font-size: 18px;
   font-weight: 600;
-  padding: 8px;
+  padding: 32px 8px 0px 8px;
+}
+
+.radioGroupLabel {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 8px 8px 0px 8px;
 }
 
 .radioLabel {
   font-weight: 400;
   width: 25%;
+  padding: 0px 8px;
 }
 
 .groupData {

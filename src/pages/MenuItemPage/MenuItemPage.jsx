@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import { getMenuItem } from '../../features/menuItem/menuItemSlice';
 
@@ -15,21 +15,51 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
 import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
+import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
+import ButtonDelete from '../../components/layout/Button/ButtonDelete/ButtonDelete';
+import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
+import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 
 import classes from './MenuItemPage.module.css';
 
 const MenuItem = (props) => {
   const dispatch = useDispatch();
+  const { menuItem, loading } = useSelector((state) => state.menuItem);
+
   const [firstRender, setfirstRender] = useState(true);
 
   const { menuItemId } = useParams();
-
-  const { menuItem, loading } = useSelector((state) => state.menuItem);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setfirstRender(false);
     dispatch(getMenuItem(menuItemId));
   }, [dispatch, menuItemId]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const category = document.getElementById('Category').value;
+    const productionArea = document.getElementById('ProductionArea').value;
+    const name = document.getElementById('Name').value;
+    const dietAvailability = document.getElementById('DietAvailability').value;
+    const portionSize = document.getElementById('PortionSize').value;
+    // const category = document.getElementById('Category').value;
+    // const category = document.getElementById('Category').value;
+    // const category = document.getElementById('Category').value;
+
+    const updatedMenuItem = {
+      category,
+      productionArea,
+      name,
+      dietAvailability,
+      portionSize,
+    };
+    console.log(updatedMenuItem);
+  };
+
+  const handleCancel = () => {
+    setSearchParams();
+  };
 
   if (loading || firstRender) {
     return <Spinner />;
@@ -41,33 +71,34 @@ const MenuItem = (props) => {
           <FormContainer
             category={capitalizeWord(menuItem.category)}
             title={titleCase(menuItem.name)}
+            onSubmit={handleSubmit}
           >
             <FormGroup
               inputType='text'
               className='col-sm-12 col-md-6 col-xl-4'
               label='Category'
-              data={menuItem.category}
+              value={menuItem.category}
               editable
             />
             <FormGroup
               inputType='text'
               className='col-sm-12 col-md-6 col-xl-4'
               label='Production Area'
-              data={menuItem.productionArea.areaName}
+              value={menuItem.productionArea.areaName}
               editable
             />
             <FormGroup
               inputType='text'
               className='col-sm-12 col-md-6 col-xl-4'
               label='Name'
-              data={menuItem.name}
+              value={menuItem.name}
               editable
             />
             <FormGroup
               inputType='text'
               className='col-sm-12 col-md-6 col-xl-4'
               label='Diet Availability'
-              data={menuItem.dietAvailability
+              value={menuItem.dietAvailability
                 .map((diet) => diet.name)
                 .join(', ')}
               editable
@@ -76,14 +107,14 @@ const MenuItem = (props) => {
               inputType='number'
               className='col-sm-6 col-md-3 col-xl-2'
               label='Portion Size'
-              data={menuItem.portionSize}
+              value={menuItem.portionSize}
               editable
             />
             <FormGroup
               inputType='text'
               className='col-sm-6 col-md-3 col-xl-2'
               label='Portion Unit'
-              data={menuItem.portionUnit}
+              value={menuItem.portionUnit}
               editable
             />
             <FormGroup
@@ -92,14 +123,14 @@ const MenuItem = (props) => {
               radioOptions={['True', 'False']}
               className='col-sm-12 col-md-6 col-xl-4'
               label='Is Liquid?'
-              data={capitalizeWord(menuItem.isLiquid)}
+              value={capitalizeWord(menuItem.isLiquid)}
               editable
             />
             <FormGroup
               className='col-sm-12 col-md-6 col-xl-4'
               label='Major Allergens'
               inputType='text'
-              data={menuItem.majorAllergens.join(', ')}
+              value={menuItem.majorAllergens.join(', ')}
               editable
             />
             <FormGroup
@@ -107,7 +138,7 @@ const MenuItem = (props) => {
               label='Carbs (grams)'
               inputType='number'
               step={10}
-              data={menuItem.carbsInGrams}
+              value={menuItem.carbsInGrams}
               editable
             />
             <FormGroup
@@ -115,13 +146,13 @@ const MenuItem = (props) => {
               label='Sodium (miligrams)'
               inputType='number'
               step={100}
-              data={menuItem.sodiumInMG}
+              value={menuItem.sodiumInMG}
               editable
             />
             <FormGroup
               className='col-12'
               label='Description'
-              data={menuItem.description}
+              value={menuItem.description}
               editable
               textarea
             />
@@ -129,8 +160,36 @@ const MenuItem = (props) => {
               inputType='text'
               className='col-sm-12 col-md-6 col-xl-4'
               label='Created'
-              data={formatDate(menuItem.createdOn)}
+              value={formatDate(menuItem.createdOn)}
             />
+            <div className={classes.btnDiv}>
+              {searchParams.get('edit') === 'true' ? (
+                <>
+                  <ButtonMain
+                    className='mx-3'
+                    text='Submit'
+                    type='Submit'
+                    onClick={handleSubmit}
+                  />
+                  <ButtonSecondary
+                    className='m-3'
+                    text='Cancel'
+                    type='Button'
+                    onClick={handleCancel}
+                  />
+                </>
+              ) : (
+                <>
+                  <ButtonEdit className='m-3' />
+                  <ButtonDelete
+                    className='m-3'
+                    text='Delete'
+                    type='Button'
+                    item={menuItem.name}
+                  />
+                </>
+              )}
+            </div>
           </FormContainer>
         </ContainerSideNav>
       </>

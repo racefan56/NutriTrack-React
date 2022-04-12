@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const FormGroup = ({
   label,
-  data,
+  value,
   editable,
   inputType,
   radioName,
@@ -19,7 +19,7 @@ const FormGroup = ({
   className,
 }) => {
   const [searchParams] = useSearchParams({});
-  const [inputValue, setinputValue] = useState(data);
+  const [inputValue, setinputValue] = useState(value);
 
   useEffect(() => {
     if (searchParams.get('edit') === 'true') {
@@ -28,7 +28,10 @@ const FormGroup = ({
         return (el.disabled = false);
       });
     } else {
-      return;
+      const elements = [...document.getElementsByClassName('editable')];
+      elements.map((el) => {
+        return (el.disabled = true);
+      });
     }
   }, [searchParams]);
 
@@ -42,19 +45,19 @@ const FormGroup = ({
 
   return (
     <div className={`${className ? className : ''}`}>
+      {label && inputType !== 'radio' ? (
+        <label
+          htmlFor={label.replace(/\s+/g, '')}
+          className={classes.groupLabel}
+        >
+          {label}
+        </label>
+      ) : (
+        <></>
+      )}
       <div className={classes.groupContainer}>
-        {data ? (
+        {value ? (
           <>
-            {inputType !== 'radio' ? (
-              <label
-                htmlFor={label.replace(/\s+/g, '')}
-                className={classes.groupLabel}
-              >
-                {label}:{' '}
-              </label>
-            ) : (
-              <></>
-            )}
             {textarea && (
               <textarea
                 id={label.replace(/\s+/g, '')}
@@ -90,7 +93,7 @@ const FormGroup = ({
                 return (
                   <div key={option}>
                     {index === 0 ? (
-                      <p className={classes.groupLabel}>{label}</p>
+                      <p className={classes.radioGroupLabel}>{label}</p>
                     ) : (
                       <></>
                     )}
@@ -142,7 +145,6 @@ const FormGroup = ({
           })
         ) : (
           <>
-            <div className={classes.groupLabel}>{label} </div>
             <div className={classes.groupData}>
               <span className={classes.portion}>
                 {mealItemObj.portionSize} {mealItemObj.portionUnit}

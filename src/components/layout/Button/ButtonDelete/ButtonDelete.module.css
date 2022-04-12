@@ -1,11 +1,12 @@
 .btnDelete {
   color: #ffff;
   font-weight: 600;
+  font-size: 18px;
   background-color: #ff6b6b;
   border: 2px solid #ffff;
   outline: 2px solid #ff6b6b;
   padding: 0.25rem 0.5rem;
-  width: 100px;
+  width: 100%;
 }
 
 .btnDelete:hover {

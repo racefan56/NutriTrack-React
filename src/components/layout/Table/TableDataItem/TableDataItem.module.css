@@ -1,3 +1,7 @@
+.item-row {
+  vertical-align: middle;
+}
+
 .item-row:hover {
   cursor: pointer;
   background-color: #e7f5ff;

@@ -5,6 +5,8 @@ const initialState = {
   menuItems: [],
   menuItem: null,
   loading: true,
+  isError: false,
+  message: '',
 };
 
 //Get all menuItems
@@ -47,6 +49,26 @@ export const getMenuItem = createAsyncThunk(
   }
 );
 
+//Delete one menuItem
+export const deleteMenuItem = createAsyncThunk(
+  'menuItem/deleteMenuItem',
+  async (menuItemId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await menuItemService.deleteMenuItem(menuItemId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const menuItemSlice = createSlice({
   name: 'menuItem',
   initialState,
@@ -58,26 +80,45 @@ export const menuItemSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getMenuItems.pending, (state) => {
+        state.isError = false;
         state.loading = true;
       })
       .addCase(getMenuItems.fulfilled, (state, action) => {
         state.menuItems = action.payload.data.data;
         state.loading = false;
       })
-      .addCase(getMenuItems.rejected, (state) => {
+      .addCase(getMenuItems.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
         state.loading = false;
         state.menuItems = [];
       })
       .addCase(getMenuItem.pending, (state) => {
+        state.isError = false;
         state.loading = true;
       })
       .addCase(getMenuItem.fulfilled, (state, action) => {
         state.menuItem = action.payload.data.data;
         state.loading = false;
       })
-      .addCase(getMenuItem.rejected, (state) => {
+      .addCase(getMenuItem.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
         state.loading = false;
         state.menuItem = [];
+      })
+      .addCase(deleteMenuItem.pending, (state) => {
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(deleteMenuItem.fulfilled, (state) => {
+        state.menuItem = [];
+        state.loading = false;
+      })
+      .addCase(deleteMenuItem.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
       });
   },
 });

@@ -1,6 +1,5 @@
 .formContainer {
   margin-top: 3rem;
-  /* position: relative; */
 }
 
 .heading {
@@ -20,7 +19,7 @@
   width: 100%;
 
   font-weight: 600;
-  font-size: 24px;
+  font-size: 32px;
 }
 
 .altHeading {
@@ -39,8 +38,6 @@
 .categoryTitleDiv {
   display: flex;
   justify-content: flex-start;
-  font-weight: 600;
-  font-size: 24px;
   color: #ffff;
 }
 
@@ -55,7 +52,7 @@
 .categorySpan {
   padding-left: 1rem;
   padding-right: 1rem;
-  border-right: 2px solid #e7f5ff;
+  border-right: 3px solid #e7f5ff;
 }
 
 .titleSpan {
@@ -79,7 +76,7 @@
   background-color: #74c0fc;
 
   font-weight: 600;
-  font-size: 24px;
+  font-size: 32px;
 }
 
 .eating {

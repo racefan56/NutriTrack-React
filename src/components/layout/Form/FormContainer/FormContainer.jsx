@@ -1,7 +1,14 @@
 import React from 'react';
 import classes from './FormContainer.module.css';
 
-const FormContainer = ({ children, status, category, title, altHeading }) => {
+const FormContainer = ({
+  children,
+  status,
+  category,
+  title,
+  altHeading,
+  onSubmit,
+}) => {
   return (
     <div className={classes.formContainer}>
       <div className={altHeading ? classes.altHeading : classes.heading}>
@@ -31,7 +38,9 @@ const FormContainer = ({ children, status, category, title, altHeading }) => {
         </div>
       </div>
 
-      <form className='row m-0'>{children}</form>
+      <form onSubmit={onSubmit} className='row m-0'>
+        {children}
+      </form>
     </div>
   );
 };

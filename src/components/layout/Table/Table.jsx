@@ -3,7 +3,7 @@ import classes from './Table.module.css';
 
 import ButtonRefresh from '../Button/ButtonRefresh/ButtonRefresh';
 
-const Table = ({ children, headers, heading, refresh }) => {
+const Table = ({ children, tableId, headers, heading, refresh }) => {
   return (
     <>
       <div className={classes.headingContainer}>
@@ -13,7 +13,7 @@ const Table = ({ children, headers, heading, refresh }) => {
         </div>
       </div>
       <div className={classes.tableContainer}>
-        <table className='table'>
+        <table id={tableId} className='table'>
           <thead>
             <tr>
               {headers.map((header, index) => {

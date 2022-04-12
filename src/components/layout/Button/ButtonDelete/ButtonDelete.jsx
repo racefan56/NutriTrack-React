@@ -1,15 +1,20 @@
 import React from 'react';
+
+import Modal from '../../Modal/Modal';
+
 import classes from './ButtonDelete.module.css';
 
-const ButtonDelete = ({ type, text, onClick, className }) => {
+const ButtonDelete = ({ className, onClick }) => {
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={`btn ${classes.btnDelete} ${className ? className : ''}`}
-    >
-      {text}
-    </button>
+    <>
+      <button
+        type='Button'
+        onClick={onClick}
+        className={`btn ${classes.btnDelete} ${className ? className : ''}`}
+      >
+        Delete
+      </button>
+    </>
   );
 };
 

@@ -28,12 +28,13 @@
   align-items: center;
   color: #e7f5ff;
   font-weight: 600;
+  font-size: 18px;
 }
 
 .navbarLink:hover,
 .navbarLinkActive {
   color: #ffff;
-  font-size: 18px;
+  font-size: 20px;
   padding: 0px 3.5px 0px 3.5px;
 }
 

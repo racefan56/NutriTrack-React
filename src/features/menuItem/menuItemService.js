@@ -33,13 +33,30 @@ const getMenuItem = async (menuItemId, token) => {
   );
 
   const menuItem = await response.data;
-  console.log(menuItem);
+  return menuItem;
+};
+
+//get menuItem
+const deleteMenuItem = async (menuItemId, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.delete(
+    `${SERVER}/menus/menuItems/${menuItemId ? menuItemId : ''}`,
+    config
+  );
+
+  const menuItem = await response.data;
   return menuItem;
 };
 
 const menuItemService = {
   getMenuItems,
   getMenuItem,
+  deleteMenuItem,
 };
 
 export default menuItemService;

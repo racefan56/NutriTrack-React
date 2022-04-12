@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import { getMenuItems } from '../../../features/menuItem/menuItemSlice';
+import {
+  getMenuItems,
+  deleteMenuItem,
+} from '../../../features/menuItem/menuItemSlice';
 import Table from '../../layout/Table/Table';
 import TableDataItem from '../../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../../Spinner/Spinner';
-import ButtonSecondary from '../../layout/Button/ButtonSecondary/ButtonSecondary';
-import ButtonDelete from '../../layout/Button/ButtonDelete/ButtonDelete';
+import ButtonEdit from '../../layout/Button/ButtonEdit/ButtonEdit';
+import Modal from '../../layout/Modal/Modal';
 
 import { titleCase } from '../../helperFunctions/helperFunctions';
 
@@ -15,27 +18,32 @@ import classes from './MenuItemResults.module.css';
 
 const MenuItemResults = (props) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const { menuItems, loading } = useSelector((state) => state.menuItem);
+  const { menuItems, loading, isError, message } = useSelector(
+    (state) => state.menuItem
+  );
 
   useEffect(() => {
     dispatch(getMenuItems());
-  }, [dispatch]);
+    if (isError) {
+      toast.error(message);
+    }
+  }, [dispatch, isError, message]);
+
+
 
   const handleRefresh = () => {
     dispatch(getMenuItems());
   };
 
-  const editMenuItem = (menuItemId) => {
-    return navigate({
-      pathname: `${menuItemId}`,
-      search: createSearchParams({ edit: 'true' }).toString(),
-    });
-  };
+  const handleDelete = (menuItemId, menuItemName) => {
+    dispatch(deleteMenuItem(menuItemId));
+    if (loading) {
+      return <Spinner />;
+    }
 
-  const deleteMenuItem = () => {
-    console.log('CLOCKED!');
+    //After a menu item is deleted, refresh the table to reflect the deletion
+    dispatch(getMenuItems());
   };
 
   if (loading) {
@@ -54,23 +62,33 @@ const MenuItemResults = (props) => {
           heading='Menu Items'
           refresh={handleRefresh}
         >
-          {menuItems.map((menuItem) => (
-            <TableDataItem
-              key={menuItem._id}
-              navigatePath={`/control-panel/menu-items/${menuItem._id}`}
-              dataPoints={[
-                titleCase(menuItem.name),
-                menuItem.productionArea.areaName,
-                menuItem.dietAvailability.map((diet) => diet.name).join(', '),
-              ]}
-            >
-              <td onClick={() => editMenuItem(menuItem._id)}>
-                <ButtonSecondary text='Edit' />
-              </td>
-              <td onClick={() => deleteMenuItem(menuItem._id)}>
-                <ButtonDelete text='Delete' className={classes.deleteBtn} />
-              </td>
-            </TableDataItem>
+          {menuItems.map((menuItem, index) => (
+            <React.Fragment key={menuItem._id}>
+              <TableDataItem
+                navigatePath={`/control-panel/menu-items/${menuItem._id}`}
+                dataPoints={[
+                  titleCase(menuItem.name),
+                  menuItem.productionArea.areaName,
+                  menuItem.dietAvailability.map((diet) => diet.name).join(', '),
+                ]}
+              >
+                <td>
+                  <ButtonEdit path={menuItem._id} />
+                </td>
+                <td>
+                  <Modal
+                    id={`menuItems-${index}`}
+                    itemId={menuItem._id}
+                    itemName={menuItem.name}
+                    onDelete={() => {
+                      handleDelete(menuItem._id, menuItem.name);
+                      handleRefresh();
+                    }}
+                    btnDelete
+                  />
+                </td>
+              </TableDataItem>
+            </React.Fragment>
           ))}
         </Table>
       </>
