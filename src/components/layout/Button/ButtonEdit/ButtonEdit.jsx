@@ -1,22 +1,11 @@
 import React from 'react';
-import { createSearchParams, useNavigate } from 'react-router-dom';
 
 import classes from './ButtonEdit.module.css';
 
-const ButtonEdit = ({ path, className }) => {
-  const navigate = useNavigate();
-  const curPath = window.location.pathname;
-
-  const editItem = () => {
-    return navigate({
-      pathname: `${path ? path : `${curPath}`}`,
-      search: createSearchParams({ edit: 'true' }).toString(),
-    });
-  };
-
+const ButtonEdit = ({ onClick, className }) => {
   return (
     <button
-      onClick={() => editItem()}
+      onClick={onClick}
       type='button'
       className={`btn ${classes.btnEdit} ${className ? className : ''}`}
     >

@@ -1,4 +1,4 @@
-.formContainer {
+.subContainer {
   margin-top: 3rem;
 }
 
@@ -18,7 +18,7 @@
 
   width: 100%;
 
-  font-weight: 800;
+  font-weight: 600;
   font-size: 32px;
 }
 
@@ -35,13 +35,13 @@
   font-size: 18px;
 }
 
-.categoryTitleDiv {
+.titleDiv {
   display: flex;
   justify-content: flex-start;
   color: #ffff;
 }
 
-.categoryTitleDivAlt {
+.titleDivAlt {
   display: flex;
   justify-content: center;
   font-weight: 600;
@@ -49,41 +49,7 @@
   color: #343a40;
 }
 
-.categorySpan {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  border-right: 3px solid #e7f5ff;
-}
-
 .titleSpan {
   padding-left: 1rem;
   padding-right: 1rem;
-}
-
-.statusTag {
-  position: absolute;
-  z-index: 1;
-  top: 5px;
-  right: 5px;
-  text-align: center;
-
-  width: 15%;
-  padding: 3px;
-
-  border-radius: 0.25rem;
-  outline: 2px solid #ffff;
-
-  background-color: #74c0fc;
-
-  font-weight: 600;
-  font-size: 32px;
-}
-
-.eating {
-  background-color: #8ce99a;
-}
-
-.npo {
-  background-color: #ff6b6b;
-  color: #ffff;
 }

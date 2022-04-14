@@ -11,7 +11,6 @@ const MealItem = ({ meal }) => {
     item.forEach((el) => {
       string += el.name;
     });
-    console.log(string);
     return string;
   };
 
@@ -29,7 +28,7 @@ const MealItem = ({ meal }) => {
       {meal.sides.length > 0 && (
         <FormGroup
           inputType='text'
-          data={objArrToString(meal.sides)}
+          defaultValue={objArrToString(meal.sides)}
           label='Sides'
         />
       )}
@@ -58,13 +57,13 @@ const MealItem = ({ meal }) => {
         inputType='text'
         className='col-6'
         label='Carbs'
-        data={meal.totalMealCarbCount + 'G'}
+        defaultValue={meal.totalMealCarbCount + 'G'}
       />
       <FormGroup
         inputType='text'
         className='col-6'
         label='Sodium'
-        data={meal.totalMealSodiumCount + 'MG'}
+        defaultValue={meal.totalMealSodiumCount + 'MG'}
       />
     </div>
   );

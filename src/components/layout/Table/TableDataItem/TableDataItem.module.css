@@ -24,3 +24,7 @@ thead tr:first-child {
   background-color: #74c0fc;
   color: #ffff;
 }
+
+td {
+  font-size: 18px;
+}

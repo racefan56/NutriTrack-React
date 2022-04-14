@@ -36,7 +36,25 @@ const getMenuItem = async (menuItemId, token) => {
   return menuItem;
 };
 
-//get menuItem
+//Update menuItem
+const updateMenuItem = async (menuItemId, formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.patch(
+    `${SERVER}/menus/menuItems/${menuItemId}`,
+    formData,
+    config
+  );
+
+  const menuItem = await response.data;
+  return menuItem;
+};
+
+//Delete menuItem
 const deleteMenuItem = async (menuItemId, token) => {
   const config = {
     headers: {
@@ -56,6 +74,7 @@ const deleteMenuItem = async (menuItemId, token) => {
 const menuItemService = {
   getMenuItems,
   getMenuItem,
+  updateMenuItem,
   deleteMenuItem,
 };
 

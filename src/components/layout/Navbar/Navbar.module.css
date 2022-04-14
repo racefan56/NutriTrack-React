@@ -9,8 +9,8 @@
   align-items: center;
   justify-content: center;
   width: 160px;
-  font-weight: 600;
-  font-size: 20px;
+  font-weight: 800;
+  font-size: 18px;
   background-color: #74c0fc;
   padding: 5px;
   color: #ffff;
@@ -27,14 +27,14 @@
   justify-content: center;
   align-items: center;
   color: #e7f5ff;
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 800;
+  font-size: 16px;
 }
 
 .navbarLink:hover,
 .navbarLinkActive {
   color: #ffff;
-  font-size: 20px;
+  font-size: 18px;
   padding: 0px 3.5px 0px 3.5px;
 }
 

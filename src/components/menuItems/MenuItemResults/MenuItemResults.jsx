@@ -2,15 +2,12 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import {
-  getMenuItems,
-  deleteMenuItem,
-} from '../../../features/menuItem/menuItemSlice';
+import { getMenuItems } from '../../../features/menuItem/menuItemSlice';
 import Table from '../../layout/Table/Table';
 import TableDataItem from '../../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../../Spinner/Spinner';
-import ButtonEdit from '../../layout/Button/ButtonEdit/ButtonEdit';
-import Modal from '../../layout/Modal/Modal';
+import ButtonSecondary from '../../layout/Button/ButtonSecondary/ButtonSecondary';
+import ButtonMain from '../../layout/Button/ButtonMain/ButtonMain';
 
 import { titleCase } from '../../helperFunctions/helperFunctions';
 
@@ -30,19 +27,7 @@ const MenuItemResults = (props) => {
     }
   }, [dispatch, isError, message]);
 
-
-
   const handleRefresh = () => {
-    dispatch(getMenuItems());
-  };
-
-  const handleDelete = (menuItemId, menuItemName) => {
-    dispatch(deleteMenuItem(menuItemId));
-    if (loading) {
-      return <Spinner />;
-    }
-
-    //After a menu item is deleted, refresh the table to reflect the deletion
     dispatch(getMenuItems());
   };
 
@@ -56,8 +41,7 @@ const MenuItemResults = (props) => {
             'Name',
             'Production Area',
             'Diet Availability',
-            'Edit',
-            'Delete',
+            '',
           ]}
           heading='Menu Items'
           refresh={handleRefresh}
@@ -73,18 +57,11 @@ const MenuItemResults = (props) => {
                 ]}
               >
                 <td>
-                  <ButtonEdit path={menuItem._id} />
-                </td>
-                <td>
-                  <Modal
-                    id={`menuItems-${index}`}
-                    itemId={menuItem._id}
-                    itemName={menuItem.name}
-                    onDelete={() => {
-                      handleDelete(menuItem._id, menuItem.name);
-                      handleRefresh();
-                    }}
-                    btnDelete
+                  <ButtonMain
+                    className='m-0'
+                    type='Link'
+                    path={`${menuItem._id}/edit`}
+                    text='View/Edit'
                   />
                 </td>
               </TableDataItem>

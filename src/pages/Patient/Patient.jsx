@@ -10,6 +10,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
 import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
+import SubContainer from '../../components/layout/SubContainer/SubContainer';
 
 import classes from './Patient.module.css';
 import MealResults from '../../components/meal/MealResults/MealResults';
@@ -46,54 +47,54 @@ const Patient = (props) => {
               inputType='text'
               className='col-4'
               label='DOB'
-              data={formatDate(patient.dob, { dateOnly: true })}
+              value={formatDate(patient.dob, { dateOnly: true })}
             />
             <FormGroup
               inputType='text'
               className='col-4'
               label='Diet'
-              data={patient.currentDiet.name}
+              value={patient.currentDiet.name}
             />
             <FormGroup
               inputType='text'
               className='col-4'
               label='High Risk'
-              data={patient.isHighRisk.toString().toUpperCase()}
+              value={patient.isHighRisk.toString().toUpperCase()}
             />
             <FormGroup
               inputType='text'
               className='col-6'
               label='Allergies'
-              data={patient.knownAllergies.toString()}
+              value={patient.knownAllergies.toString()}
             />
             <FormGroup
               inputType='text'
               className='col-6'
               label='Supplements'
-              data={patient.supplements.toString()}
+              value={patient.supplements.toString()}
             />
             <FormGroup
               inputType='text'
               className='col-6'
               label='Created'
-              data={formatDate(patient.createdAt)}
+              value={formatDate(patient.createdAt)}
             />
             <FormGroup
               inputType='text'
               className='col-6'
               label='Updated'
-              data={formatDate(patient.updatedAt)}
+              value={formatDate(patient.updatedAt)}
             />
           </FormContainer>
 
           {patient.mealOrders.length > 0 ? (
-            <FormContainer title='Meal Orders' altHeading='true'>
+            <SubContainer title='Meal Orders' altHeading='true'>
               <MealResults meals={patient.mealOrders} />
-            </FormContainer>
+            </SubContainer>
           ) : (
-            <FormContainer altHeading='true'>
+            <SubContainer altHeading='true'>
               <p className={classes.noMeals}>This patient has no meal orders</p>
-            </FormContainer>
+            </SubContainer>
           )}
         </ContainerSideNav>
       </>

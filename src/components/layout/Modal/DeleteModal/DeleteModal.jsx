@@ -1,9 +1,9 @@
 import React from 'react';
-import classes from './Modal.module.css';
+import classes from './DeleteModal.module.css';
 
-import ButtonSecondary from '../Button/ButtonSecondary/ButtonSecondary';
-import ButtonMain from '../Button/ButtonMain/ButtonMain';
-import ButtonDelete from '../Button/ButtonDelete/ButtonDelete';
+import ButtonSecondary from '../../Button/ButtonSecondary/ButtonSecondary';
+import ButtonMain from '../../Button/ButtonMain/ButtonMain';
+import ButtonDelete from '../../Button/ButtonDelete/ButtonDelete';
 
 const Modal = ({
   id,
@@ -42,12 +42,8 @@ const Modal = ({
                 </p>
 
                 <div className={classes.modalBtnContainer}>
-                  <ButtonDelete
-                    onClick={onDelete}
-                    className={classes.btnModal}
-                    text='Delete'
-                  />
-                  <ButtonSecondary className={classes.btnModal} text='Cancel' />
+                  <ButtonDelete onClick={onDelete} text='Delete' />
+                  <ButtonSecondary className='m-3' text='Cancel' />
                 </div>
               </>
             ) : (

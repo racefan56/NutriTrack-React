@@ -39,3 +39,18 @@ export const formatDate = (date, dateOnly) => {
 
   return formatedDateTime;
 };
+
+export const formEditMode = (editMode) => {
+  console.log(editMode);
+  if (editMode) {
+    const elements = [...document.getElementsByClassName('editable')];
+    elements.map((el) => {
+      return (el.disabled = false);
+    });
+  } else {
+    const elements = [...document.getElementsByClassName('editable')];
+    elements.map((el) => {
+      return (el.disabled = true);
+    });
+  }
+};
