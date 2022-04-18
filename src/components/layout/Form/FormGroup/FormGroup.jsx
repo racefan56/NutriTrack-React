@@ -11,11 +11,14 @@ const FormGroup = ({
   id,
   label,
   value,
+  placeholder,
   defaultValue,
   editable,
+  readonly,
   onChange,
   inputType,
   selectOptions,
+  checkboxOptions,
   step,
   textarea,
   mealItemArr,
@@ -38,13 +41,70 @@ const FormGroup = ({
             onChange={onChange}
           >
             {selectOptions.map((option, index) => {
+              // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
               return (
-                <option key={`${option}${index}`} value={option}>
-                  {capitalizeWord(option)}
+                <option key={`${option.label}${index}`} value={option.value}>
+                  {capitalizeWord(option.label)}
                 </option>
               );
             })}
           </select>
+        </fieldset>
+      </div>
+    );
+  }
+
+  if (inputType === 'checkbox') {
+    return (
+      <div className={className ? className : ''}>
+        <fieldset className={`row ${classes.groupContainer}`}>
+          <label htmlFor={id} className={classes.groupLabel}>
+            {label}
+          </label>
+
+          {checkboxOptions.map((option, index) => {
+            // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
+
+            return (
+              <fieldset
+                className={`col-12 col-md-6`}
+                key={`${option.value}${index}`}
+              >
+                {value.includes(option.value) ? (
+                  <label>
+                    <input
+                      className={`${editable ? 'editable' : ''} ${
+                        classes.inputCheck
+                      }`}
+                      type='checkbox'
+                      id={id}
+                      name={id}
+                      value={option.value}
+                      onChange={onChange}
+                      defaultChecked
+                      disabled
+                    />
+                    {capitalizeWord(option.label)}
+                  </label>
+                ) : (
+                  <label>
+                    <input
+                      className={`${editable ? 'editable' : ''} ${
+                        classes.inputCheck
+                      }`}
+                      type='checkbox'
+                      id={id}
+                      name={id}
+                      value={option.value}
+                      onChange={onChange}
+                      disabled
+                    />
+                    {capitalizeWord(option.label)}
+                  </label>
+                )}
+              </fieldset>
+            );
+          })}
         </fieldset>
       </div>
     );
@@ -67,21 +127,25 @@ const FormGroup = ({
                 <input
                   id={id}
                   type='text'
-                  className={`${editable ? 'editable' : ''} ${classes.input}`}
+                  className={`${editable ? 'editable' : ''} ${classes.input} ${
+                    readonly ? classes.readonly : ''
+                  }`}
                   defaultValue={defaultValue}
-                  disabled
+                  disabled={editable ? true : false}
+                  readOnly={readonly ? true : false}
                 />
               )}
             </>
           ) : (
             <></>
           )}
-          {value ? (
+          {!defaultValue ? (
             <>
               {textarea && (
                 <textarea
                   id={id}
                   className={`${editable ? 'editable' : ''} ${classes.input}`}
+                  placeholder={placeholder}
                   disabled
                   value={value}
                   onChange={onChange}
@@ -95,6 +159,7 @@ const FormGroup = ({
                   className={`${editable ? 'editable' : ''} ${classes.input}`}
                   disabled
                   value={value}
+                  placeholder={placeholder}
                   onChange={onChange}
                 />
               )}
@@ -104,6 +169,7 @@ const FormGroup = ({
                   type='text'
                   className={`${editable ? 'editable' : ''} ${classes.input}`}
                   disabled
+                  placeholder={placeholder}
                   value={value}
                   onChange={onChange}
                 />

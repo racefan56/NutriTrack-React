@@ -10,6 +10,27 @@ const initialState = {
   isSuccess: '',
 };
 
+//Create one menuItem
+export const createMenuItem = createAsyncThunk(
+  'menuItem/createMenuItem',
+  async (formData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await menuItemService.createMenuItem(formData, token);
+    } catch (error) {
+      console.log(error);
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data._message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 //Get all menuItems
 export const getMenuItems = createAsyncThunk(
   'menuItem/getMenuItems',
@@ -21,7 +42,7 @@ export const getMenuItems = createAsyncThunk(
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data.message) ||
+          error.response.data._message) ||
         error.message ||
         error.toString();
 
@@ -41,7 +62,7 @@ export const getMenuItem = createAsyncThunk(
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data.message) ||
+          error.response.data._message) ||
         error.message ||
         error.toString();
 
@@ -61,7 +82,7 @@ export const updateMenuItem = createAsyncThunk(
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data.message) ||
+          error.response.data._message) ||
         error.message ||
         error.toString();
 
@@ -81,7 +102,7 @@ export const deleteMenuItem = createAsyncThunk(
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data.message) ||
+          error.response.data._message) ||
         error.message ||
         error.toString();
 
@@ -100,6 +121,23 @@ export const menuItemSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(createMenuItem.pending, (state) => {
+        state.loading = true;
+        state.isError = false;
+        state.isSuccess = false;
+      })
+      .addCase(createMenuItem.fulfilled, (state, action) => {
+        state.menuItem = action.payload.data.data;
+        state.loading = false;
+        state.isSuccess = true;
+      })
+      .addCase(createMenuItem.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.isSuccess = false;
+        state.menuItem = [];
+        state.loading = false;
+      })
       .addCase(getMenuItems.pending, (state) => {
         state.isError = false;
         state.loading = true;

@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import {
-  getMenuItem,
-  updateMenuItem,
-  deleteMenuItem,
-} from '../../features/menuItem/menuItemSlice';
+import { createMenuItem } from '../../features/menuItem/menuItemSlice';
 import { getProductionAreas } from '../../features/productionArea/productionAreaSlice';
 import { getDiets } from '../../features/diet/dietSlice';
 
@@ -18,35 +14,29 @@ import {
   formEditMode,
 } from './../../components/helperFunctions/helperFunctions';
 
-import DeleteModal from '../../components/layout/Modal/DeleteModal/DeleteModal';
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
 import SideNav from '../../components/layout/SideNav/SideNav';
 import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
 import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
-import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 
-import classes from './MenuItemPage.module.css';
+import classes from './CreateMenuItem.module.css';
 
-const MenuItemPage = () => {
+const CreateMenuItem = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { menuItem, loading, isSuccess } = useSelector(
-    (state) => state.menuItem
-  );
+  formEditMode(true);
+
+  const { loading, isError, message } = useSelector((state) => state.menuItem);
   const { productionAreas } = useSelector((state) => state.productionArea);
   const { diets } = useSelector((state) => state.diet);
 
-  const { menuItemId } = useParams();
-
-  const [firstRender, setfirstRender] = useState(true);
-  const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({
+  const initialFormState = {
     category: 'entree',
-    productionArea: null,
+    productionArea: productionAreas[0] ? productionAreas[0]._id : '',
     name: '',
     dietAvailability: [],
     portionSize: 0,
@@ -56,7 +46,10 @@ const MenuItemPage = () => {
     carbsInGrams: 0,
     sodiumInMG: 0,
     description: '',
-  });
+  };
+
+  const [firstRender, setfirstRender] = useState(true);
+  const [formData, setFormData] = useState(initialFormState);
 
   const {
     category,
@@ -73,23 +66,10 @@ const MenuItemPage = () => {
   } = formData;
 
   useEffect(() => {
-    setfirstRender(false);
-    if (menuItemId) {
-      dispatch(getMenuItem(menuItemId));
-    }
     dispatch(getDiets());
     dispatch(getProductionAreas());
-  }, [dispatch, menuItemId]);
-
-  useEffect(() => {
-    if (menuItem) {
-      setFormData({ ...menuItem });
-    }
-  }, [menuItem]);
-
-  useEffect(() => {
-    formEditMode(editMode);
-  }, [editMode]);
+    setfirstRender(false);
+  }, [dispatch]);
 
   const handleChange = (e) => {
     const key = e.target.id;
@@ -110,33 +90,24 @@ const MenuItemPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(updateMenuItem([menuItemId, formData]));
-    setEditMode(false);
-    if (isSuccess) {
-      toast.success('Menu item successfully updated!');
-    }
-  };
+    dispatch(createMenuItem(formData));
 
-  const handleEdit = () => {
-    setEditMode(true);
-    navigate(`/control-panel/menu-items/${menuItemId}/edit`);
+    if (loading) {
+      return <Spinner />;
+    }
+
+    if (isError) {
+      toast.error(message);
+      navigate('/control-panel/menu-items/create');
+    } else {
+      toast.success('Menu item successfully created!');
+      navigate('/control-panel/menu-items');
+    }
   };
 
   const handleCancel = () => {
-    setEditMode(false);
     //Reset menu item fields back to their original values
-    setFormData({ ...menuItem });
-    navigate(`/control-panel/menu-items/${menuItemId}`);
-  };
-
-  const handleDelete = (menuItemId) => {
-    dispatch(deleteMenuItem(menuItemId));
-
-    //After a menu item is deleted, return to menuItems page
-    navigate('/control-panel/menu-items');
-    if (isSuccess) {
-      toast.success('Menu item successfully deleted!');
-    }
+    setFormData({ ...initialFormState });
   };
 
   if (loading || firstRender) {
@@ -147,8 +118,7 @@ const MenuItemPage = () => {
         <SideNav />
         <ContainerSideNav>
           <FormContainer
-            category={capitalizeWord(menuItem ? menuItem.category : 'New Item')}
-            title={titleCase(menuItem ? menuItem.name : '')}
+            title={titleCase('Create Menu Item')}
             onSubmit={handleSubmit}
           >
             <FormGroup
@@ -158,6 +128,7 @@ const MenuItemPage = () => {
               label='Name'
               value={name}
               onChange={handleChange}
+              placeholder='Enter item name'
               editable
             />
             <FormGroup
@@ -185,7 +156,7 @@ const MenuItemPage = () => {
               })}
               label='Production Area'
               className='col-12 col-md-6 col-lg-3'
-              value={productionArea ? productionArea._id : ''}
+              value={productionArea}
               onChange={handleChange}
               editable
             />
@@ -194,6 +165,7 @@ const MenuItemPage = () => {
               className='col-12'
               label='Description'
               value={description}
+              placeholder='Description...'
               onChange={handleChange}
               editable
               textarea
@@ -287,45 +259,21 @@ const MenuItemPage = () => {
               onChange={handleChange}
               editable
             />
-
-            <FormGroup
-              id='createdOn'
-              inputType='text'
-              className='col-12 col-xl-6'
-              label='Created'
-              defaultValue={formatDate(menuItem ? menuItem.createdOn : '')}
-              readonly
-            />
             <div className={classes.btnDiv}>
-              {editMode ? (
-                <>
-                  <ButtonMain
-                    className='mx-3'
-                    text='Submit'
-                    type='Submit'
-                    onClick={handleSubmit}
-                  />
-                  <ButtonSecondary
-                    className='m-3'
-                    text='Cancel'
-                    type='Button'
-                    onClick={handleCancel}
-                  />
-                </>
-              ) : (
-                <>
-                  <ButtonEdit onClick={handleEdit} />
-                  <DeleteModal
-                    id={menuItemId}
-                    itemId={menuItemId}
-                    itemName={menuItem.name}
-                    onDelete={() => {
-                      handleDelete(menuItemId, menuItem.name);
-                    }}
-                    btnDelete
-                  />
-                </>
-              )}
+              <>
+                <ButtonMain
+                  className='mx-3'
+                  text='Submit'
+                  type='Submit'
+                  onClick={handleSubmit}
+                />
+                <ButtonSecondary
+                  className='m-3'
+                  text='Cancel'
+                  type='Button'
+                  onClick={handleCancel}
+                />
+              </>
             </div>
           </FormContainer>
         </ContainerSideNav>
@@ -334,4 +282,4 @@ const MenuItemPage = () => {
   }
 };
 
-export default MenuItemPage;
+export default CreateMenuItem;

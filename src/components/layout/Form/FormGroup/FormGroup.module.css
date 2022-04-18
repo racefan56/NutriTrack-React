@@ -1,17 +1,15 @@
 .groupContainer {
   color: #343a40;
   border-radius: 0.25rem;
-  margin: 0.5rem 0.5rem;
+  margin: 1rem;
   padding: 0.5rem;
   font-size: 18px;
-  background-color: #f8f9fa;
-  border: 2px solid #343a40;
 }
 
 .groupLabel {
   font-size: 18px;
   font-weight: 600;
-  padding: 8px;
+  padding: 8px 8px 8px 0px;
 }
 
 .groupData {
@@ -31,11 +29,21 @@
   padding: 8px;
 }
 
+.inputCheck {
+  background-color: #ffff;
+  border: 2px solid #343a40;
+  border-radius: 0.25rem;
+  margin: 8px;
+}
+
 .radioInput {
   width: 1rem;
 }
 
 .input:disabled {
-  background-color: transparent;
+  background-color: #f1f3f5;
+}
+
+.readonly {
   border: 0;
 }

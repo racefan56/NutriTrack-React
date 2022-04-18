@@ -16,6 +16,7 @@ import MyAccount from './pages/MyAccount/MyAccount';
 import Notfound from './pages/NotFound/Notfound';
 import MenuItems from './pages/MenuItems/MenuItems';
 import MenuItemPage from './pages/MenuItemPage/MenuItemPage';
+import CreateMenuItem from './pages/CreateMenuItem/CreateMenuItem';
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
           </Route>
 
           {/* MENU ITEM ROUTES */}
+          {/* View all menu items */}
           <Route
             path='/control-panel/menu-items'
             element={<PrivateRoute validRoles={['admin']} />}
@@ -79,6 +81,18 @@ function App() {
             <Route path='/control-panel/menu-items' element={<MenuItems />} />
           </Route>
 
+          {/* Create menu item */}
+          <Route
+            path='/control-panel/menu-items/create'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/control-panel/menu-items/create'
+              element={<CreateMenuItem />}
+            />
+          </Route>
+
+          {/* View menu item */}
           <Route
             path='/control-panel/menu-items/:menuItemId'
             element={<PrivateRoute validRoles={['admin']} />}
@@ -89,6 +103,7 @@ function App() {
             />
           </Route>
 
+          {/* Edit menu item */}
           <Route
             path='/control-panel/menu-items/:menuItemId/edit'
             element={<PrivateRoute validRoles={['admin']} />}

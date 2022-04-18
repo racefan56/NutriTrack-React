@@ -2,6 +2,24 @@ import axios from 'axios';
 
 const SERVER = process.env.REACT_APP_SERVER;
 
+//Create menuItem
+const createMenuItem = async (formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.post(
+    `${SERVER}/menus/menuItems`,
+    formData,
+    config
+  );
+
+  const menuItem = await response.data;
+  return menuItem;
+};
+
 //get all menuItems
 const getMenuItems = async (queryString, token) => {
   const config = {
@@ -76,6 +94,7 @@ const menuItemService = {
   getMenuItem,
   updateMenuItem,
   deleteMenuItem,
+  createMenuItem,
 };
 
 export default menuItemService;

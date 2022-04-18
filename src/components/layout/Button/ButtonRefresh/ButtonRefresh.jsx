@@ -4,7 +4,7 @@ import { BiRefresh } from 'react-icons/bi';
 
 const ButtonRefresh = ({ refresh }) => {
   return (
-    <span className={classes.refreshBtnContainer}>
+    <span title='Refresh' className={classes.refreshBtnContainer}>
       <BiRefresh className={classes.refreshBtn} onClick={refresh} />
     </span>
   );

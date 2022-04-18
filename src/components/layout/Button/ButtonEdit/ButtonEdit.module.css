@@ -1,11 +1,16 @@
 .btnEdit,
 .btnEdit:hover {
-  color: #228be6;
+  color: #e7f5ff;
   font-weight: 600;
   font-size: 18px;
-  background-color: #ffff;
+  background-color: #228be6;
   border: 2px solid #228be6;
   padding: 0.5rem;
   margin: 1rem;
   width: 100%;
+}
+
+.btnEdit:hover {
+  background-color: #ffff;
+  color: #228be6;
 }

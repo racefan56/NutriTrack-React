@@ -10,10 +10,12 @@
 
 .heading {
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .headingContainer {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid;
   margin-bottom: 1rem;

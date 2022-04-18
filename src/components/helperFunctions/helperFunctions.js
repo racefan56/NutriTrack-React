@@ -1,4 +1,7 @@
 export function capitalizeWord(string) {
+  if (!string) {
+    return;
+  }
   //Convert to string if not already a string, then capitalize only the first letter
   return (
     string.toString().charAt(0).toUpperCase() +
@@ -7,15 +10,19 @@ export function capitalizeWord(string) {
 }
 
 export function titleCase(string) {
-  const titleCase = string
-    .toLowerCase()
-    .split(' ')
-    .map((word) => {
-      return word[0].toUpperCase() + word.slice(1).toLowerCase();
-    })
-    .join(' ');
+  if (!string) {
+    return;
+  } else {
+    const titleCase = string
+      .toLowerCase()
+      .split(' ')
+      .map((word) => {
+        return word[0].toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join(' ');
 
-  return titleCase;
+    return titleCase;
+  }
 }
 
 export const formatDate = (date, dateOnly) => {
@@ -41,7 +48,6 @@ export const formatDate = (date, dateOnly) => {
 };
 
 export const formEditMode = (editMode) => {
-  console.log(editMode);
   if (editMode) {
     const elements = [...document.getElementsByClassName('editable')];
     elements.map((el) => {

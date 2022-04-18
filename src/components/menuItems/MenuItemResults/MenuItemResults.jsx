@@ -39,12 +39,14 @@ const MenuItemResults = (props) => {
         <Table
           headers={[
             'Name',
-            'Production Area',
-            'Diet Availability',
+            'Category',
+            <abbr title='Production Area'>Prod. Area</abbr>,
+            'Diets',
             '',
           ]}
           heading='Menu Items'
           refresh={handleRefresh}
+          createPath='create'
         >
           {menuItems.map((menuItem, index) => (
             <React.Fragment key={menuItem._id}>
@@ -52,6 +54,7 @@ const MenuItemResults = (props) => {
                 navigatePath={`/control-panel/menu-items/${menuItem._id}`}
                 dataPoints={[
                   titleCase(menuItem.name),
+                  menuItem.category,
                   menuItem.productionArea.areaName,
                   menuItem.dietAvailability.map((diet) => diet.name).join(', '),
                 ]}
