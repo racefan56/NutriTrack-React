@@ -1,18 +1,19 @@
 import React from 'react';
-import classes from './DeleteModal.module.css';
+import classes from './Modal.module.css';
 
-import ButtonSecondary from '../../Button/ButtonSecondary/ButtonSecondary';
-import ButtonMain from '../../Button/ButtonMain/ButtonMain';
-import ButtonDelete from '../../Button/ButtonDelete/ButtonDelete';
+import ButtonSecondary from '../Button/ButtonSecondary/ButtonSecondary';
+import ButtonMain from '../Button/ButtonMain/ButtonMain';
+import ButtonDelete from '../Button/ButtonDelete/ButtonDelete';
 
 const Modal = ({
+  children,
   id,
   heading,
   message,
   btnDelete,
   onDelete,
-  btnText,
-  itemId,
+  handleCancel,
+  handleConfirm,
   itemName,
 }) => {
   const openModal = () => {
@@ -25,11 +26,16 @@ const Modal = ({
 
   return (
     <>
-      <ButtonDelete
-        onClick={openModal}
-        className={classes.btnDelete}
-        text='Delete'
-      />
+      {btnDelete ? (
+        <ButtonDelete
+          onClick={openModal}
+          className={classes.btnDelete}
+          text='Delete'
+        />
+      ) : (
+        <></>
+      )}
+      {children ? children : <></>}
       <div id={id} onClick={closeModal} className={classes.modalContainer}>
         <div className={classes.modalContent}>
           <div>
@@ -50,11 +56,11 @@ const Modal = ({
               <>
                 <h3 className={classes.modalHeading}>{heading}</h3>
                 <p>{message}</p>
+                <ButtonMain onClick={handleConfirm} text='Confirm' />
 
-                <ButtonMain
-                  onClick={closeModal}
-                  className={classes.btnDelete}
-                  text='Ok'
+                <ButtonSecondary
+                  onClick={handleCancel}
+                  text='Cancel'
                 />
               </>
             )}

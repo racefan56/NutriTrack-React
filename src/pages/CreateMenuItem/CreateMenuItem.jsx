@@ -8,8 +8,6 @@ import { getProductionAreas } from '../../features/productionArea/productionArea
 import { getDiets } from '../../features/diet/dietSlice';
 
 import {
-  formatDate,
-  capitalizeWord,
   titleCase,
   formEditMode,
 } from './../../components/helperFunctions/helperFunctions';
@@ -21,6 +19,7 @@ import FormContainer from '../../components/layout/Form/FormContainer/FormContai
 import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
+import Modal from '../../components/layout/Modal/Modal';
 
 import classes from './CreateMenuItem.module.css';
 
@@ -71,6 +70,14 @@ const CreateMenuItem = () => {
     setfirstRender(false);
   }, [dispatch]);
 
+  const openModal = (id) => {
+    document.getElementById(id).style.display = 'flex';
+  };
+
+  const closeModal = (id) => {
+    document.getElementById(id).style.display = 'none';
+  };
+
   const handleChange = (e) => {
     const key = e.target.id;
     if (e.target.type === 'checkbox') {
@@ -106,8 +113,11 @@ const CreateMenuItem = () => {
   };
 
   const handleCancel = () => {
-    //Reset menu item fields back to their original values
-    setFormData({ ...initialFormState });
+    closeModal('confirmCancel');
+  };
+
+  const handleConfirm = () => {
+    navigate('/control-panel/menu-items');
   };
 
   if (loading || firstRender) {
@@ -271,7 +281,14 @@ const CreateMenuItem = () => {
                   className='m-3'
                   text='Cancel'
                   type='Button'
-                  onClick={handleCancel}
+                  onClick={() => openModal('confirmCancel')}
+                />
+                <Modal
+                  heading='Are you sure?'
+                  message='Any unsaved changes will be lost.'
+                  id='confirmCancel'
+                  handleCancel={handleCancel}
+                  handleConfirm={handleConfirm}
                 />
               </>
             </div>

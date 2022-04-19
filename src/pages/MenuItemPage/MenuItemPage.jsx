@@ -18,7 +18,7 @@ import {
   formEditMode,
 } from './../../components/helperFunctions/helperFunctions';
 
-import DeleteModal from '../../components/layout/Modal/DeleteModal/DeleteModal';
+import Modal from '../../components/layout/Modal/Modal';
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
 import SideNav from '../../components/layout/SideNav/SideNav';
@@ -119,14 +119,12 @@ const MenuItemPage = () => {
 
   const handleEdit = () => {
     setEditMode(true);
-    navigate(`/control-panel/menu-items/${menuItemId}/edit`);
   };
 
   const handleCancel = () => {
     setEditMode(false);
     //Reset menu item fields back to their original values
     setFormData({ ...menuItem });
-    navigate(`/control-panel/menu-items/${menuItemId}`);
   };
 
   const handleDelete = (menuItemId) => {
@@ -139,7 +137,7 @@ const MenuItemPage = () => {
     }
   };
 
-  if (loading || firstRender) {
+  if (loading || firstRender || !menuItem) {
     return <Spinner />;
   } else {
     return (
@@ -315,7 +313,7 @@ const MenuItemPage = () => {
               ) : (
                 <>
                   <ButtonEdit onClick={handleEdit} />
-                  <DeleteModal
+                  <Modal
                     id={menuItemId}
                     itemId={menuItemId}
                     itemName={menuItem.name}

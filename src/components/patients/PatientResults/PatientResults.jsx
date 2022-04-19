@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Table from '../../layout/Table/Table';
 import TableDataItem from '../../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../../Spinner/Spinner';
+import ButtonMain from '../../layout/Button/ButtonMain/ButtonMain';
 
 import classes from './PatientResults.module.css';
 
@@ -26,9 +27,10 @@ function PatientResults() {
     return (
       <>
         <Table
-          headers={['Room', 'First', 'Last', 'Diet', 'Status']}
+          headers={['Room', 'First', 'Last', 'Diet', 'Status', '']}
           heading='Patients'
           refresh={handleRefresh}
+          createPath='create'
         >
           {patients.map((patient) => (
             <TableDataItem
@@ -41,7 +43,16 @@ function PatientResults() {
                 patient.currentDiet.name,
                 patient.status,
               ]}
-            />
+            >
+              <td>
+                <ButtonMain
+                  className='m-0'
+                  type='Link'
+                  path={`${patient._id}`}
+                  text='View/Edit'
+                />
+              </td>
+            </TableDataItem>
           ))}
         </Table>
       </>

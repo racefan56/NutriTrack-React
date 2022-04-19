@@ -16,7 +16,7 @@ const ButtonMain = ({ type, text, onClick, path, className }) => {
   }
   return (
     <button
-      type={type}
+      type={type ? type : 'button'}
       onClick={onClick}
       className={`btn ${classes.btnMain} ${className ? className : ''}`}
     >

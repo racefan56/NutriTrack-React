@@ -25,6 +25,50 @@ const FormGroup = ({
   mealItemObj,
   className,
 }) => {
+  if (mealItemArr) {
+    return mealItemArr.map((item, index) => {
+      return (
+        <fieldset className={classes.groupContainer} key={uuidv4()}>
+          {index === 0 ? (
+            <label
+              htmlFor={label.replace(/\s+/g, '')}
+              className={classes.groupLabel}
+            >
+              {label}:{' '}
+            </label>
+          ) : (
+            <></>
+          )}
+          <div className={classes.groupData}>
+            <span className={classes.portion}>
+              {item.portionSize} {item.portionUnit}
+            </span>
+            {item.name}
+          </div>
+        </fieldset>
+      );
+    });
+  }
+
+  if (mealItemObj) {
+    return (
+      <fieldset className={classes.groupContainer}>
+        <label
+          htmlFor={label.replace(/\s+/g, '')}
+          className={classes.groupLabel}
+        >
+          {label}:{' '}
+        </label>
+        <div className={classes.groupData}>
+          <span className={classes.portion}>
+            {mealItemObj.portionSize} {mealItemObj.portionUnit}
+          </span>
+          {mealItemObj.name}
+        </div>
+      </fieldset>
+    );
+  }
+
   if (inputType === 'select') {
     return (
       <div className={className ? className : ''}>
@@ -192,38 +236,6 @@ const FormGroup = ({
                   })}
                 </select>
               )}
-            </>
-          ) : mealItemArr ? (
-            mealItemArr.map((item, index) => {
-              return (
-                <React.Fragment key={uuidv4()}>
-                  {index === 0 ? (
-                    <label
-                      htmlFor={label.replace(/\s+/g, '')}
-                      className={classes.groupLabel}
-                    >
-                      {label}:{' '}
-                    </label>
-                  ) : (
-                    <></>
-                  )}
-                  <div className={classes.groupData}>
-                    <span className={classes.portion}>
-                      {item.portionSize} {item.portionUnit}
-                    </span>
-                    {item.name}
-                  </div>
-                </React.Fragment>
-              );
-            })
-          ) : mealItemObj ? (
-            <>
-              <div className={classes.groupData}>
-                <span className={classes.portion}>
-                  {mealItemObj.portionSize} {mealItemObj.portionUnit}
-                </span>
-                {mealItemObj.name}
-              </div>
             </>
           ) : (
             <></>

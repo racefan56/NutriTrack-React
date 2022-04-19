@@ -63,7 +63,7 @@ const MenuItemResults = (props) => {
                   <ButtonMain
                     className='m-0'
                     type='Link'
-                    path={`${menuItem._id}/edit`}
+                    path={`${menuItem._id}`}
                     text='View/Edit'
                   />
                 </td>

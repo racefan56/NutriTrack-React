@@ -52,4 +52,6 @@
 .titleSpan {
   padding-left: 1rem;
   padding-right: 1rem;
+  font-weight: 800;
+  font-size: 32px;
 }

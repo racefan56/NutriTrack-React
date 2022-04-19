@@ -6,6 +6,7 @@
 .tableContainer {
   border: 2px solid #343a40;
   border-radius: 0.25rem;
+  overflow: auto;
 }
 
 .heading {

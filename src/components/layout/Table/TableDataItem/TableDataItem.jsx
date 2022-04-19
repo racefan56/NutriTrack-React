@@ -25,7 +25,7 @@ const TableDataItem = ({ children, navigatePath, dataPoints }) => {
           </td>
         );
       })}
-      {children}
+      {children ? children : <></>}
     </tr>
   );
 };

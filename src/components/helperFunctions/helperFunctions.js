@@ -5,7 +5,7 @@ export function capitalizeWord(string) {
   //Convert to string if not already a string, then capitalize only the first letter
   return (
     string.toString().charAt(0).toUpperCase() +
-    string.toString().slice(1).toLowerCase()
+    string.toString().slice(1)
   );
 }
 

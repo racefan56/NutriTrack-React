@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Modal from '../../Modal/DeleteModal/DeleteModal';
-
 import classes from './ButtonDelete.module.css';
 
 const ButtonDelete = ({ className, onClick }) => {
