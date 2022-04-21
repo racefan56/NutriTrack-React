@@ -3,18 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import {
-  getPatient,
-  updatePatient,
-  deletePatient,
-} from './../../features/patient/patientSlice';
+import { createPatient } from './../../features/patient/patientSlice';
 import { getDiets } from './../../features/diet/dietSlice';
 import { getRooms } from './../../features/room/roomSlice';
 
 import {
-  formatDate,
-  ISOdateOnly,
   formEditMode,
+  ISOdateOnly,
+  titleCase,
 } from '../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
@@ -22,19 +18,17 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
 import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
-import SubContainer from '../../components/layout/SubContainer/SubContainer';
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
-import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './Patient.module.css';
-import MealResults from '../../components/meal/MealResults/MealResults';
+import classes from './CreatePatient.module.css';
 
-const Patient = (props) => {
+const CreatePatient = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { patientId } = useParams();
+
+  formEditMode(true);
 
   const { patient, loading, isSuccess, isError, message } = useSelector(
     (state) => state.patient
@@ -42,21 +36,19 @@ const Patient = (props) => {
   const { diets } = useSelector((state) => state.diet);
   const { rooms } = useSelector((state) => state.room);
 
-  const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({
+  const initialFormState = {
     firstName: '',
     lastName: '',
-    dob: '1970-01-01T00:00:00.000Z',
+    dob: '1970-01-01',
     knownAllergies: [],
-    roomNumber: { _id: '' },
-    currentDiet: { _id: '' },
-    mealOrders: [],
-    supplements: [],
-    status: 'eating',
-    isHighRisk: 'false',
-    createdAt: '1970-01-01T00:00:00.000Z',
-    updatedAt: '1970-01-01T00:00:00.000Z',
-  });
+    roomNumber: rooms[0] ? rooms[0]._id : '',
+    currentDiet: diets[0] ? diets[0]._id : '',
+    supplements: 'none',
+    status: 'NPO',
+    isHighRisk: 'true',
+  };
+
+  const [formData, setFormData] = useState(initialFormState);
 
   const {
     firstName,
@@ -65,34 +57,35 @@ const Patient = (props) => {
     knownAllergies,
     roomNumber,
     currentDiet,
-    mealOrders,
     supplements,
     status,
     isHighRisk,
-    createdAt,
-    updatedAt,
   } = formData;
 
   useEffect(() => {
-    dispatch(getPatient(patientId));
     dispatch(getDiets());
     dispatch(getRooms());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (patient) {
-      setFormData({ ...patient });
+    if (rooms[0] && diets[0]) {
+      setFormData((prevState) => ({
+        ...prevState,
+        roomNumber: rooms[0]._id,
+        currentDiet: diets[0]._id,
+      }));
     }
-  }, [patient]);
+  }, [rooms, diets]);
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success('Patient data successfully updated!');
+      toast.success('Patient data successfully created!');
       navigate('/patients');
     }
 
     if (isError) {
       if (message.keyValue.roomNumber) {
+        formEditMode(true);
         toast.error('That room is currently occupied.');
       } else {
         toast.error(message);
@@ -100,6 +93,20 @@ const Patient = (props) => {
       }
     }
   }, [isError, isSuccess, message, navigate]);
+
+  useEffect(() => {
+    if (isSuccess && patient) {
+      navigate(`/patients/${patient._id}`);
+    }
+  }, [isSuccess, navigate, patient]);
+
+  const openModal = (id) => {
+    document.getElementById(id).style.display = 'flex';
+  };
+
+  const closeModal = (id) => {
+    document.getElementById(id).style.display = 'none';
+  };
 
   const roomSets = () => {
     const units = [...new Set(rooms.map((room) => room.unit.unitName))];
@@ -114,7 +121,6 @@ const Patient = (props) => {
 
   const handleChange = (e) => {
     const key = e.target.id;
-    console.log(e.target);
 
     if (e.target.type === 'checkbox') {
       const checked = Array.from(
@@ -133,46 +139,26 @@ const Patient = (props) => {
   const handleSubmit = (e) => {
     console.log(formData);
     e.preventDefault();
-    dispatch(updatePatient([patientId, formData]));
-    formEditMode(false);
-    setEditMode(false);
-  };
-
-  const handleEdit = () => {
-    formEditMode(true);
-    setEditMode(true);
+    dispatch(createPatient(formData));
   };
 
   const handleCancel = () => {
-    formEditMode(false);
-    setEditMode(false);
-    //Reset menu item fields back to their original values
-    setFormData({ ...patient });
+    closeModal('confirmCancel');
   };
 
-  const handleDelete = (patientId) => {
-    dispatch(deletePatient(patientId));
-    //After a patient is deleted, return to patients page
+  const handleConfirm = () => {
     navigate('/patients');
-    if (isSuccess) {
-      toast.success('Patient successfully deleted!');
-    }
   };
 
-  if (loading || !patient || !formData) {
+  if (loading) {
     return <Spinner />;
   } else {
-    const unitRoom = `${patient.unit} ${patient.roomNumber.roomNumber}`;
-
-    const patientName = `${patient.firstName} ${patient.lastName}`;
     return (
       <>
         <SideNav />
         <ContainerSideNav>
           <FormContainer
-            status={patient.status}
-            category={unitRoom}
-            title={patientName}
+            title={titleCase('Create Patient')}
             onSubmit={handleSubmit}
           >
             <FormGroup
@@ -280,73 +266,34 @@ const Patient = (props) => {
               onChange={handleChange}
               editable
             />
-            <FormGroup
-              id='createdAt'
-              inputType='text'
-              className='col-12 col-md-6'
-              label='Created'
-              value={formatDate(createdAt)}
-              readonly
-            />
-            <FormGroup
-              id='updatedAt'
-              inputType='text'
-              className='col-12 col-md-6'
-              label='Updated'
-              value={formatDate(updatedAt)}
-              readonly
-            />
             <div className={classes.btnDiv}>
-              {editMode ? (
-                <>
-                  <ButtonMain
-                    className='mx-3'
-                    text='Submit'
-                    type='Submit'
-                    onClick={handleSubmit}
-                  />
-                  <ButtonSecondary
-                    className='m-3'
-                    text='Cancel'
-                    type='Button'
-                    onClick={handleCancel}
-                  />
-                </>
-              ) : (
-                <>
-                  <ButtonEdit onClick={handleEdit} />
-                  <Modal
-                    id={patientId}
-                    itemName={patient.firstName + ' ' + patient.lastName}
-                    onDelete={() => {
-                      handleDelete(patientId);
-                    }}
-                    btnDelete
-                  />
-                </>
-              )}
+              <>
+                <ButtonMain
+                  className='mx-3'
+                  text='Submit'
+                  type='Submit'
+                  onClick={handleSubmit}
+                />
+                <ButtonSecondary
+                  className='m-3'
+                  text='Cancel'
+                  type='Button'
+                  onClick={() => openModal('confirmCancel')}
+                />
+                <Modal
+                  heading='Are you sure?'
+                  message='Any unsaved changes will be lost.'
+                  id='confirmCancel'
+                  handleCancel={handleCancel}
+                  handleConfirm={handleConfirm}
+                />
+              </>
             </div>
           </FormContainer>
-
-          {mealOrders ? (
-            mealOrders.length > 0 ? (
-              <SubContainer title='Meal Orders' altHeading='true'>
-                <MealResults meals={mealOrders} />
-              </SubContainer>
-            ) : (
-              <SubContainer altHeading='true'>
-                <p className={classes.noMeals}>
-                  This patient has no meal orders
-                </p>
-              </SubContainer>
-            )
-          ) : (
-            <></>
-          )}
         </ContainerSideNav>
       </>
     );
   }
 };
 
-export default Patient;
+export default CreatePatient;

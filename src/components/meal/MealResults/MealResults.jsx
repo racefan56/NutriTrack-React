@@ -9,6 +9,9 @@ import Meal from '../Meal/Meal';
 import classes from './MealResults.module.css';
 
 const MealResults = ({ meals }) => {
+  if (!meals) {
+    return <></>;
+  }
   const mealDaysPeriods = meals.map((meal) => {
     return [formatDate(meal.mealDate, { dateOnly: true }), meal.mealPeriod];
   });

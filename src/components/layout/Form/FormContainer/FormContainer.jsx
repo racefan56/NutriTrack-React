@@ -15,7 +15,7 @@ const FormContainer = ({
         {status ? (
           <div
             className={`${classes.statusTag} ${
-              status === 'eating' ? classes.eating : classes.npo
+              status === 'Eating' ? classes.eating : classes.npo
             }`}
           >
             {status}

@@ -11,6 +11,7 @@ import Census from './pages/Census';
 import Alerts from './pages/Alerts';
 import Patients from './pages/Patients/Patients';
 import Patient from './pages/Patient/Patient';
+import CreatePatient from './pages/CreatePatient/CreatePatient';
 import PatientOrders from './pages/PatientOrders';
 import MyAccount from './pages/MyAccount/MyAccount';
 import Notfound from './pages/NotFound/Notfound';
@@ -50,13 +51,25 @@ function App() {
           >
             <Route path='/alerts' element={<Alerts />} />
           </Route>
+
+          {/* PATIENT ROUTES */}
+          {/* View all patients */}
           <Route
             path='/patients'
             element={<PrivateRoute validRoles={['admin']} />}
           >
-            {/* PATIENT ROUTES */}
             <Route path='/patients' element={<Patients />} />
           </Route>
+
+          {/* Create patient */}
+          <Route
+            path='/patients/create'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/patients/create' element={<CreatePatient />} />
+          </Route>
+
+          {/* View/Edit/Delete patient */}
           <Route
             path='/patients/:patientId'
             element={<PrivateRoute validRoles={['admin']} />}
@@ -92,24 +105,13 @@ function App() {
             />
           </Route>
 
-          {/* View menu item */}
+          {/* View/Edit/Delete menu item */}
           <Route
             path='/control-panel/menu-items/:menuItemId'
             element={<PrivateRoute validRoles={['admin']} />}
           >
             <Route
               path='/control-panel/menu-items/:menuItemId'
-              element={<MenuItemPage />}
-            />
-          </Route>
-
-          {/* Edit menu item */}
-          <Route
-            path='/control-panel/menu-items/:menuItemId/edit'
-            element={<PrivateRoute validRoles={['admin']} />}
-          >
-            <Route
-              path='/control-panel/menu-items/:menuItemId/edit'
               element={<MenuItemPage />}
             />
           </Route>

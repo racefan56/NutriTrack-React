@@ -22,7 +22,7 @@ export const createMenuItem = createAsyncThunk(
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data._message) ||
+          error.response.data.message) ||
         error.message ||
         error.toString();
 
@@ -42,7 +42,7 @@ export const getMenuItems = createAsyncThunk(
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data._message) ||
+          error.response.data.message) ||
         error.message ||
         error.toString();
 
@@ -62,7 +62,7 @@ export const getMenuItem = createAsyncThunk(
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data._message) ||
+          error.response.data.message) ||
         error.message ||
         error.toString();
 
@@ -82,7 +82,7 @@ export const updateMenuItem = createAsyncThunk(
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data._message) ||
+          error.response.data.message) ||
         error.message ||
         error.toString();
 
@@ -102,7 +102,7 @@ export const deleteMenuItem = createAsyncThunk(
       const message =
         (error.response &&
           error.response.data &&
-          error.response.data._message) ||
+          error.response.data.message) ||
         error.message ||
         error.toString();
 

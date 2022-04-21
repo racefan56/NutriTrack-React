@@ -3,10 +3,7 @@ export function capitalizeWord(string) {
     return;
   }
   //Convert to string if not already a string, then capitalize only the first letter
-  return (
-    string.toString().charAt(0).toUpperCase() +
-    string.toString().slice(1)
-  );
+  return string.toString().charAt(0).toUpperCase() + string.toString().slice(1);
 }
 
 export function titleCase(string) {
@@ -45,6 +42,30 @@ export const formatDate = (date, dateOnly) => {
   }:${minutes}:${seconds} ${hours > 12 ? 'PM' : 'AM'}`;
 
   return formatedDateTime;
+};
+
+export const getToday = () => {
+  let today = new Date();
+  let dd = today.getDate();
+  let mm = today.getMonth() + 1; //January is 0!
+  const yyyy = today.getFullYear();
+
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+
+  today = yyyy + '-' + mm + '-' + dd;
+
+  return today;
+};
+
+export const ISOdateOnly = (date) => {
+  const dateOnly = date.split('T')[0];
+  return dateOnly;
 };
 
 export const formEditMode = (editMode) => {

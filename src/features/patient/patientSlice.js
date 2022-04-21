@@ -3,10 +3,31 @@ import patientService from './patientService';
 import { logout } from './../auth/authSlice';
 
 const initialState = {
-  patients: [],
-  patient: {},
+  patients: null,
+  patient: null,
   loading: true,
 };
+
+//Create patient
+export const createPatient = createAsyncThunk(
+  'patient/createPatient',
+  async (formData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await patientService.createPatient(formData, token);
+    } catch (error) {
+      console.log(error.response);
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 //Get all patients
 export const getPatients = createAsyncThunk(
@@ -48,6 +69,46 @@ export const getPatient = createAsyncThunk(
   }
 );
 
+//Update one patient
+export const updatePatient = createAsyncThunk(
+  'patient/updatePatient',
+  async ([patientId, formData], thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await patientService.updatePatient(patientId, formData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+//Delete one patient
+export const deletePatient = createAsyncThunk(
+  'patient/deletePatient',
+  async (patientId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await patientService.deletePatient(patientId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const patientSlice = createSlice({
   name: 'patient',
   initialState,
@@ -58,7 +119,25 @@ export const patientSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(createPatient.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(createPatient.fulfilled, (state, action) => {
+        state.patient = action.payload.data.data;
+        state.isSuccess = true;
+        state.loading = false;
+      })
+      .addCase(createPatient.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload;
+        state.loading = false;
+      })
       .addCase(getPatients.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
         state.loading = true;
       })
       .addCase(getPatients.fulfilled, (state, action) => {
@@ -67,9 +146,11 @@ export const patientSlice = createSlice({
       })
       .addCase(getPatients.rejected, (state) => {
         state.loading = false;
-        state.patients = [];
+        state.patients = null;
       })
       .addCase(getPatient.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
         state.loading = true;
       })
       .addCase(getPatient.fulfilled, (state, action) => {
@@ -78,7 +159,38 @@ export const patientSlice = createSlice({
       })
       .addCase(getPatient.rejected, (state) => {
         state.loading = false;
+        state.patient = null;
+      })
+      .addCase(updatePatient.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(updatePatient.fulfilled, (state, action) => {
+        state.patient = action.payload.data.data;
+        state.isSuccess = true;
+        state.loading = false;
+      })
+      .addCase(updatePatient.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload;
+        state.loading = false;
+      })
+      .addCase(deletePatient.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(deletePatient.fulfilled, (state) => {
         state.patient = [];
+        state.loading = false;
+        state.isSuccess = true;
+      })
+      .addCase(deletePatient.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
       })
       // Return state to defaults on user logout
       .addCase(logout, () => {

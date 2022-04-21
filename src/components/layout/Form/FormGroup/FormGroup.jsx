@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React from 'react';
 
-import { capitalizeWord } from '../../../helperFunctions/helperFunctions';
+import {
+  capitalizeWord,
+  getToday,
+} from '../../../helperFunctions/helperFunctions';
 
 import classes from './FormGroup.module.css';
 
@@ -18,6 +20,9 @@ const FormGroup = ({
   onChange,
   inputType,
   selectOptions,
+  selectOptionsGroups,
+  groupValue,
+  groupLabel,
   checkboxOptions,
   step,
   textarea,
@@ -84,14 +89,40 @@ const FormGroup = ({
             value={value}
             onChange={onChange}
           >
-            {selectOptions.map((option, index) => {
-              // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
-              return (
-                <option key={`${option.label}${index}`} value={option.value}>
-                  {capitalizeWord(option.label)}
-                </option>
-              );
-            })}
+            {selectOptionsGroups ? (
+              selectOptionsGroups.map((group, index) => {
+                // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
+                const key = Object.keys(group)[0];
+                return (
+                  <optgroup key={key} label={key}>
+                    {[...group[key]].map((option) => {
+                      return (
+                        <option
+                          key={`${option[groupLabel]}${index}`}
+                          value={option[groupValue]}
+                        >
+                          {capitalizeWord(key + ' ' + option[groupLabel])}
+                        </option>
+                      );
+                    })}
+                  </optgroup>
+                );
+              })
+            ) : (
+              <></>
+            )}
+            {selectOptions ? (
+              selectOptions.map((option, index) => {
+                // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
+                return (
+                  <option key={`${option.label}${index}`} value={option.value}>
+                    {capitalizeWord(option.label)}
+                  </option>
+                );
+              })
+            ) : (
+              <></>
+            )}
           </select>
         </fieldset>
       </div>
@@ -114,37 +145,41 @@ const FormGroup = ({
                 className={`col-12 col-md-6`}
                 key={`${option.value}${index}`}
               >
-                {value.includes(option.value) ? (
-                  <label>
-                    <input
-                      className={`${editable ? 'editable' : ''} ${
-                        classes.inputCheck
-                      }`}
-                      type='checkbox'
-                      id={id}
-                      name={id}
-                      value={option.value}
-                      onChange={onChange}
-                      defaultChecked
-                      disabled
-                    />
-                    {capitalizeWord(option.label)}
-                  </label>
+                {value ? (
+                  value.includes(option.value) ? (
+                    <label>
+                      <input
+                        className={`${editable ? 'editable' : ''} ${
+                          classes.inputCheck
+                        }`}
+                        type='checkbox'
+                        id={id}
+                        name={id}
+                        value={option.value}
+                        onChange={onChange}
+                        defaultChecked
+                        disabled
+                      />
+                      {capitalizeWord(option.label)}
+                    </label>
+                  ) : (
+                    <label>
+                      <input
+                        className={`${editable ? 'editable' : ''} ${
+                          classes.inputCheck
+                        }`}
+                        type='checkbox'
+                        id={id}
+                        name={id}
+                        value={option.value}
+                        onChange={onChange}
+                        disabled
+                      />
+                      {capitalizeWord(option.label)}
+                    </label>
+                  )
                 ) : (
-                  <label>
-                    <input
-                      className={`${editable ? 'editable' : ''} ${
-                        classes.inputCheck
-                      }`}
-                      type='checkbox'
-                      id={id}
-                      name={id}
-                      value={option.value}
-                      onChange={onChange}
-                      disabled
-                    />
-                    {capitalizeWord(option.label)}
-                  </label>
+                  <></>
                 )}
               </fieldset>
             );
@@ -211,6 +246,19 @@ const FormGroup = ({
                 <input
                   id={id}
                   type='text'
+                  className={`${editable ? 'editable' : ''} ${classes.input}`}
+                  disabled
+                  placeholder={placeholder}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
+              {inputType === 'date' && (
+                <input
+                  id={id}
+                  type='date'
+                  min='1900-01-01'
+                  max={getToday()}
                   className={`${editable ? 'editable' : ''} ${classes.input}`}
                   disabled
                   placeholder={placeholder}
