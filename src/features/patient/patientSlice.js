@@ -6,6 +6,8 @@ const initialState = {
   patients: null,
   patient: null,
   loading: true,
+  isError: false,
+  isSuccess: false,
 };
 
 //Create patient
@@ -77,6 +79,7 @@ export const updatePatient = createAsyncThunk(
       const token = thunkAPI.getState().auth.token;
       return await patientService.updatePatient(patientId, formData, token);
     } catch (error) {
+      console.log(error.response);
       const message =
         (error.response &&
           error.response.data &&
@@ -145,6 +148,7 @@ export const patientSlice = createSlice({
         state.patients = action.payload.data.data;
       })
       .addCase(getPatients.rejected, (state) => {
+        state.isError = true;
         state.loading = false;
         state.patients = null;
       })

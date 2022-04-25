@@ -7,7 +7,7 @@ const initialState = {
   loading: true,
   isError: false,
   message: '',
-  isSuccess: '',
+  isSuccess: false,
 };
 
 //Get all productionAreas
@@ -31,12 +31,15 @@ export const getProductionAreas = createAsyncThunk(
 );
 
 //Get one productionArea
-export const getMenuItem = createAsyncThunk(
-  'menuItem/getMenuItem',
-  async (menuItemId, thunkAPI) => {
+export const getProductionArea = createAsyncThunk(
+  'productionArea/getProductionArea',
+  async (productionAreaId, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
-      return await productionAreaService.getProductionArea(menuItemId, token);
+      return await productionAreaService.getProductionArea(
+        productionAreaId,
+        token
+      );
     } catch (error) {
       const message =
         (error.response &&
@@ -101,13 +104,13 @@ export const productionAreaSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getProductionAreas.pending, (state) => {
+        state.isSuccess = false;
         state.isError = false;
         state.loading = true;
       })
       .addCase(getProductionAreas.fulfilled, (state, action) => {
         state.productionAreas = action.payload.data.data;
         state.loading = false;
-        state.isSuccess = true;
       })
       .addCase(getProductionAreas.rejected, (state, action) => {
         state.isError = true;
@@ -115,20 +118,20 @@ export const productionAreaSlice = createSlice({
         state.loading = false;
         state.menuItems = [];
       })
-      .addCase(getMenuItem.pending, (state) => {
+      .addCase(getProductionArea.pending, (state) => {
+        state.isSuccess = false;
         state.isError = false;
         state.loading = true;
       })
-      .addCase(getMenuItem.fulfilled, (state, action) => {
-        state.menuItem = action.payload.data.data;
+      .addCase(getProductionArea.fulfilled, (state, action) => {
+        state.productionArea = action.payload.data.data;
         state.loading = false;
-        state.isSuccess = true;
       })
-      .addCase(getMenuItem.rejected, (state, action) => {
+      .addCase(getProductionArea.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.menuItem = [];
+        state.productionArea = [];
       });
     //   .addCase(updateMenuItem.pending, (state) => {
     //     state.isError = false;

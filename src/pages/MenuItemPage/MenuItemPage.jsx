@@ -24,6 +24,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
 import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
+import FormActionBtnContainer from '../../components/layout/Form/FormActionBtnContainer/FormActionBtnContainer';
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
@@ -294,37 +295,36 @@ const MenuItemPage = () => {
               defaultValue={formatDate(menuItem ? menuItem.createdOn : '')}
               readonly
             />
-            <div className={classes.btnDiv}>
-              {editMode ? (
-                <>
-                  <ButtonMain
-                    className='mx-3'
-                    text='Submit'
-                    type='Submit'
-                    onClick={handleSubmit}
-                  />
-                  <ButtonSecondary
-                    className='m-3'
-                    text='Cancel'
-                    type='Button'
-                    onClick={handleCancel}
-                  />
-                </>
-              ) : (
-                <>
-                  <ButtonEdit onClick={handleEdit} />
-                  <Modal
-                    id={menuItemId}
-                    itemId={menuItemId}
-                    itemName={menuItem.name}
-                    onDelete={() => {
-                      handleDelete(menuItemId, menuItem.name);
-                    }}
-                    btnDelete
-                  />
-                </>
-              )}
-            </div>
+
+            {editMode ? (
+              <FormActionBtnContainer>
+                <ButtonMain
+                  className='mx-3'
+                  text='Submit'
+                  type='Submit'
+                  onClick={handleSubmit}
+                />
+                <ButtonSecondary
+                  className='m-3'
+                  text='Cancel'
+                  type='Button'
+                  onClick={handleCancel}
+                />
+              </FormActionBtnContainer>
+            ) : (
+              <FormActionBtnContainer>
+                <ButtonEdit onClick={handleEdit} />
+                <Modal
+                  id={menuItemId}
+                  itemId={menuItemId}
+                  itemName={menuItem.name}
+                  onDelete={() => {
+                    handleDelete(menuItemId, menuItem.name);
+                  }}
+                  btnDelete
+                />
+              </FormActionBtnContainer>
+            )}
           </FormContainer>
         </ContainerSideNav>
       </>

@@ -15,6 +15,9 @@ import {
   formatDate,
   ISOdateOnly,
   formEditMode,
+  invalidInput,
+  getToday,
+  roomsAvailableByUnit,
 } from '../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
@@ -22,6 +25,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
 import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
+import FormActionBtnContainer from '../../components/layout/Form/FormActionBtnContainer/FormActionBtnContainer';
 import SubContainer from '../../components/layout/SubContainer/SubContainer';
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
@@ -30,17 +34,18 @@ import Modal from '../../components/layout/Modal/Modal';
 
 import classes from './Patient.module.css';
 import MealResults from '../../components/meal/MealResults/MealResults';
+import { getMenuItems } from '../../features/menuItem/menuItemSlice';
 
 const Patient = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { patientId } = useParams();
 
-  const { patient, loading, isSuccess, isError, message } = useSelector(
-    (state) => state.patient
-  );
+  const { patient, patients, loading, isSuccess, isError, message } =
+    useSelector((state) => state.patient);
   const { diets } = useSelector((state) => state.diet);
   const { rooms } = useSelector((state) => state.room);
+  const { menuItems } = useSelector((state) => state.menuItem);
 
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
@@ -77,7 +82,8 @@ const Patient = (props) => {
     dispatch(getPatient(patientId));
     dispatch(getDiets());
     dispatch(getRooms());
-  }, []);
+    dispatch(getMenuItems('category=supplement'));
+  }, [dispatch, patientId]);
 
   useEffect(() => {
     if (patient) {
@@ -92,29 +98,23 @@ const Patient = (props) => {
     }
 
     if (isError) {
-      if (message.keyValue.roomNumber) {
+      if (message.keyValue?.roomNumber) {
         toast.error('That room is currently occupied.');
-      } else {
-        toast.error(message);
-        navigate('/not-found');
+      }
+
+      if (message.message) {
+        toast.error(message.message);
       }
     }
   }, [isError, isSuccess, message, navigate]);
 
-  const roomSets = () => {
-    const units = [...new Set(rooms.map((room) => room.unit.unitName))];
-
-    const roomsByUnit = units.map((unit) => {
-      const result = rooms.filter((room) => room.unit.unitName === unit);
-
-      return { [unit]: result };
-    });
-    return roomsByUnit;
-  };
-
   const handleChange = (e) => {
     const key = e.target.id;
-    console.log(e.target);
+
+    //remove inline style added to invalid inputs on submit attempts when edited
+    if (e.target.style) {
+      e.target.removeAttribute('style');
+    }
 
     if (e.target.type === 'checkbox') {
       const checked = Array.from(
@@ -131,11 +131,24 @@ const Patient = (props) => {
   };
 
   const handleSubmit = (e) => {
-    console.log(formData);
     e.preventDefault();
-    dispatch(updatePatient([patientId, formData]));
-    formEditMode(false);
-    setEditMode(false);
+
+    if (firstName.length < 1 || lastName.length < 1 || dob > getToday()) {
+      if (firstName.length < 1) {
+        invalidInput('firstName');
+        toast.error('First name is required.');
+      }
+      if (lastName.length < 1) {
+        invalidInput('lastName');
+        toast.error('Last name is required.');
+      }
+      if (dob > getToday()) {
+        invalidInput('dob');
+        toast.error(`DOB can't be in the future`);
+      }
+    } else {
+      dispatch(updatePatient([patientId, formData]));
+    }
   };
 
   const handleEdit = () => {
@@ -183,6 +196,8 @@ const Patient = (props) => {
               value={firstName}
               onChange={handleChange}
               editable
+              required
+              minLength='3'
             />
             <FormGroup
               id='lastName'
@@ -192,6 +207,7 @@ const Patient = (props) => {
               value={lastName}
               onChange={handleChange}
               editable
+              required
             />
             <FormGroup
               id='dob'
@@ -201,6 +217,7 @@ const Patient = (props) => {
               value={ISOdateOnly(dob)}
               onChange={handleChange}
               editable
+              required
             />
             <FormGroup
               id='status'
@@ -214,11 +231,16 @@ const Patient = (props) => {
               value={status}
               onChange={handleChange}
               editable
+              required
             />
             <FormGroup
               id='roomNumber'
               inputType='select'
-              selectOptionsGroups={roomSets()}
+              selectOptionsGroups={roomsAvailableByUnit(
+                rooms,
+                patients,
+                patient
+              )}
               groupValue='_id'
               groupLabel='roomNumber'
               className='col-12 col-md-6 col-lg-4'
@@ -226,6 +248,7 @@ const Patient = (props) => {
               value={roomNumber._id}
               onChange={handleChange}
               editable
+              required
             />
             <FormGroup
               id='isHighRisk'
@@ -239,6 +262,7 @@ const Patient = (props) => {
               value={isHighRisk.toString()}
               onChange={handleChange}
               editable
+              required
             />
             <FormGroup
               id='currentDiet'
@@ -251,15 +275,20 @@ const Patient = (props) => {
               value={currentDiet._id}
               onChange={handleChange}
               editable
+              required
             />
             <FormGroup
               id='supplements'
-              inputType='text'
+              inputType='checkbox'
+              checkboxOptions={menuItems.map((item) => {
+                return { value: item._id, label: item.name };
+              })}
               className='col-12 col-lg-6'
               label='Supplements'
-              value={supplements.toString()}
+              value={supplements}
               onChange={handleChange}
               editable
+              required
             />
             <FormGroup
               id='knownAllergies'
@@ -296,36 +325,34 @@ const Patient = (props) => {
               value={formatDate(updatedAt)}
               readonly
             />
-            <div className={classes.btnDiv}>
-              {editMode ? (
-                <>
-                  <ButtonMain
-                    className='mx-3'
-                    text='Submit'
-                    type='Submit'
-                    onClick={handleSubmit}
-                  />
-                  <ButtonSecondary
-                    className='m-3'
-                    text='Cancel'
-                    type='Button'
-                    onClick={handleCancel}
-                  />
-                </>
-              ) : (
-                <>
-                  <ButtonEdit onClick={handleEdit} />
-                  <Modal
-                    id={patientId}
-                    itemName={patient.firstName + ' ' + patient.lastName}
-                    onDelete={() => {
-                      handleDelete(patientId);
-                    }}
-                    btnDelete
-                  />
-                </>
-              )}
-            </div>
+            {editMode ? (
+              <FormActionBtnContainer>
+                <ButtonMain
+                  className='mx-3'
+                  text='Submit'
+                  type='Submit'
+                  onClick={handleSubmit}
+                />
+                <ButtonSecondary
+                  className='m-3'
+                  text='Cancel'
+                  type='Button'
+                  onClick={handleCancel}
+                />
+              </FormActionBtnContainer>
+            ) : (
+              <FormActionBtnContainer>
+                <ButtonEdit onClick={handleEdit} />
+                <Modal
+                  id={patientId}
+                  itemName={patient.firstName + ' ' + patient.lastName}
+                  onDelete={() => {
+                    handleDelete(patientId);
+                  }}
+                  btnDelete
+                />
+              </FormActionBtnContainer>
+            )}
           </FormContainer>
 
           {mealOrders ? (

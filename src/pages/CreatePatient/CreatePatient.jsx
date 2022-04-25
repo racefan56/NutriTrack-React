@@ -11,6 +11,9 @@ import {
   formEditMode,
   ISOdateOnly,
   titleCase,
+  getToday,
+  invalidInput,
+  roomsAvailableByUnit,
 } from '../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
@@ -18,6 +21,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
 import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
+import FormActionBtnContainer from '../../components/layout/Form/FormActionBtnContainer/FormActionBtnContainer';
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 import Modal from '../../components/layout/Modal/Modal';
@@ -30,9 +34,8 @@ const CreatePatient = (props) => {
 
   formEditMode(true);
 
-  const { patient, loading, isSuccess, isError, message } = useSelector(
-    (state) => state.patient
-  );
+  const { patient, patients, loading, isSuccess, isError, message } =
+    useSelector((state) => state.patient);
   const { diets } = useSelector((state) => state.diet);
   const { rooms } = useSelector((state) => state.room);
 
@@ -78,27 +81,25 @@ const CreatePatient = (props) => {
   }, [rooms, diets]);
 
   useEffect(() => {
+    if (isSuccess && patient) {
+      navigate(`/patients/${patient._id}`);
+    }
+
     if (isSuccess) {
       toast.success('Patient data successfully created!');
       navigate('/patients');
     }
 
     if (isError) {
-      if (message.keyValue.roomNumber) {
-        formEditMode(true);
+      if (message.keyValue?.roomNumber) {
         toast.error('That room is currently occupied.');
-      } else {
-        toast.error(message);
-        navigate('/not-found');
+      }
+
+      if (message.message) {
+        toast.error(message.message);
       }
     }
-  }, [isError, isSuccess, message, navigate]);
-
-  useEffect(() => {
-    if (isSuccess && patient) {
-      navigate(`/patients/${patient._id}`);
-    }
-  }, [isSuccess, navigate, patient]);
+  }, [isError, isSuccess, message, navigate, patient]);
 
   const openModal = (id) => {
     document.getElementById(id).style.display = 'flex';
@@ -108,19 +109,13 @@ const CreatePatient = (props) => {
     document.getElementById(id).style.display = 'none';
   };
 
-  const roomSets = () => {
-    const units = [...new Set(rooms.map((room) => room.unit.unitName))];
-
-    const roomsByUnit = units.map((unit) => {
-      const result = rooms.filter((room) => room.unit.unitName === unit);
-
-      return { [unit]: result };
-    });
-    return roomsByUnit;
-  };
-
   const handleChange = (e) => {
     const key = e.target.id;
+
+    //remove inline style added to invalid inputs on submit attempt
+    if (e.target.style) {
+      e.target.removeAttribute('style');
+    }
 
     if (e.target.type === 'checkbox') {
       const checked = Array.from(
@@ -137,9 +132,24 @@ const CreatePatient = (props) => {
   };
 
   const handleSubmit = (e) => {
-    console.log(formData);
     e.preventDefault();
-    dispatch(createPatient(formData));
+
+    if (firstName.length < 1 || lastName.length < 1 || dob > getToday()) {
+      if (firstName.length < 1) {
+        invalidInput('firstName');
+        toast.error('First name is required.');
+      }
+      if (lastName.length < 1) {
+        invalidInput('lastName');
+        toast.error('Last name is required.');
+      }
+      if (dob > getToday()) {
+        invalidInput('dob');
+        toast.error(`DOB can't be in the future`);
+      }
+    } else {
+      dispatch(createPatient(formData));
+    }
   };
 
   const handleCancel = () => {
@@ -204,7 +214,7 @@ const CreatePatient = (props) => {
             <FormGroup
               id='roomNumber'
               inputType='select'
-              selectOptionsGroups={roomSets()}
+              selectOptionsGroups={roomsAvailableByUnit(rooms, patients)}
               groupValue='_id'
               groupLabel='roomNumber'
               className='col-12 col-md-6 col-lg-4'
@@ -266,29 +276,27 @@ const CreatePatient = (props) => {
               onChange={handleChange}
               editable
             />
-            <div className={classes.btnDiv}>
-              <>
-                <ButtonMain
-                  className='mx-3'
-                  text='Submit'
-                  type='Submit'
-                  onClick={handleSubmit}
-                />
-                <ButtonSecondary
-                  className='m-3'
-                  text='Cancel'
-                  type='Button'
-                  onClick={() => openModal('confirmCancel')}
-                />
-                <Modal
-                  heading='Are you sure?'
-                  message='Any unsaved changes will be lost.'
-                  id='confirmCancel'
-                  handleCancel={handleCancel}
-                  handleConfirm={handleConfirm}
-                />
-              </>
-            </div>
+            <FormActionBtnContainer>
+              <ButtonMain
+                className='mx-3'
+                text='Submit'
+                type='Submit'
+                onClick={handleSubmit}
+              />
+              <ButtonSecondary
+                className='m-3'
+                text='Cancel'
+                type='Button'
+                onClick={() => openModal('confirmCancel')}
+              />
+              <Modal
+                heading='Are you sure?'
+                message='Any unsaved changes will be lost.'
+                id='confirmCancel'
+                handleCancel={handleCancel}
+                handleConfirm={handleConfirm}
+              />
+            </FormActionBtnContainer>
           </FormContainer>
         </ContainerSideNav>
       </>

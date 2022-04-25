@@ -10,6 +10,7 @@ import { getDiets } from '../../features/diet/dietSlice';
 import {
   titleCase,
   formEditMode,
+  invalidInput,
 } from './../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
@@ -17,6 +18,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
 import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
+import FormActionBtnContainer from '../../components/layout/Form/FormActionBtnContainer/FormActionBtnContainer';
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 import Modal from '../../components/layout/Modal/Modal';
@@ -29,7 +31,9 @@ const CreateMenuItem = () => {
 
   formEditMode(true);
 
-  const { loading, isError, message } = useSelector((state) => state.menuItem);
+  const { loading, isError, isSuccess, message } = useSelector(
+    (state) => state.menuItem
+  );
   const { productionAreas } = useSelector((state) => state.productionArea);
   const { diets } = useSelector((state) => state.diet);
 
@@ -38,7 +42,7 @@ const CreateMenuItem = () => {
     productionArea: productionAreas[0] ? productionAreas[0]._id : '',
     name: '',
     dietAvailability: [],
-    portionSize: 0,
+    portionSize: 1,
     portionUnit: 'each',
     isLiquid: false,
     majorAllergens: [],
@@ -68,7 +72,31 @@ const CreateMenuItem = () => {
     dispatch(getDiets());
     dispatch(getProductionAreas());
     setfirstRender(false);
-  }, [dispatch]);
+  }, [dispatch, productionAreas]);
+
+  useEffect(() => {
+    if (productionAreas[0]) {
+      setFormData({ ...formData, productionArea: productionAreas[0]._id });
+    }
+  }, [productionAreas]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Menu item successfully created!');
+      navigate('/control-panel/menu-items');
+    }
+
+    if (isError) {
+      if (message.keyValue?.name) {
+        toast.error('That name is already taken.');
+      }
+      if (message.message) {
+        toast.error(message.message);
+      } else {
+        toast.error(message);
+      }
+    }
+  }, [isError, isSuccess, message, navigate]);
 
   const openModal = (id) => {
     document.getElementById(id).style.display = 'flex';
@@ -80,6 +108,12 @@ const CreateMenuItem = () => {
 
   const handleChange = (e) => {
     const key = e.target.id;
+
+    //remove inline style added to invalid inputs on submit attempts when edited
+    if (e.target.style) {
+      e.target.removeAttribute('style');
+    }
+
     if (e.target.type === 'checkbox') {
       const checked = Array.from(
         document.querySelectorAll(`input[type=checkbox][name=${key}]:checked`),
@@ -97,18 +131,31 @@ const CreateMenuItem = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(createMenuItem(formData));
-
-    if (loading) {
-      return <Spinner />;
-    }
-
-    if (isError) {
-      toast.error(message);
-      navigate('/control-panel/menu-items/create');
+    console.log(formData);
+    if (
+      name < 1 ||
+      description.length < 1 ||
+      dietAvailability.length < 1 ||
+      portionSize <= 0
+    ) {
+      if (name.length < 1) {
+        invalidInput('name');
+        toast.error('Item name is required.');
+      }
+      if (description.length < 3) {
+        invalidInput('description');
+        toast.error('Item description is required.');
+      }
+      if (dietAvailability.length < 1) {
+        invalidInput('dietAvailability');
+        toast.error('Diet availability is required.');
+      }
+      if (portionSize <= 0) {
+        invalidInput('portionSize');
+        toast.error('Portion size must be greater than 0');
+      }
     } else {
-      toast.success('Menu item successfully created!');
-      navigate('/control-panel/menu-items');
+      dispatch(createMenuItem(formData));
     }
   };
 
@@ -120,7 +167,7 @@ const CreateMenuItem = () => {
     navigate('/control-panel/menu-items');
   };
 
-  if (loading || firstRender) {
+  if (loading || firstRender || !productionAreas) {
     return <Spinner />;
   } else {
     return (
@@ -269,29 +316,27 @@ const CreateMenuItem = () => {
               onChange={handleChange}
               editable
             />
-            <div className={classes.btnDiv}>
-              <>
-                <ButtonMain
-                  className='mx-3'
-                  text='Submit'
-                  type='Submit'
-                  onClick={handleSubmit}
-                />
-                <ButtonSecondary
-                  className='m-3'
-                  text='Cancel'
-                  type='Button'
-                  onClick={() => openModal('confirmCancel')}
-                />
-                <Modal
-                  heading='Are you sure?'
-                  message='Any unsaved changes will be lost.'
-                  id='confirmCancel'
-                  handleCancel={handleCancel}
-                  handleConfirm={handleConfirm}
-                />
-              </>
-            </div>
+            <FormActionBtnContainer>
+              <ButtonMain
+                className='mx-3'
+                text='Submit'
+                type='Submit'
+                onClick={handleSubmit}
+              />
+              <ButtonSecondary
+                className='m-3'
+                text='Cancel'
+                type='Button'
+                onClick={() => openModal('confirmCancel')}
+              />
+              <Modal
+                heading='Are you sure?'
+                message='Any unsaved changes will be lost.'
+                id='confirmCancel'
+                handleCancel={handleCancel}
+                handleConfirm={handleConfirm}
+              />
+            </FormActionBtnContainer>
           </FormContainer>
         </ContainerSideNav>
       </>

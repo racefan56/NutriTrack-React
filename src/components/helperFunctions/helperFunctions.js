@@ -81,3 +81,34 @@ export const formEditMode = (editMode) => {
     });
   }
 };
+
+export const invalidInput = (elId) => {
+  document.getElementById(elId).style.backgroundColor = '#ffc9c9';
+};
+
+export const roomsAvailableByUnit = (rooms, patients, curPatient) => {
+  //checks what rooms are currently occupied by other patients, ommiting the room the CURRENT patient is in if that data is provided.
+  const occupiedRooms = curPatient
+    ? patients.flatMap((patient) => {
+        return patient.roomNumber._id !== curPatient.roomNumber._id
+          ? patient.roomNumber._id
+          : [];
+      })
+    : patients.map((patient) => {
+        return patient.roomNumber._id;
+      });
+
+  //filter out the rooms that are occupied by other patients
+  const availableRooms = rooms.filter((room) => {
+    return !occupiedRooms.includes(room._id);
+  });
+
+  const units = [...new Set(availableRooms.map((room) => room.unit.unitName))];
+
+  const availableRoomsByUnit = units.map((unit) => {
+    const result = availableRooms.filter((room) => room.unit.unitName === unit);
+
+    return { [unit]: result };
+  });
+  return availableRoomsByUnit;
+};

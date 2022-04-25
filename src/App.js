@@ -18,6 +18,9 @@ import Notfound from './pages/NotFound/Notfound';
 import MenuItems from './pages/MenuItems/MenuItems';
 import MenuItemPage from './pages/MenuItemPage/MenuItemPage';
 import CreateMenuItem from './pages/CreateMenuItem/CreateMenuItem';
+import ProductionAreas from './pages/ProductionAreas/ProductionAreas';
+import ProductionArea from './pages/ProductionArea/ProductionArea';
+import CreateProductionArea from './pages/CreateProductionArea/CreateProductionArea';
 
 function App() {
   return (
@@ -27,12 +30,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' element={<Login />} />
-          <Route
-            path='/control-panel'
-            element={<PrivateRoute validRoles={['admin']} />}
-          >
-            <Route path='/control-panel' element={<ControlPanel />} />
-          </Route>
+
           <Route
             path='/my-account'
             element={<PrivateRoute validRoles={['admin']} />}
@@ -50,6 +48,47 @@ function App() {
             element={<PrivateRoute validRoles={['admin']} />}
           >
             <Route path='/alerts' element={<Alerts />} />
+          </Route>
+
+          <Route
+            path='/control-panel'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel' element={<ControlPanel />} />
+          </Route>
+
+          {/* View/Edit/Delete a production area */}
+          <Route
+            path='/control-panel/production-areas/:productionAreaId'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/control-panel/production-areas/:productionAreaId'
+              element={<ProductionArea />}
+            />
+          </Route>
+
+          {/* Create a production area */}
+          <Route
+            path='/control-panel/production-areas/create'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/control-panel/production-areas/create'
+              element={<CreateProductionArea />}
+            />
+          </Route>
+
+          {/* PRODUCTION AREA ROUTES */}
+          {/* Get all production areas */}
+          <Route
+            path='/control-panel/production-areas'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/control-panel/production-areas'
+              element={<ProductionAreas />}
+            />
           </Route>
 
           {/* PATIENT ROUTES */}

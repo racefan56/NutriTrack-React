@@ -257,32 +257,12 @@ const FormGroup = ({
                 <input
                   id={id}
                   type='date'
-                  min='1900-01-01'
-                  max={getToday()}
                   className={`${editable ? 'editable' : ''} ${classes.input}`}
                   disabled
                   placeholder={placeholder}
                   value={value}
                   onChange={onChange}
                 />
-              )}
-              {inputType === 'select' && (
-                <select
-                  id={id}
-                  name={id}
-                  className={`${editable ? 'editable' : ''} ${classes.input}`}
-                  disabled
-                  value={value}
-                  onChange={onChange}
-                >
-                  {selectOptions.map((option, index) => {
-                    return (
-                      <option key={`${option}${index}`} value={option}>
-                        {capitalizeWord(option)}
-                      </option>
-                    );
-                  })}
-                </select>
               )}
             </>
           ) : (
