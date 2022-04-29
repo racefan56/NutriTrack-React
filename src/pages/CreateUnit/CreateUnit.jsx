@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { createProductionArea } from '../../features/productionArea/productionAreaSlice';
+import { createUnit } from '../../features/unit/unitSlice';
 
 import {
   formEditMode,
@@ -18,24 +18,23 @@ import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
 import FormActionBtnContainer from '../../components/layout/Form/FormActionBtnContainer/FormActionBtnContainer';
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
-import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './CreateProductionArea.module.css';
+import classes from './CreateUnit.module.css';
 
-const CreateProductionArea = (props) => {
+const CreateUnit = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { loading, isSuccess, isError, message } = useSelector(
-    (state) => state.productionArea
+    (state) => state.unit
   );
   const [formData, setFormData] = useState({
-    areaName: '',
+    unitName: '',
     description: '',
   });
 
-  const { areaName, description } = formData;
+  const { unitName, description } = formData;
 
   useEffect(() => {
     formEditMode(true);
@@ -43,15 +42,15 @@ const CreateProductionArea = (props) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success('Production area successfully created!');
-      navigate('/control-panel/production-areas');
+      toast.success('Unit successfully created!');
+      navigate('/control-panel/units');
     }
 
     if (isError) {
       formEditMode(true);
-      if (message.keyValue?.areaName) {
-        toast.error('That area name is already taken.');
-        invalidInput('areaName');
+      if (message.keyValue?.unitName) {
+        toast.error('That unit name is already taken.');
+        invalidInput('unitName');
       }
       if (message.message) {
         toast.error(message.message);
@@ -73,17 +72,17 @@ const CreateProductionArea = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (areaName.length < 1 || description.length < 3) {
-      if (areaName.length < 1) {
-        invalidInput('areaName');
-        toast.error('Area name is required.');
+    if (unitName.length < 1 || description.length < 3) {
+      if (unitName.length < 1) {
+        invalidInput('unitName');
+        toast.error('Unit name is required.');
       }
       if (description.length < 3) {
         invalidInput('description');
         toast.error('A description is required.');
       }
     } else {
-      dispatch(createProductionArea(formData));
+      dispatch(createUnit(formData));
     }
   };
 
@@ -100,7 +99,7 @@ const CreateProductionArea = (props) => {
   };
 
   const handleConfirm = () => {
-    navigate('/control-panel/production-areas');
+    navigate('/control-panel/units');
   };
 
   if (loading) {
@@ -111,16 +110,16 @@ const CreateProductionArea = (props) => {
         <SideNav />
         <ContainerSideNav>
           <FormContainer
-            category='Create Production Area'
-            title={areaName}
+            category='Create Unit'
+            title={unitName}
             onSubmit={handleSubmit}
           >
             <FormGroup
-              id='areaName'
+              id='unitName'
               inputType='text'
               className='col-12 col-lg-6'
               label='Area Name'
-              value={areaName}
+              value={unitName}
               onChange={handleChange}
               editable
             />
@@ -162,4 +161,4 @@ const CreateProductionArea = (props) => {
   }
 };
 
-export default CreateProductionArea;
+export default CreateUnit;

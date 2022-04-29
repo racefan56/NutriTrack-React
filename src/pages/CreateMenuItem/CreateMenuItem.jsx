@@ -78,6 +78,7 @@ const CreateMenuItem = () => {
     if (productionAreas[0]) {
       setFormData({ ...formData, productionArea: productionAreas[0]._id });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productionAreas]);
 
   useEffect(() => {
@@ -87,8 +88,10 @@ const CreateMenuItem = () => {
     }
 
     if (isError) {
+      formEditMode(true);
       if (message.keyValue?.name) {
         toast.error('That name is already taken.');
+        invalidInput('name');
       }
       if (message.message) {
         toast.error(message.message);
@@ -175,7 +178,8 @@ const CreateMenuItem = () => {
         <SideNav />
         <ContainerSideNav>
           <FormContainer
-            title={titleCase('Create Menu Item')}
+            category='Create Menu Item'
+            title={name}
             onSubmit={handleSubmit}
           >
             <FormGroup

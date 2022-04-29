@@ -84,13 +84,12 @@ const CreatePatient = (props) => {
     if (isSuccess && patient) {
       navigate(`/patients/${patient._id}`);
     }
-
     if (isSuccess) {
       toast.success('Patient data successfully created!');
       navigate('/patients');
     }
-
     if (isError) {
+      formEditMode(true);
       if (message.keyValue?.roomNumber) {
         toast.error('That room is currently occupied.');
       }
@@ -168,7 +167,8 @@ const CreatePatient = (props) => {
         <SideNav />
         <ContainerSideNav>
           <FormContainer
-            title={titleCase('Create Patient')}
+            category='Create Patient'
+            title={`${firstName} ${lastName}`}
             onSubmit={handleSubmit}
           >
             <FormGroup

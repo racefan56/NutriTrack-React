@@ -2,13 +2,33 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import productionAreaService from './productionAreaService';
 
 const initialState = {
-  productionAreas: [],
-  productionArea: [],
+  productionAreas: null,
+  productionArea: null,
   loading: true,
   isError: false,
   message: '',
   isSuccess: false,
 };
+
+//Create production area
+export const createProductionArea = createAsyncThunk(
+  'productionArea/createProductionArea',
+  async (formData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await productionAreaService.createProductionArea(formData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 //Get all productionAreas
 export const getProductionAreas = createAsyncThunk(
@@ -53,45 +73,52 @@ export const getProductionArea = createAsyncThunk(
   }
 );
 
-// //Update one menuItem
-// export const updateMenuItem = createAsyncThunk(
-//   'menuItem/updateMenuItem',
-//   async ([menuItemId, formData], thunkAPI) => {
-//     try {
-//       const token = thunkAPI.getState().auth.token;
-//       return await menuItemService.updateMenuItem(menuItemId, formData, token);
-//     } catch (error) {
-//       const message =
-//         (error.response &&
-//           error.response.data &&
-//           error.response.data.message) ||
-//         error.message ||
-//         error.toString();
+//Update one production area
+export const updateProductionArea = createAsyncThunk(
+  'productionArea/updateProductionArea',
+  async ([productionAreaId, formData], thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await productionAreaService.updateProductionArea(
+        productionAreaId,
+        formData,
+        token
+      );
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-//       return thunkAPI.rejectWithValue(message);
-//     }
-//   }
-// );
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
-// //Delete one menuItem
-// export const deleteMenuItem = createAsyncThunk(
-//   'menuItem/deleteMenuItem',
-//   async (menuItemId, thunkAPI) => {
-//     try {
-//       const token = thunkAPI.getState().auth.token;
-//       return await menuItemService.deleteMenuItem(menuItemId, token);
-//     } catch (error) {
-//       const message =
-//         (error.response &&
-//           error.response.data &&
-//           error.response.data.message) ||
-//         error.message ||
-//         error.toString();
+//Delete one production area
+export const deleteProductionArea = createAsyncThunk(
+  'productionArea/deleteProductionArea',
+  async (productionAreaId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await productionAreaService.deleteProductionArea(
+        productionAreaId,
+        token
+      );
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-//       return thunkAPI.rejectWithValue(message);
-//     }
-//   }
-// );
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const productionAreaSlice = createSlice({
   name: 'productionArea',
@@ -103,6 +130,24 @@ export const productionAreaSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(createProductionArea.pending, (state) => {
+        state.loading = true;
+        state.isError = false;
+        state.isSuccess = false;
+      })
+      .addCase(createProductionArea.fulfilled, (state, action) => {
+        state.productionArea = action.payload.data.data;
+        state.loading = false;
+        state.isSuccess = true;
+        state.isError = false;
+      })
+      .addCase(createProductionArea.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.isSuccess = false;
+        state.productionArea = null;
+        state.loading = false;
+      })
       .addCase(getProductionAreas.pending, (state) => {
         state.isSuccess = false;
         state.isError = false;
@@ -116,7 +161,7 @@ export const productionAreaSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.menuItems = [];
+        state.productionAreas = [];
       })
       .addCase(getProductionArea.pending, (state) => {
         state.isSuccess = false;
@@ -131,37 +176,38 @@ export const productionAreaSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.productionArea = [];
+        state.productionArea = {};
+      })
+      .addCase(updateProductionArea.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(updateProductionArea.fulfilled, (state, action) => {
+        state.productionArea = action.payload.data.data;
+        state.loading = false;
+        state.isSuccess = true;
+      })
+      .addCase(updateProductionArea.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
+      })
+      .addCase(deleteProductionArea.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(deleteProductionArea.fulfilled, (state) => {
+        state.productionArea = {};
+        state.loading = false;
+        state.isSuccess = true;
+      })
+      .addCase(deleteProductionArea.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
       });
-    //   .addCase(updateMenuItem.pending, (state) => {
-    //     state.isError = false;
-    //     state.loading = true;
-    //   })
-    //   .addCase(updateMenuItem.fulfilled, (state, action) => {
-    //     state.menuItem = action.payload.data.data;
-    //     state.loading = false;
-    //     state.isSuccess = true;
-    //   })
-    //   .addCase(updateMenuItem.rejected, (state, action) => {
-    //     state.isError = true;
-    //     state.message = action.payload;
-    //     state.loading = false;
-    //     state.menuItem = [];
-    //   })
-    //   .addCase(deleteMenuItem.pending, (state) => {
-    //     state.isError = false;
-    //     state.loading = true;
-    //   })
-    //   .addCase(deleteMenuItem.fulfilled, (state) => {
-    //     state.menuItem = [];
-    //     state.loading = false;
-    //     state.isSuccess = true;
-    //   })
-    //   .addCase(deleteMenuItem.rejected, (state, action) => {
-    //     state.isError = true;
-    //     state.message = action.payload;
-    //     state.loading = false;
-    //   });
   },
 });
 

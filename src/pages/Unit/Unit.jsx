@@ -3,9 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { createProductionArea } from '../../features/productionArea/productionAreaSlice';
+import { getUnit, updateUnit, deleteUnit } from '../../features/unit/unitSlice';
 
 import {
+  formatDate,
   formEditMode,
   invalidInput,
 } from '../../components/helperFunctions/helperFunctions';
@@ -21,43 +22,56 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './CreateProductionArea.module.css';
+import classes from './Unit.module.css';
 
-const CreateProductionArea = (props) => {
+const Unit = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { unitId } = useParams();
 
-  const { loading, isSuccess, isError, message } = useSelector(
-    (state) => state.productionArea
+  const { loading, unit, isSuccess, isError, message } = useSelector(
+    (state) => state.unit
   );
+
+  const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
-    areaName: '',
+    unitName: '',
     description: '',
   });
 
-  const { areaName, description } = formData;
+  const { unitName, description } = formData;
 
   useEffect(() => {
-    formEditMode(true);
-  }, []);
+    dispatch(getUnit(unitId));
+  }, [dispatch, unitId]);
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success('Production area successfully created!');
-      navigate('/control-panel/production-areas');
+    if (unit) {
+      setFormData({ ...unit });
+    }
+  }, [unit]);
+
+  useEffect(() => {
+    if (isSuccess && unit) {
+      toast.success('Unit successfully updated!');
+      navigate('/control-panel/units');
+    }
+
+    if (isSuccess && !unit) {
+      toast.success('Unit successfully deleted!');
+      navigate('/control-panel/units');
     }
 
     if (isError) {
-      formEditMode(true);
-      if (message.keyValue?.areaName) {
-        toast.error('That area name is already taken.');
-        invalidInput('areaName');
+      if (message.keyValue?.unitName) {
+        toast.error('That unit name is already taken.');
       }
+
       if (message.message) {
         toast.error(message.message);
       }
     }
-  }, [isError, isSuccess, message, navigate]);
+  }, [isError, isSuccess, message, navigate, unit]);
 
   const handleChange = (e) => {
     const key = e.target.id;
@@ -73,37 +87,37 @@ const CreateProductionArea = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (areaName.length < 1 || description.length < 3) {
-      if (areaName.length < 1) {
-        invalidInput('areaName');
-        toast.error('Area name is required.');
+    if (unitName.length < 1 || description.length < 3) {
+      if (unitName.length < 1) {
+        invalidInput('unitName');
+        toast.error('Unit name is required.');
       }
       if (description.length < 3) {
         invalidInput('description');
         toast.error('A description is required.');
       }
     } else {
-      dispatch(createProductionArea(formData));
+      dispatch(updateUnit([unitId, formData]));
     }
   };
 
-  const openModal = (id) => {
-    document.getElementById(id).style.display = 'flex';
-  };
-
-  const closeModal = (id) => {
-    document.getElementById(id).style.display = 'none';
+  const handleEdit = () => {
+    formEditMode(true);
+    setEditMode(true);
   };
 
   const handleCancel = () => {
-    closeModal('confirmCancel');
+    formEditMode(false);
+    setEditMode(false);
+    //Reset fields back to their original values
+    setFormData({ ...unit });
   };
 
-  const handleConfirm = () => {
-    navigate('/control-panel/production-areas');
+  const handleDelete = (unitId) => {
+    dispatch(deleteUnit(unitId));
   };
 
-  if (loading) {
+  if (loading || !unit || !formData) {
     return <Spinner />;
   } else {
     return (
@@ -111,16 +125,16 @@ const CreateProductionArea = (props) => {
         <SideNav />
         <ContainerSideNav>
           <FormContainer
-            category='Create Production Area'
-            title={areaName}
+            category='Unit'
+            title={unitName}
             onSubmit={handleSubmit}
           >
             <FormGroup
-              id='areaName'
+              id='unitName'
               inputType='text'
               className='col-12 col-lg-6'
-              label='Area Name'
-              value={areaName}
+              label='Unit Name'
+              value={unitName}
               onChange={handleChange}
               editable
             />
@@ -133,28 +147,34 @@ const CreateProductionArea = (props) => {
               onChange={handleChange}
               editable
             />
-
-            <FormActionBtnContainer>
-              <ButtonMain
-                className='mx-3'
-                text='Submit'
-                type='Submit'
-                onClick={handleSubmit}
-              />
-              <ButtonSecondary
-                className='m-3'
-                text='Cancel'
-                type='Button'
-                onClick={() => openModal('confirmCancel')}
-              />
-              <Modal
-                heading='Are you sure?'
-                message='Any unsaved changes will be lost.'
-                id='confirmCancel'
-                handleCancel={handleCancel}
-                handleConfirm={handleConfirm}
-              />
-            </FormActionBtnContainer>
+            {editMode ? (
+              <FormActionBtnContainer>
+                <ButtonMain
+                  className='mx-3'
+                  text='Submit'
+                  type='Submit'
+                  onClick={handleSubmit}
+                />
+                <ButtonSecondary
+                  className='m-3'
+                  text='Cancel'
+                  type='Button'
+                  onClick={handleCancel}
+                />
+              </FormActionBtnContainer>
+            ) : (
+              <FormActionBtnContainer>
+                <ButtonEdit onClick={handleEdit} />
+                <Modal
+                  id={unitId}
+                  itemName={unit.unitName}
+                  onDelete={() => {
+                    handleDelete(unitId);
+                  }}
+                  btnDelete
+                />
+              </FormActionBtnContainer>
+            )}
           </FormContainer>
         </ContainerSideNav>
       </>
@@ -162,4 +182,4 @@ const CreateProductionArea = (props) => {
   }
 };
 
-export default CreateProductionArea;
+export default Unit;

@@ -71,6 +71,7 @@ export const ISOdateOnly = (date) => {
 export const formEditMode = (editMode) => {
   if (editMode) {
     const elements = [...document.getElementsByClassName('editable')];
+
     elements.map((el) => {
       return (el.disabled = false);
     });

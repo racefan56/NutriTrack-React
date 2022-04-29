@@ -136,7 +136,6 @@ export const menuItemSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.isSuccess = false;
-        state.menuItem = [];
         state.loading = false;
       })
       .addCase(getMenuItems.pending, (state) => {

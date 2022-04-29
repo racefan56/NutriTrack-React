@@ -2,6 +2,24 @@ import axios from 'axios';
 
 const SERVER = process.env.REACT_APP_SERVER;
 
+//Create production area
+const createProductionArea = async (formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.post(
+    `${SERVER}/menus/productionAreas`,
+    formData,
+    config
+  );
+
+  const productionArea = await response.data;
+  return productionArea;
+};
+
 //get all productionAreas
 const getProductionAreas = async (queryString, token) => {
   const config = {
@@ -38,46 +56,49 @@ const getProductionArea = async (productionAreaId, token) => {
   return productionArea;
 };
 
-// //Update menuItem
-// const updateMenuItem = async (menuItemId, formData, token) => {
-//   const config = {
-//     headers: {
-//       Authorization: `${token}`,
-//     },
-//   };
+//Update production area
+const updateProductionArea = async (productionAreaId, formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
 
-//   const response = await axios.patch(
-//     `${SERVER}/menus/menuItems/${menuItemId}`,
-//     formData,
-//     config
-//   );
+  const response = await axios.patch(
+    `${SERVER}/menus/productionAreas/${productionAreaId}`,
+    formData,
+    config
+  );
 
-//   const menuItem = await response.data;
-//   return menuItem;
-// };
+  const productionArea = await response.data;
+  return productionArea;
+};
 
-// //Delete menuItem
-// const deleteMenuItem = async (menuItemId, token) => {
-//   const config = {
-//     headers: {
-//       Authorization: `${token}`,
-//     },
-//   };
+//Delete production area
+const deleteProductionArea = async (productionAreaId, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
 
-//   const response = await axios.delete(
-//     `${SERVER}/menus/menuItems/${menuItemId ? menuItemId : ''}`,
-//     config
-//   );
+  const response = await axios.delete(
+    `${SERVER}/menus/productionAreas/${
+      productionAreaId ? productionAreaId : ''
+    }`,
+    config
+  );
 
-//   const menuItem = await response.data;
-//   return menuItem;
-// };
+  const productionArea = await response.data;
+  return productionArea;
+};
 
 const productionAreaService = {
+  createProductionArea,
   getProductionAreas,
   getProductionArea,
-  //   updateMenuItem,
-  //   deleteMenuItem,
+  updateProductionArea,
+  deleteProductionArea,
 };
 
 export default productionAreaService;

@@ -2,6 +2,20 @@ import axios from 'axios';
 
 const SERVER = process.env.REACT_APP_SERVER;
 
+//Create unit
+const createUnit = async (formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.post(`${SERVER}/units`, formData, config);
+
+  const unit = await response.data;
+  return unit;
+};
+
 //get all units
 const getUnits = async (queryString, token) => {
   const config = {
@@ -36,46 +50,47 @@ const getUnit = async (unitId, token) => {
   return unit;
 };
 
-// //Update menuItem
-// const updateMenuItem = async (menuItemId, formData, token) => {
-//   const config = {
-//     headers: {
-//       Authorization: `${token}`,
-//     },
-//   };
+//Update unit
+const updateUnit = async (unitId, formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
 
-//   const response = await axios.patch(
-//     `${SERVER}/menus/menuItems/${menuItemId}`,
-//     formData,
-//     config
-//   );
+  const response = await axios.patch(
+    `${SERVER}/units/${unitId}`,
+    formData,
+    config
+  );
 
-//   const menuItem = await response.data;
-//   return menuItem;
-// };
+  const unit = await response.data;
+  return unit;
+};
 
-// //Delete menuItem
-// const deleteMenuItem = async (menuItemId, token) => {
-//   const config = {
-//     headers: {
-//       Authorization: `${token}`,
-//     },
-//   };
+//Delete unit
+const deleteUnit = async (unitId, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
 
-//   const response = await axios.delete(
-//     `${SERVER}/menus/menuItems/${menuItemId ? menuItemId : ''}`,
-//     config
-//   );
+  const response = await axios.delete(
+    `${SERVER}/units/${unitId ? unitId : ''}`,
+    config
+  );
 
-//   const menuItem = await response.data;
-//   return menuItem;
-// };
+  const unit = await response.data;
+  return unit;
+};
 
 const unitService = {
+  createUnit,
   getUnits,
   getUnit,
-  //   updateMenuItem,
-  //   deleteMenuItem,
+  updateUnit,
+  deleteUnit,
 };
 
 export default unitService;

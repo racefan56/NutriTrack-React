@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { getProductionArea } from '../../features/productionArea/productionAreaSlice';
+import {
+  getProductionArea,
+  updateProductionArea,
+  deleteProductionArea,
+} from '../../features/productionArea/productionAreaSlice';
 
 import {
   formatDate,
@@ -82,7 +86,7 @@ const ProductionArea = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (areaName.length < 1 || description.length < 1) {
+    if (areaName.length < 1 || description.length < 3) {
       if (areaName.length < 1) {
         invalidInput('areaName');
         toast.error('Area name is required.');
@@ -92,7 +96,7 @@ const ProductionArea = (props) => {
         toast.error('A description is required.');
       }
     } else {
-      //   dispatch(updatePatient([patientId, formData]));
+      dispatch(updateProductionArea([productionAreaId, formData]));
     }
   };
 
@@ -104,12 +108,12 @@ const ProductionArea = (props) => {
   const handleCancel = () => {
     formEditMode(false);
     setEditMode(false);
-    //Reset menu item fields back to their original values
+    //Reset fields back to their original values
     setFormData({ ...productionArea });
   };
 
   const handleDelete = (productionAreaId) => {
-    // dispatch(deletePatient(productionAreaId));
+    dispatch(deleteProductionArea(productionAreaId));
     //After area is deleted, return to areas page
     navigate('/control-panel/production-areas');
     if (isSuccess) {

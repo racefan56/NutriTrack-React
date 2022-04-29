@@ -21,6 +21,9 @@ import CreateMenuItem from './pages/CreateMenuItem/CreateMenuItem';
 import ProductionAreas from './pages/ProductionAreas/ProductionAreas';
 import ProductionArea from './pages/ProductionArea/ProductionArea';
 import CreateProductionArea from './pages/CreateProductionArea/CreateProductionArea';
+import Units from './pages/Units/Units';
+import Unit from './pages/Unit/Unit';
+import CreateUnit from './pages/CreateUnit/CreateUnit';
 
 function App() {
   return (
@@ -57,6 +60,7 @@ function App() {
             <Route path='/control-panel' element={<ControlPanel />} />
           </Route>
 
+          {/* PRODUCTION AREA ROUTES */}
           {/* View/Edit/Delete a production area */}
           <Route
             path='/control-panel/production-areas/:productionAreaId'
@@ -79,7 +83,6 @@ function App() {
             />
           </Route>
 
-          {/* PRODUCTION AREA ROUTES */}
           {/* Get all production areas */}
           <Route
             path='/control-panel/production-areas'
@@ -89,6 +92,34 @@ function App() {
               path='/control-panel/production-areas'
               element={<ProductionAreas />}
             />
+          </Route>
+
+          {/* UNIT ROUTES */}
+          {/* View/Edit/Delete a unit */}
+          <Route
+            path='/control-panel/units/:unitId'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel/units/:unitId' element={<Unit />} />
+          </Route>
+
+          {/* Create a unit */}
+          <Route
+            path='/control-panel/units/create'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/control-panel/units/create'
+              element={<CreateUnit />}
+            />
+          </Route>
+
+          {/* Get all units */}
+          <Route
+            path='/control-panel/units'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel/units' element={<Units />} />
           </Route>
 
           {/* PATIENT ROUTES */}
