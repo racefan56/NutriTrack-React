@@ -30,7 +30,7 @@ const SideNav = () => {
 
         <LinkSubSection title={'Facility'}>
           <MenuLink to='/control-panel/units' text='Units' />
-          <MenuLink to='/' text='Rooms' />
+          <MenuLink to='/control-panel/rooms' text='Rooms' />
         </LinkSubSection>
       </div>
     );

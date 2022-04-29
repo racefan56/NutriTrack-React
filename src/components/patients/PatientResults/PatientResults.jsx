@@ -21,7 +21,7 @@ function PatientResults() {
     dispatch(getPatients());
   };
 
-  if (loading) {
+  if (loading || !patients[0]) {
     return <Spinner />;
   } else {
     return (

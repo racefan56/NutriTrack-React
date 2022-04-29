@@ -24,6 +24,9 @@ import CreateProductionArea from './pages/CreateProductionArea/CreateProductionA
 import Units from './pages/Units/Units';
 import Unit from './pages/Unit/Unit';
 import CreateUnit from './pages/CreateUnit/CreateUnit';
+import Rooms from './pages/Rooms/Rooms';
+import Room from './pages/Room/Room';
+import CreateRoom from './pages/CreateRoom/CreateRoom';
 
 function App() {
   return (
@@ -120,6 +123,34 @@ function App() {
             element={<PrivateRoute validRoles={['admin']} />}
           >
             <Route path='/control-panel/units' element={<Units />} />
+          </Route>
+
+          {/* ROOM ROUTES */}
+          {/* View/Edit/Delete a room */}
+          <Route
+            path='/control-panel/rooms/:roomId'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel/rooms/:roomId' element={<Room />} />
+          </Route>
+
+          {/* Create a room */}
+          <Route
+            path='/control-panel/rooms/create'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/control-panel/rooms/create'
+              element={<CreateRoom />}
+            />
+          </Route>
+
+          {/* Get all rooms */}
+          <Route
+            path='/control-panel/rooms'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel/rooms' element={<Rooms />} />
           </Route>
 
           {/* PATIENT ROUTES */}

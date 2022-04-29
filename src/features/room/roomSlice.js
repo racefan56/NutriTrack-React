@@ -2,13 +2,33 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import roomService from './roomService';
 
 const initialState = {
-  rooms: [],
-  room: [],
+  rooms: null,
+  room: null,
   loading: true,
   isError: false,
   message: '',
-  isSuccess: '',
+  isSuccess: false,
 };
+
+//Create room
+export const createRoom = createAsyncThunk(
+  'room/createRoom',
+  async (formData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await roomService.createRoom(formData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 //Get all rooms
 export const getRooms = createAsyncThunk(
@@ -50,45 +70,45 @@ export const getRoom = createAsyncThunk(
   }
 );
 
-// //Update one menuItem
-// export const updateMenuItem = createAsyncThunk(
-//   'menuItem/updateMenuItem',
-//   async ([menuItemId, formData], thunkAPI) => {
-//     try {
-//       const token = thunkAPI.getState().auth.token;
-//       return await menuItemService.updateMenuItem(menuItemId, formData, token);
-//     } catch (error) {
-//       const message =
-//         (error.response &&
-//           error.response.data &&
-//           error.response.data.message) ||
-//         error.message ||
-//         error.toString();
+//Update one room
+export const updateRoom = createAsyncThunk(
+  'room/updateRoom',
+  async ([roomId, formData], thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await roomService.updateRoom(roomId, formData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-//       return thunkAPI.rejectWithValue(message);
-//     }
-//   }
-// );
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
-// //Delete one menuItem
-// export const deleteMenuItem = createAsyncThunk(
-//   'menuItem/deleteMenuItem',
-//   async (menuItemId, thunkAPI) => {
-//     try {
-//       const token = thunkAPI.getState().auth.token;
-//       return await menuItemService.deleteMenuItem(menuItemId, token);
-//     } catch (error) {
-//       const message =
-//         (error.response &&
-//           error.response.data &&
-//           error.response.data.message) ||
-//         error.message ||
-//         error.toString();
+//Delete one room
+export const deleteRoom = createAsyncThunk(
+  'room/deleteRoom',
+  async (roomId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await roomService.deleteRoom(roomId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-//       return thunkAPI.rejectWithValue(message);
-//     }
-//   }
-// );
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const roomSlice = createSlice({
   name: 'room',
@@ -100,65 +120,81 @@ export const roomSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(createRoom.pending, (state) => {
+        state.loading = true;
+        state.isError = false;
+        state.isSuccess = false;
+      })
+      .addCase(createRoom.fulfilled, (state, action) => {
+        state.room = action.payload.data.data;
+        state.loading = false;
+        state.isSuccess = true;
+        state.isError = false;
+      })
+      .addCase(createRoom.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.isSuccess = false;
+        state.loading = false;
+      })
       .addCase(getRooms.pending, (state) => {
         state.isError = false;
+        state.isSuccess = false;
         state.loading = true;
       })
       .addCase(getRooms.fulfilled, (state, action) => {
         state.rooms = action.payload.data.data;
         state.loading = false;
-        state.isSuccess = true;
       })
       .addCase(getRooms.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.rooms = [];
+        state.rooms = null;
       })
       .addCase(getRoom.pending, (state) => {
         state.isError = false;
+        state.isSuccess = false;
         state.loading = true;
       })
       .addCase(getRoom.fulfilled, (state, action) => {
         state.room = action.payload.data.data;
         state.loading = false;
-        state.isSuccess = true;
       })
       .addCase(getRoom.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.room = [];
+        state.room = null;
+      })
+      .addCase(updateRoom.pending, (state) => {
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(updateRoom.fulfilled, (state, action) => {
+        state.room = action.payload.data.data;
+        state.loading = false;
+        state.isSuccess = true;
+      })
+      .addCase(updateRoom.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
+      })
+      .addCase(deleteRoom.pending, (state) => {
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(deleteRoom.fulfilled, (state) => {
+        state.room = null;
+        state.loading = false;
+        state.isSuccess = true;
+      })
+      .addCase(deleteRoom.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
       });
-    //   .addCase(updateMenuItem.pending, (state) => {
-    //     state.isError = false;
-    //     state.loading = true;
-    //   })
-    //   .addCase(updateMenuItem.fulfilled, (state, action) => {
-    //     state.menuItem = action.payload.data.data;
-    //     state.loading = false;
-    //     state.isSuccess = true;
-    //   })
-    //   .addCase(updateMenuItem.rejected, (state, action) => {
-    //     state.isError = true;
-    //     state.message = action.payload;
-    //     state.loading = false;
-    //     state.menuItem = [];
-    //   })
-    //   .addCase(deleteMenuItem.pending, (state) => {
-    //     state.isError = false;
-    //     state.loading = true;
-    //   })
-    //   .addCase(deleteMenuItem.fulfilled, (state) => {
-    //     state.menuItem = [];
-    //     state.loading = false;
-    //     state.isSuccess = true;
-    //   })
-    //   .addCase(deleteMenuItem.rejected, (state, action) => {
-    //     state.isError = true;
-    //     state.message = action.payload;
-    //     state.loading = false;
-    //   });
   },
 });
 

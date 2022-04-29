@@ -2,6 +2,20 @@ import axios from 'axios';
 
 const SERVER = process.env.REACT_APP_SERVER;
 
+//Create room
+const createRoom = async (formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.post(`${SERVER}/units/rooms`, formData, config);
+
+  const room = await response.data;
+  return room;
+};
+
 //get all rooms
 const getRooms = async (queryString, token) => {
   const config = {
@@ -36,46 +50,47 @@ const getRoom = async (roomId, token) => {
   return room;
 };
 
-// //Update menuItem
-// const updateMenuItem = async (menuItemId, formData, token) => {
-//   const config = {
-//     headers: {
-//       Authorization: `${token}`,
-//     },
-//   };
+//Update room
+const updateRoom = async (roomId, formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
 
-//   const response = await axios.patch(
-//     `${SERVER}/menus/menuItems/${menuItemId}`,
-//     formData,
-//     config
-//   );
+  const response = await axios.patch(
+    `${SERVER}/units/rooms/${roomId}`,
+    formData,
+    config
+  );
 
-//   const menuItem = await response.data;
-//   return menuItem;
-// };
+  const room = await response.data;
+  return room;
+};
 
-// //Delete menuItem
-// const deleteMenuItem = async (menuItemId, token) => {
-//   const config = {
-//     headers: {
-//       Authorization: `${token}`,
-//     },
-//   };
+//Delete room
+const deleteRoom = async (roomId, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
 
-//   const response = await axios.delete(
-//     `${SERVER}/menus/menuItems/${menuItemId ? menuItemId : ''}`,
-//     config
-//   );
+  const response = await axios.delete(
+    `${SERVER}/units/rooms/${roomId ? roomId : ''}`,
+    config
+  );
 
-//   const menuItem = await response.data;
-//   return menuItem;
-// };
+  const room = await response.data;
+  return room;
+};
 
 const roomService = {
+  createRoom,
   getRooms,
   getRoom,
-  //   updateMenuItem,
-  //   deleteMenuItem,
+  updateRoom,
+  deleteRoom,
 };
 
 export default roomService;
