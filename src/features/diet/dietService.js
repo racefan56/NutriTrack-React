@@ -2,6 +2,20 @@ import axios from 'axios';
 
 const SERVER = process.env.REACT_APP_SERVER;
 
+//Create diet
+const createDiet = async (formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.post(`${SERVER}/menus/diets`, formData, config);
+
+  const diet = await response.data;
+  return diet;
+};
+
 //get all diets
 const getDiets = async (queryString, token) => {
   const config = {
@@ -36,46 +50,47 @@ const getDiet = async (dietId, token) => {
   return diet;
 };
 
-// //Update menuItem
-// const updateMenuItem = async (menuItemId, formData, token) => {
-//   const config = {
-//     headers: {
-//       Authorization: `${token}`,
-//     },
-//   };
+//Update diet
+const updateDiet = async (dietId, formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
 
-//   const response = await axios.patch(
-//     `${SERVER}/menus/menuItems/${menuItemId}`,
-//     formData,
-//     config
-//   );
+  const response = await axios.patch(
+    `${SERVER}/menus/diets/${dietId}`,
+    formData,
+    config
+  );
 
-//   const menuItem = await response.data;
-//   return menuItem;
-// };
+  const diet = await response.data;
+  return diet;
+};
 
-// //Delete menuItem
-// const deleteMenuItem = async (menuItemId, token) => {
-//   const config = {
-//     headers: {
-//       Authorization: `${token}`,
-//     },
-//   };
+//Delete diet
+const deleteDiet = async (dietId, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
 
-//   const response = await axios.delete(
-//     `${SERVER}/menus/menuItems/${menuItemId ? menuItemId : ''}`,
-//     config
-//   );
+  const response = await axios.delete(
+    `${SERVER}/menus/diets/${dietId ? dietId : ''}`,
+    config
+  );
 
-//   const menuItem = await response.data;
-//   return menuItem;
-// };
+  const diet = await response.data;
+  return diet;
+};
 
 const dietService = {
+  createDiet,
   getDiets,
   getDiet,
-  //   updateMenuItem,
-  //   deleteMenuItem,
+  updateDiet,
+  deleteDiet,
 };
 
 export default dietService;

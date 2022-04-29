@@ -3,11 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import {
-  getProductionArea,
-  updateProductionArea,
-  deleteProductionArea,
-} from '../../features/productionArea/productionAreaSlice';
+import { getDiet, updateDiet, deleteDiet } from '../../features/diet/dietSlice';
 
 import {
   formatDate,
@@ -26,51 +22,59 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './ProductionArea.module.css';
+import classes from './Diet.module.css';
 
-const ProductionArea = (props) => {
+const Diet = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { productionAreaId } = useParams();
+  const { dietId } = useParams();
 
-  const { loading, productionArea, isSuccess, isError, message } = useSelector(
-    (state) => state.productionArea
+  const { loading, diet, isSuccess, isError, message } = useSelector(
+    (state) => state.diet
   );
 
   const [editMode, setEditMode] = useState();
   const [formData, setFormData] = useState({
-    areaName: '',
+    name: '',
+    sodiumInMG: 0,
+    carbsInGrams: 0,
     description: '',
   });
 
-  const { areaName, description } = formData;
+  const { name, sodiumInMG, carbsInGrams, description } = formData;
 
   useEffect(() => {
-    dispatch(getProductionArea(productionAreaId));
-  }, [dispatch, productionAreaId]);
+    dispatch(getDiet(dietId));
+  }, [dispatch, dietId]);
 
   useEffect(() => {
-    if (productionArea) {
-      setFormData({ ...productionArea });
+    if (diet) {
+      setFormData({ ...diet });
     }
-  }, [productionArea]);
+  }, [diet]);
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success('Production area successfully updated!');
-      navigate('/control-panel/production-areas');
+    if (isSuccess && diet) {
+      toast.success('Diet successfully updated!');
+      navigate('/control-panel/diets');
+    }
+
+    if (isSuccess && !diet) {
+      toast.success('Diet successfully deleted!');
+      //After diet is deleted, return to diets page
+      navigate('/control-panel/diets');
     }
 
     if (isError) {
-      if (message.keyValue?.areaName) {
-        toast.error('That area name is already taken.');
+      if (message.keyValue?.name) {
+        toast.error('That diet name is already taken.');
       }
 
       if (message.message) {
         toast.error(message.message);
       }
     }
-  }, [isError, isSuccess, message, navigate]);
+  }, [diet, isError, isSuccess, message, navigate]);
 
   const handleChange = (e) => {
     const key = e.target.id;
@@ -86,17 +90,17 @@ const ProductionArea = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (areaName.length < 1 || description.length < 3) {
-      if (areaName.length < 1) {
-        invalidInput('areaName');
-        toast.error('Area name is required.');
+    if (name.length < 1 || description.length < 3) {
+      if (name.length < 1) {
+        invalidInput('name');
+        toast.error('Diet name is required.');
       }
       if (description.length < 3) {
         invalidInput('description');
         toast.error('A description is required.');
       }
     } else {
-      dispatch(updateProductionArea([productionAreaId, formData]));
+      dispatch(updateDiet([dietId, formData]));
     }
   };
 
@@ -109,36 +113,45 @@ const ProductionArea = (props) => {
     formEditMode(false);
     setEditMode(false);
     //Reset fields back to their original values
-    setFormData({ ...productionArea });
+    setFormData({ ...diet });
   };
 
-  const handleDelete = (productionAreaId) => {
-    dispatch(deleteProductionArea(productionAreaId));
-    if (isSuccess) {
-      toast.success('Production area successfully deleted!');
-      //After area is deleted, return to areas page
-      navigate('/control-panel/production-areas');
-    }
+  const handleDelete = (dietId) => {
+    dispatch(deleteDiet(dietId));
   };
 
-  if (loading || !productionArea || !formData) {
+  if (loading || !diet || !formData) {
     return <Spinner />;
   } else {
     return (
       <>
         <SideNav />
         <ContainerSideNav>
-          <FormContainer
-            category='Production Area'
-            title={areaName}
-            onSubmit={handleSubmit}
-          >
+          <FormContainer category='Diet' title={name} onSubmit={handleSubmit}>
             <FormGroup
-              id='areaName'
+              id='name'
               inputType='text'
               className='col-12 col-lg-6'
               label='Area Name'
-              value={areaName}
+              value={name}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='sodiumInMG'
+              inputType='number'
+              className='col-12 col-lg-6'
+              label='Sodium (miligrams/meal)'
+              value={sodiumInMG}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='carbsInGrams'
+              inputType='number'
+              className='col-12 col-lg-6'
+              label='Carbs (grams/meal)'
+              value={carbsInGrams}
               onChange={handleChange}
               editable
             />
@@ -170,10 +183,10 @@ const ProductionArea = (props) => {
               <FormActionBtnContainer>
                 <ButtonEdit onClick={handleEdit} />
                 <Modal
-                  id={productionAreaId}
-                  itemName={productionArea.areaName}
+                  id={dietId}
+                  itemName={diet.name}
                   onDelete={() => {
-                    handleDelete(productionAreaId);
+                    handleDelete(dietId);
                   }}
                   btnDelete
                 />
@@ -186,4 +199,4 @@ const ProductionArea = (props) => {
   }
 };
 
-export default ProductionArea;
+export default Diet;

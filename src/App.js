@@ -15,18 +15,26 @@ import CreatePatient from './pages/CreatePatient/CreatePatient';
 import PatientOrders from './pages/PatientOrders';
 import MyAccount from './pages/MyAccount/MyAccount';
 import Notfound from './pages/NotFound/Notfound';
+
 import MenuItems from './pages/MenuItems/MenuItems';
 import MenuItemPage from './pages/MenuItemPage/MenuItemPage';
 import CreateMenuItem from './pages/CreateMenuItem/CreateMenuItem';
+
 import ProductionAreas from './pages/ProductionAreas/ProductionAreas';
 import ProductionArea from './pages/ProductionArea/ProductionArea';
 import CreateProductionArea from './pages/CreateProductionArea/CreateProductionArea';
+
 import Units from './pages/Units/Units';
 import Unit from './pages/Unit/Unit';
 import CreateUnit from './pages/CreateUnit/CreateUnit';
+
 import Rooms from './pages/Rooms/Rooms';
 import Room from './pages/Room/Room';
 import CreateRoom from './pages/CreateRoom/CreateRoom';
+
+import Diets from './pages/Diets/Diets';
+import Diet from './pages/Diet/Diet';
+import CreateDiet from './pages/CreateDiet/CreateDiet';
 
 function App() {
   return (
@@ -151,6 +159,34 @@ function App() {
             element={<PrivateRoute validRoles={['admin']} />}
           >
             <Route path='/control-panel/rooms' element={<Rooms />} />
+          </Route>
+
+          {/* DIET ROUTES */}
+          {/* View/Edit/Delete a diet */}
+          <Route
+            path='/control-panel/diets/:dietId'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel/diets/:dietId' element={<Diet />} />
+          </Route>
+
+          {/* Create a diet */}
+          <Route
+            path='/control-panel/diets/create'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/control-panel/diets/create'
+              element={<CreateDiet />}
+            />
+          </Route>
+
+          {/* Get all diets */}
+          <Route
+            path='/control-panel/diets'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel/diets' element={<Diets />} />
           </Route>
 
           {/* PATIENT ROUTES */}

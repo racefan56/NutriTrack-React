@@ -3,14 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import {
-  getProductionArea,
-  updateProductionArea,
-  deleteProductionArea,
-} from '../../features/productionArea/productionAreaSlice';
+import { createDiet } from '../../features/diet/dietSlice';
 
 import {
-  formatDate,
   formEditMode,
   invalidInput,
 } from '../../components/helperFunctions/helperFunctions';
@@ -26,46 +21,40 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './ProductionArea.module.css';
+import classes from './CreateDiet.module.css';
 
-const ProductionArea = (props) => {
+const CreateDiet = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { productionAreaId } = useParams();
 
-  const { loading, productionArea, isSuccess, isError, message } = useSelector(
-    (state) => state.productionArea
+  const { loading, isSuccess, isError, message } = useSelector(
+    (state) => state.diet
   );
-
-  const [editMode, setEditMode] = useState();
   const [formData, setFormData] = useState({
-    areaName: '',
+    name: '',
+    sodiumInMG: 0,
+    carbsInGrams: 0,
     description: '',
   });
 
-  const { areaName, description } = formData;
+  const { name, sodiumInMG, carbsInGrams, description } = formData;
 
   useEffect(() => {
-    dispatch(getProductionArea(productionAreaId));
-  }, [dispatch, productionAreaId]);
-
-  useEffect(() => {
-    if (productionArea) {
-      setFormData({ ...productionArea });
-    }
-  }, [productionArea]);
+    formEditMode(true);
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success('Production area successfully updated!');
-      navigate('/control-panel/production-areas');
+      toast.success('Diet successfully created!');
+      navigate('/control-panel/diets');
     }
 
     if (isError) {
-      if (message.keyValue?.areaName) {
-        toast.error('That area name is already taken.');
+      formEditMode(true);
+      if (message.keyValue?.name) {
+        toast.error('That diet name is already taken.');
+        invalidInput('name');
       }
-
       if (message.message) {
         toast.error(message.message);
       }
@@ -86,42 +75,50 @@ const ProductionArea = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (areaName.length < 1 || description.length < 3) {
-      if (areaName.length < 1) {
-        invalidInput('areaName');
+    if (
+      name.length < 1 ||
+      description.length < 3 ||
+      sodiumInMG < 0 ||
+      carbsInGrams < 0
+    ) {
+      if (name.length < 1) {
+        invalidInput('name');
         toast.error('Area name is required.');
       }
       if (description.length < 3) {
         invalidInput('description');
         toast.error('A description is required.');
       }
+      if (sodiumInMG < 0) {
+        invalidInput('sodiumInMG');
+        toast.error(`Sodium count can't be negative`);
+      }
+      if (carbsInGrams < 0) {
+        invalidInput('carbsInGrams');
+        toast.error(`Carb count can't be negative`);
+      }
     } else {
-      dispatch(updateProductionArea([productionAreaId, formData]));
+      dispatch(createDiet(formData));
     }
   };
 
-  const handleEdit = () => {
-    formEditMode(true);
-    setEditMode(true);
+  const openModal = (id) => {
+    document.getElementById(id).style.display = 'flex';
+  };
+
+  const closeModal = (id) => {
+    document.getElementById(id).style.display = 'none';
   };
 
   const handleCancel = () => {
-    formEditMode(false);
-    setEditMode(false);
-    //Reset fields back to their original values
-    setFormData({ ...productionArea });
+    closeModal('confirmCancel');
   };
 
-  const handleDelete = (productionAreaId) => {
-    dispatch(deleteProductionArea(productionAreaId));
-    if (isSuccess) {
-      toast.success('Production area successfully deleted!');
-      //After area is deleted, return to areas page
-      navigate('/control-panel/production-areas');
-    }
+  const handleConfirm = () => {
+    navigate('/control-panel/diets');
   };
 
-  if (loading || !productionArea || !formData) {
+  if (loading) {
     return <Spinner />;
   } else {
     return (
@@ -129,16 +126,34 @@ const ProductionArea = (props) => {
         <SideNav />
         <ContainerSideNav>
           <FormContainer
-            category='Production Area'
-            title={areaName}
+            category='Create Diet'
+            title={name}
             onSubmit={handleSubmit}
           >
             <FormGroup
-              id='areaName'
+              id='name'
               inputType='text'
               className='col-12 col-lg-6'
               label='Area Name'
-              value={areaName}
+              value={name}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='sodiumInMG'
+              inputType='number'
+              className='col-12 col-lg-6'
+              label='Sodium (miligrams/meal)'
+              value={sodiumInMG}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='carbsInGrams'
+              inputType='number'
+              className='col-12 col-lg-6'
+              label='Carbs (grams/meal)'
+              value={carbsInGrams}
               onChange={handleChange}
               editable
             />
@@ -151,34 +166,28 @@ const ProductionArea = (props) => {
               onChange={handleChange}
               editable
             />
-            {editMode ? (
-              <FormActionBtnContainer>
-                <ButtonMain
-                  className='mx-3'
-                  text='Submit'
-                  type='Submit'
-                  onClick={handleSubmit}
-                />
-                <ButtonSecondary
-                  className='m-3'
-                  text='Cancel'
-                  type='Button'
-                  onClick={handleCancel}
-                />
-              </FormActionBtnContainer>
-            ) : (
-              <FormActionBtnContainer>
-                <ButtonEdit onClick={handleEdit} />
-                <Modal
-                  id={productionAreaId}
-                  itemName={productionArea.areaName}
-                  onDelete={() => {
-                    handleDelete(productionAreaId);
-                  }}
-                  btnDelete
-                />
-              </FormActionBtnContainer>
-            )}
+
+            <FormActionBtnContainer>
+              <ButtonMain
+                className='mx-3'
+                text='Submit'
+                type='Submit'
+                onClick={handleSubmit}
+              />
+              <ButtonSecondary
+                className='m-3'
+                text='Cancel'
+                type='Button'
+                onClick={() => openModal('confirmCancel')}
+              />
+              <Modal
+                heading='Are you sure?'
+                message='Any unsaved changes will be lost.'
+                id='confirmCancel'
+                handleCancel={handleCancel}
+                handleConfirm={handleConfirm}
+              />
+            </FormActionBtnContainer>
           </FormContainer>
         </ContainerSideNav>
       </>
@@ -186,4 +195,4 @@ const ProductionArea = (props) => {
   }
 };
 
-export default ProductionArea;
+export default CreateDiet;

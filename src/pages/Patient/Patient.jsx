@@ -47,7 +47,7 @@ const Patient = (props) => {
   const { rooms } = useSelector((state) => state.room);
   const { menuItems } = useSelector((state) => state.menuItem);
 
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -62,6 +62,7 @@ const Patient = (props) => {
     createdAt: '1970-01-01T00:00:00.000Z',
     updatedAt: '1970-01-01T00:00:00.000Z',
   });
+  const [availableRooms, setAvailableRooms] = useState();
 
   const {
     firstName,
@@ -84,6 +85,12 @@ const Patient = (props) => {
     dispatch(getRooms());
     dispatch(getMenuItems('category=supplement'));
   }, [dispatch, patientId]);
+
+  useEffect(() => {
+    if (rooms && rooms[0] && diets && diets[0]) {
+      setAvailableRooms(roomsAvailableByUnit(rooms, patients, patient));
+    }
+  }, [rooms, diets, patients, patient]);
 
   useEffect(() => {
     if (patient) {
@@ -172,7 +179,15 @@ const Patient = (props) => {
     }
   };
 
-  if (loading || !patient || !formData) {
+  if (
+    loading ||
+    !patient ||
+    !rooms ||
+    !patient ||
+    !menuItems ||
+    !formData ||
+    !availableRooms
+  ) {
     return <Spinner />;
   } else {
     const unitRoom = `${patient.unit} ${patient.roomNumber.roomNumber}`;
@@ -236,11 +251,7 @@ const Patient = (props) => {
             <FormGroup
               id='roomNumber'
               inputType='select'
-              selectOptionsGroups={roomsAvailableByUnit(
-                rooms,
-                patients,
-                patient
-              )}
+              selectOptionsGroups={availableRooms[0]}
               groupValue='_id'
               groupLabel='roomNumber'
               className='col-12 col-md-6 col-lg-4'
@@ -361,11 +372,11 @@ const Patient = (props) => {
                 <MealResults meals={mealOrders} />
               </SubContainer>
             ) : (
-              <SubContainer altHeading='true'>
-                <p className={classes.noMeals}>
-                  This patient has no meal orders
-                </p>
-              </SubContainer>
+              <SubContainer
+                className='mt-3'
+                altHeading
+                text='This patient has no meal orders.'
+              />
             )
           ) : (
             <></>

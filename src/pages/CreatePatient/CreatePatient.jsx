@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { createPatient } from './../../features/patient/patientSlice';
 import { getDiets } from './../../features/diet/dietSlice';
 import { getRooms } from './../../features/room/roomSlice';
+import { getMenuItems } from '../../features/menuItem/menuItemSlice';
 
 import {
   formEditMode,
@@ -18,6 +19,7 @@ import {
 
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
+import SubContainer from '../../components/layout/SubContainer/SubContainer';
 import SideNav from '../../components/layout/SideNav/SideNav';
 import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
 import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
@@ -32,26 +34,26 @@ const CreatePatient = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  formEditMode(true);
-
   const { patient, patients, loading, isSuccess, isError, message } =
     useSelector((state) => state.patient);
   const { diets } = useSelector((state) => state.diet);
   const { rooms } = useSelector((state) => state.room);
+  const { menuItems } = useSelector((state) => state.menuItem);
 
   const initialFormState = {
     firstName: '',
     lastName: '',
     dob: '1970-01-01',
     knownAllergies: [],
-    roomNumber: rooms[0] ? rooms[0]._id : '',
-    currentDiet: diets[0] ? diets[0]._id : '',
-    supplements: 'none',
+    roomNumber: '',
+    currentDiet: '',
+    supplements: [],
     status: 'NPO',
     isHighRisk: 'true',
   };
 
   const [formData, setFormData] = useState(initialFormState);
+  const [availableRooms, setAvailableRooms] = useState();
 
   const {
     firstName,
@@ -68,17 +70,25 @@ const CreatePatient = (props) => {
   useEffect(() => {
     dispatch(getDiets());
     dispatch(getRooms());
+    dispatch(getMenuItems('category=supplement'));
   }, [dispatch]);
 
   useEffect(() => {
-    if (rooms[0] && diets[0]) {
+    if (rooms && rooms[0] && diets && diets[0]) {
+      setAvailableRooms(roomsAvailableByUnit(rooms, patients));
+      formEditMode(true);
+    }
+  }, [rooms, diets, patients]);
+
+  useEffect(() => {
+    if (availableRooms && availableRooms[1].length > 0) {
       setFormData((prevState) => ({
         ...prevState,
-        roomNumber: rooms[0]._id,
+        roomNumber: availableRooms[1][0],
         currentDiet: diets[0]._id,
       }));
     }
-  }, [rooms, diets]);
+  }, [availableRooms, diets]);
 
   useEffect(() => {
     if (isSuccess && patient) {
@@ -132,7 +142,6 @@ const CreatePatient = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (firstName.length < 1 || lastName.length < 1 || dob > getToday()) {
       if (firstName.length < 1) {
         invalidInput('firstName');
@@ -159,9 +168,9 @@ const CreatePatient = (props) => {
     navigate('/patients');
   };
 
-  if (loading) {
+  if (loading || !diets || !rooms || !menuItems || !availableRooms) {
     return <Spinner />;
-  } else {
+  } else if (availableRooms[1].length > 0) {
     return (
       <>
         <SideNav />
@@ -214,7 +223,7 @@ const CreatePatient = (props) => {
             <FormGroup
               id='roomNumber'
               inputType='select'
-              selectOptionsGroups={roomsAvailableByUnit(rooms, patients)}
+              selectOptionsGroups={roomsAvailableByUnit(rooms, patients)[0]}
               groupValue='_id'
               groupLabel='roomNumber'
               className='col-12 col-md-6 col-lg-4'
@@ -247,6 +256,19 @@ const CreatePatient = (props) => {
               value={currentDiet._id}
               onChange={handleChange}
               editable
+            />
+            <FormGroup
+              id='supplements'
+              inputType='checkbox'
+              checkboxOptions={menuItems.map((item) => {
+                return { value: item._id, label: item.name };
+              })}
+              className='col-12 col-lg-6'
+              label='Supplements'
+              value={supplements}
+              onChange={handleChange}
+              editable
+              required
             />
             <FormGroup
               id='supplements'
@@ -298,6 +320,19 @@ const CreatePatient = (props) => {
               />
             </FormActionBtnContainer>
           </FormContainer>
+        </ContainerSideNav>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <SideNav />
+        <ContainerSideNav>
+          <SubContainer
+            altHeading
+            title={`Can't Create New Patient`}
+            text='All rooms are currently occupied.'
+          />
         </ContainerSideNav>
       </>
     );

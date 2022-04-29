@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import menuItemService from './menuItemService';
 
 const initialState = {
-  menuItems: [],
+  menuItems: null,
   menuItem: null,
   loading: true,
   isError: false,

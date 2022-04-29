@@ -138,7 +138,7 @@ const MenuItemPage = () => {
     }
   };
 
-  if (loading || firstRender || !menuItem) {
+  if (loading || firstRender || !menuItem || !productionAreas) {
     return <Spinner />;
   } else {
     return (

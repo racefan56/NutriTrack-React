@@ -21,7 +21,7 @@ const SideNav = () => {
         <LinkSubSection title={'Dietary'}>
           <MenuLink to='/' text='Menus' />
           <MenuLink to='/control-panel/menu-items' text='Menu Items' />
-          <MenuLink to='/' text='Diets' />
+          <MenuLink to='/control-panel/diets' text='Diets' />
           <MenuLink
             to='/control-panel/production-areas'
             text='Production Areas'

@@ -87,6 +87,7 @@ export const invalidInput = (elId) => {
   document.getElementById(elId).style.backgroundColor = '#ffc9c9';
 };
 
+//Returns an array with the first element being the available rooms grouped by unit. The second element being a complete array of all available room IDs from all units.
 export const roomsAvailableByUnit = (rooms, patients, curPatient) => {
   //checks what rooms are currently occupied by other patients, ommiting the room the CURRENT patient is in if that data is provided.
   const occupiedRooms = curPatient
@@ -111,5 +112,5 @@ export const roomsAvailableByUnit = (rooms, patients, curPatient) => {
 
     return { [unit]: result };
   });
-  return availableRoomsByUnit;
+  return [availableRoomsByUnit, availableRooms];
 };
