@@ -55,6 +55,8 @@ const CreatePatient = (props) => {
   const [formData, setFormData] = useState(initialFormState);
   const [availableRooms, setAvailableRooms] = useState();
 
+  const [enableForm] = useState(true);
+
   const {
     firstName,
     lastName,
@@ -76,7 +78,6 @@ const CreatePatient = (props) => {
   useEffect(() => {
     if (rooms && rooms[0] && diets && diets[0]) {
       setAvailableRooms(roomsAvailableByUnit(rooms, patients));
-      formEditMode(true);
     }
   }, [rooms, diets, patients]);
 
@@ -109,6 +110,9 @@ const CreatePatient = (props) => {
       }
     }
   }, [isError, isSuccess, message, navigate, patient]);
+
+  //Always enable all editable form fields for create type pages
+  formEditMode(enableForm);
 
   const openModal = (id) => {
     document.getElementById(id).style.display = 'flex';

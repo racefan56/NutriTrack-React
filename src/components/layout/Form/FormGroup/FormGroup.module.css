@@ -1,6 +1,6 @@
 .groupContainer {
   color: #343a40;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   margin: 1rem;
   padding: 0.5rem;
   font-size: 18px;
@@ -24,7 +24,7 @@
 .input {
   background-color: #ffff;
   border: 2px solid #343a40;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   width: 100%;
   padding: 8px;
 }
@@ -32,7 +32,7 @@
 .inputCheck {
   background-color: #ffff;
   border: 2px solid #343a40;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   margin: 8px;
 }
 

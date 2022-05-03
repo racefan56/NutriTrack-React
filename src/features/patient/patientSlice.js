@@ -144,11 +144,13 @@ export const patientSlice = createSlice({
         state.loading = true;
       })
       .addCase(getPatients.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isSuccess = false;
         state.patients = action.payload.data.data;
+        state.loading = false;
       })
       .addCase(getPatients.rejected, (state) => {
         state.isError = true;
+        state.isSuccess = false;
         state.loading = false;
         state.patients = null;
       })
@@ -158,12 +160,15 @@ export const patientSlice = createSlice({
         state.loading = true;
       })
       .addCase(getPatient.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isSuccess = false;
         state.patient = action.payload.data.data;
+        state.loading = false;
       })
       .addCase(getPatient.rejected, (state) => {
-        state.loading = false;
         state.patient = null;
+        state.isError = true;
+        state.isSuccess = false;
+        state.loading = false;
       })
       .addCase(updatePatient.pending, (state) => {
         state.isSuccess = false;
@@ -187,12 +192,13 @@ export const patientSlice = createSlice({
         state.loading = true;
       })
       .addCase(deletePatient.fulfilled, (state) => {
-        state.patient = [];
+        state.patient = null;
         state.loading = false;
         state.isSuccess = true;
       })
       .addCase(deletePatient.rejected, (state, action) => {
         state.isError = true;
+        state.isSuccess = false;
         state.message = action.payload;
         state.loading = false;
       })

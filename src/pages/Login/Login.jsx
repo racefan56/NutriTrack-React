@@ -46,8 +46,8 @@ function Login() {
   return (
     <div className='container min-vh-100 d-flex align-items-center'>
       <Card className={classes['card-login']}>
-        <div className='d-flex display-1 mb-3 justify-content-center'>
-          <Brand className={classes['brand-login']} />
+        <div className='d-flex w-100 mb-3 justify-content-center'>
+          <Brand w100 className={classes['brand-login']} />
         </div>
         <form onSubmit={handleSubmit}>
           <div className='form-group'>

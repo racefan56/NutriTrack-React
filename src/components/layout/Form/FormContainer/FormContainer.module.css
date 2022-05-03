@@ -11,7 +11,7 @@
   padding: 8px;
 
   background-color: #74c0fc;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-bottom: 2px solid;
@@ -63,20 +63,19 @@
 .statusTag {
   position: absolute;
   z-index: 1;
-  top: 5px;
-  right: 5px;
+  top: 14px;
+  right: 16px;
   text-align: center;
 
   width: 15%;
-  padding: 3px;
 
-  border-radius: 0.25rem;
-  outline: 2px solid #ffff;
+  border-radius: 0.5rem;
+  outline: 3px solid #ffff;
 
   background-color: #74c0fc;
 
-  font-weight: 600;
-  font-size: 32px;
+  font-weight: 800;
+  font-size: 24px;
 }
 
 .eating {

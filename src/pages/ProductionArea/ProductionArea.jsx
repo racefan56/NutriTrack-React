@@ -56,8 +56,13 @@ const ProductionArea = (props) => {
   }, [productionArea]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && productionArea) {
       toast.success('Production area successfully updated!');
+      navigate('/control-panel/production-areas');
+    }
+
+    if (isSuccess && !productionArea) {
+      toast.success('Production area successfully deleted!');
       navigate('/control-panel/production-areas');
     }
 

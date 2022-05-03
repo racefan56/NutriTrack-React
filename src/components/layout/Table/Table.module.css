@@ -5,7 +5,7 @@
 
 .tableContainer {
   border: 2px solid #343a40;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   overflow: auto;
 }
 
@@ -21,4 +21,9 @@
   border-bottom: 2px solid;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
+}
+
+thead:first-child {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }

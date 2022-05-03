@@ -87,7 +87,13 @@ const Patient = (props) => {
   }, [dispatch, patientId]);
 
   useEffect(() => {
-    if (rooms && rooms[0] && diets && diets[0]) {
+    if (
+      rooms &&
+      rooms.length > 0 &&
+      patients &&
+      patients.length > 0 &&
+      patient
+    ) {
       setAvailableRooms(roomsAvailableByUnit(rooms, patients, patient));
     }
   }, [rooms, diets, patients, patient]);
@@ -99,8 +105,13 @@ const Patient = (props) => {
   }, [patient]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && patient) {
       toast.success('Patient data successfully updated!');
+      navigate('/patients');
+    }
+
+    if (isSuccess && !patient) {
+      toast.success('Patient data successfully deleted!');
       navigate('/patients');
     }
 
@@ -173,8 +184,8 @@ const Patient = (props) => {
   const handleDelete = (patientId) => {
     dispatch(deletePatient(patientId));
     //After a patient is deleted, return to patients page
-    navigate('/patients');
     if (isSuccess) {
+      navigate('/patients');
       toast.success('Patient successfully deleted!');
     }
   };
@@ -183,6 +194,7 @@ const Patient = (props) => {
     loading ||
     !patient ||
     !rooms ||
+    !diets ||
     !patient ||
     !menuItems ||
     !formData ||

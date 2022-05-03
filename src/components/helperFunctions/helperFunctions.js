@@ -1,3 +1,5 @@
+import { scryRenderedComponentsWithType } from 'react-dom/test-utils';
+
 export function capitalizeWord(string) {
   if (!string) {
     return;
@@ -90,6 +92,7 @@ export const invalidInput = (elId) => {
 //Returns an array with the first element being the available rooms grouped by unit. The second element being a complete array of all available room IDs from all units.
 export const roomsAvailableByUnit = (rooms, patients, curPatient) => {
   //checks what rooms are currently occupied by other patients, ommiting the room the CURRENT patient is in if that data is provided.
+  console.log(patients, curPatient);
   const occupiedRooms = curPatient
     ? patients.flatMap((patient) => {
         return patient.roomNumber._id !== curPatient.roomNumber._id
