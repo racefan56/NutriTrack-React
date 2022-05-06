@@ -1,22 +1,22 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import productionAreaService from './productionAreaService';
+import menuService from './menuService';
 
 const initialState = {
-  productionAreas: null,
-  productionArea: null,
+  menus: null,
+  menu: null,
   loading: true,
   isError: false,
   message: '',
   isSuccess: false,
 };
 
-//Create production area
-export const createProductionArea = createAsyncThunk(
-  'productionArea/createProductionArea',
+//Create menu
+export const createMenu = createAsyncThunk(
+  'menu/createMenu',
   async (formData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
-      return await productionAreaService.createProductionArea(formData, token);
+      return await menuService.createMenu(formData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -30,13 +30,13 @@ export const createProductionArea = createAsyncThunk(
   }
 );
 
-//Get all productionAreas
-export const getProductionAreas = createAsyncThunk(
-  'productionArea/getProductionAreas',
+//Get all menus
+export const getMenus = createAsyncThunk(
+  'menu/getMenus',
   async (queryString, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
-      return await productionAreaService.getProductionAreas(queryString, token);
+      return await menuService.getMenus(queryString, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -50,16 +50,13 @@ export const getProductionAreas = createAsyncThunk(
   }
 );
 
-//Get one productionArea
-export const getProductionArea = createAsyncThunk(
-  'productionArea/getProductionArea',
-  async (productionAreaId, thunkAPI) => {
+//Get one menu
+export const getMenu = createAsyncThunk(
+  'menu/getMenu',
+  async (menuId, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
-      return await productionAreaService.getProductionArea(
-        productionAreaId,
-        token
-      );
+      return await menuService.getMenu(menuId, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -73,17 +70,13 @@ export const getProductionArea = createAsyncThunk(
   }
 );
 
-//Update one production area
-export const updateProductionArea = createAsyncThunk(
-  'productionArea/updateProductionArea',
-  async ([productionAreaId, formData], thunkAPI) => {
+//Update one menu
+export const updateMenu = createAsyncThunk(
+  'menu/updateMenu',
+  async ([menuId, formData], thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
-      return await productionAreaService.updateProductionArea(
-        productionAreaId,
-        formData,
-        token
-      );
+      return await menuService.updateMenu(menuId, formData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -97,16 +90,13 @@ export const updateProductionArea = createAsyncThunk(
   }
 );
 
-//Delete one production area
-export const deleteProductionArea = createAsyncThunk(
-  'productionArea/deleteProductionArea',
-  async (productionAreaId, thunkAPI) => {
+//Delete one menu
+export const deleteMenu = createAsyncThunk(
+  'menu/deleteMenu',
+  async (menuId, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
-      return await productionAreaService.deleteProductionArea(
-        productionAreaId,
-        token
-      );
+      return await menuService.deleteMenu(menuId, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -120,8 +110,8 @@ export const deleteProductionArea = createAsyncThunk(
   }
 );
 
-export const productionAreaSlice = createSlice({
-  name: 'productionArea',
+export const menuSlice = createSlice({
+  name: 'menu',
   initialState,
   reducers: {
     reset: (state) => {
@@ -130,77 +120,77 @@ export const productionAreaSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createProductionArea.pending, (state) => {
+      .addCase(createMenu.pending, (state) => {
         state.isSuccess = false;
         state.isError = false;
         state.loading = true;
       })
-      .addCase(createProductionArea.fulfilled, (state, action) => {
-        state.productionArea = action.payload.data.data;
+      .addCase(createMenu.fulfilled, (state, action) => {
+        state.menu = action.payload.data.data;
         state.isSuccess = true;
         state.loading = false;
       })
-      .addCase(createProductionArea.rejected, (state, action) => {
+      .addCase(createMenu.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
       })
-      .addCase(getProductionAreas.pending, (state) => {
+      .addCase(getMenus.pending, (state) => {
         state.isSuccess = false;
         state.isError = false;
         state.loading = true;
       })
-      .addCase(getProductionAreas.fulfilled, (state, action) => {
-        state.productionAreas = action.payload.data.data;
+      .addCase(getMenus.fulfilled, (state, action) => {
+        state.menus = action.payload.data.data;
         state.loading = false;
       })
-      .addCase(getProductionAreas.rejected, (state, action) => {
+      .addCase(getMenus.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.productionAreas = null;
+        state.menus = null;
       })
-      .addCase(getProductionArea.pending, (state) => {
+      .addCase(getMenu.pending, (state) => {
         state.isSuccess = false;
         state.isError = false;
         state.loading = true;
       })
-      .addCase(getProductionArea.fulfilled, (state, action) => {
-        state.productionArea = action.payload.data.data;
+      .addCase(getMenu.fulfilled, (state, action) => {
+        state.menu = action.payload.data.data;
         state.loading = false;
       })
-      .addCase(getProductionArea.rejected, (state, action) => {
+      .addCase(getMenu.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.productionArea = null;
+        state.menu = null;
       })
-      .addCase(updateProductionArea.pending, (state) => {
+      .addCase(updateMenu.pending, (state) => {
         state.isSuccess = false;
         state.isError = false;
         state.loading = true;
       })
-      .addCase(updateProductionArea.fulfilled, (state, action) => {
-        state.productionArea = action.payload.data.data;
+      .addCase(updateMenu.fulfilled, (state, action) => {
+        state.menu = action.payload.data.data;
         state.isSuccess = true;
         state.loading = false;
       })
-      .addCase(updateProductionArea.rejected, (state, action) => {
+      .addCase(updateMenu.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
       })
-      .addCase(deleteProductionArea.pending, (state) => {
+      .addCase(deleteMenu.pending, (state) => {
         state.isSuccess = false;
         state.isError = false;
         state.loading = true;
       })
-      .addCase(deleteProductionArea.fulfilled, (state) => {
-        state.productionArea = null;
+      .addCase(deleteMenu.fulfilled, (state) => {
+        state.menu = null;
         state.loading = false;
         state.isSuccess = true;
       })
-      .addCase(deleteProductionArea.rejected, (state, action) => {
+      .addCase(deleteMenu.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
@@ -208,6 +198,6 @@ export const productionAreaSlice = createSlice({
   },
 });
 
-export const { reset } = productionAreaSlice.actions;
+export const { reset } = menuSlice.actions;
 
-export default productionAreaSlice.reducer;
+export default menuSlice.reducer;

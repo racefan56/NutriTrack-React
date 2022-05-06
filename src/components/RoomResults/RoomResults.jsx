@@ -7,6 +7,7 @@ import Table from '../layout/Table/Table';
 import TableDataItem from '../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../Spinner/Spinner';
 import ButtonMain from '../layout/Button/ButtonMain/ButtonMain';
+import Error from '../Error/Error';
 
 import classes from './RoomResults.module.css';
 
@@ -30,6 +31,10 @@ const RoomResults = (props) => {
 
   if (loading) {
     return <Spinner />;
+  }
+
+  if (!loading && isError) {
+    return <Error></Error>;
   } else {
     return (
       <>

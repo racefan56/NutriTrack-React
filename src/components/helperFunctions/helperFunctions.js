@@ -1,5 +1,3 @@
-import { scryRenderedComponentsWithType } from 'react-dom/test-utils';
-
 export function capitalizeWord(string) {
   if (!string) {
     return;
@@ -86,7 +84,13 @@ export const formEditMode = (editMode) => {
 };
 
 export const invalidInput = (elId) => {
-  document.getElementById(elId).style.backgroundColor = '#ffc9c9';
+  if (Array.isArray(elId)) {
+    elId.map((el) => {
+      return (document.getElementById(el).style.backgroundColor = '#ffc9c9');
+    });
+  } else {
+    document.getElementById(elId).style.backgroundColor = '#ffc9c9';
+  }
 };
 
 //Returns an array with the first element being the available rooms grouped by unit. The second element being a complete array of all available room IDs from all units.

@@ -2,31 +2,31 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { getUnits } from '../../features/unit/unitSlice';
+import { getMenus } from '../../features/menu/menuSlice';
 import Table from '../layout/Table/Table';
 import TableDataItem from '../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../Spinner/Spinner';
 import ButtonMain from '../layout/Button/ButtonMain/ButtonMain';
 import Error from '../Error/Error';
 
-import classes from './UnitResults.module.css';
+import classes from './MenuResults.module.css';
 
-const UnitResults = (props) => {
+const MenuResults = (props) => {
   const dispatch = useDispatch();
 
-  const { units, loading, isError, message } = useSelector(
-    (state) => state.unit
+  const { menus, loading, isError, message } = useSelector(
+    (state) => state.menu
   );
 
   useEffect(() => {
-    dispatch(getUnits());
+    dispatch(getMenus());
     if (isError) {
       toast.error(message);
     }
   }, [dispatch, isError, message]);
 
   const handleRefresh = () => {
-    dispatch(getUnits());
+    dispatch(getMenus());
   };
 
   if (loading) {
@@ -39,22 +39,28 @@ const UnitResults = (props) => {
     return (
       <>
         <Table
-          headers={['Unit name', 'Description', '']}
-          heading='Units'
+          headers={['Day', 'Meal Period', 'Diets', '']}
+          heading='Menus'
           refresh={handleRefresh}
           createPath='create'
         >
-          {units.map((unit, index) => (
-            <React.Fragment key={unit._id}>
+          {menus.map((menu, index) => (
+            <React.Fragment key={menu._id}>
               <TableDataItem
-                navigatePath={`/control-panel/units/${unit._id}`}
-                dataPoints={[unit.unitName.toUpperCase(), unit.description]}
+                navigatePath={`/control-panel/menus/${menu._id}`}
+                dataPoints={[
+                  menu.day,
+                  menu.mealPeriod,
+                  menu.dietAvailability.map((diet) => {
+                    return diet.name;
+                  }),
+                ]}
               >
                 <td>
                   <ButtonMain
                     className='m-0'
                     type='Link'
-                    path={`${unit._id}`}
+                    path={`${menu._id}`}
                     text='View/Edit'
                   />
                 </td>
@@ -67,4 +73,4 @@ const UnitResults = (props) => {
   }
 };
 
-export default UnitResults;
+export default MenuResults;

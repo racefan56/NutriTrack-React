@@ -7,6 +7,7 @@ import productionAreaReducer from '../features/productionArea/productionAreaSlic
 import dietReducer from '../features/diet/dietSlice';
 import unitReducer from '../features/unit/unitSlice';
 import roomReducer from '../features/room/roomSlice';
+import menuReducer from '../features/menu/menuSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
     diet: dietReducer,
     unit: unitReducer,
     room: roomReducer,
+    menu: menuReducer,
   },
 });

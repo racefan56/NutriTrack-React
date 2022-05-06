@@ -132,7 +132,6 @@ export const dietSlice = createSlice({
       })
       .addCase(createDiet.rejected, (state, action) => {
         state.isError = true;
-        state.isSuccess = false;
         state.message = action.payload;
         state.loading = false;
       })
@@ -149,7 +148,7 @@ export const dietSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.menuItems = null;
+        state.diets = null;
       })
       .addCase(getDiet.pending, (state) => {
         state.isSuccess = false;
@@ -164,7 +163,7 @@ export const dietSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.menuItem = null;
+        state.diet = null;
       })
       .addCase(updateDiet.pending, (state) => {
         state.isSuccess = false;
@@ -178,7 +177,6 @@ export const dietSlice = createSlice({
       })
       .addCase(updateDiet.rejected, (state, action) => {
         state.isError = true;
-        state.isSuccess = false;
         state.message = action.payload;
         state.loading = false;
       })

@@ -121,25 +121,23 @@ export const unitSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createUnit.pending, (state) => {
-        state.loading = true;
-        state.isError = false;
         state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
       })
       .addCase(createUnit.fulfilled, (state, action) => {
         state.unit = action.payload.data.data;
-        state.loading = false;
         state.isSuccess = true;
-        state.isError = false;
+        state.loading = false;
       })
       .addCase(createUnit.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
-        state.isSuccess = false;
         state.loading = false;
       })
       .addCase(getUnits.pending, (state) => {
-        state.isError = false;
         state.isSuccess = false;
+        state.isError = false;
         state.loading = true;
       })
       .addCase(getUnits.fulfilled, (state, action) => {
@@ -150,11 +148,11 @@ export const unitSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.units = [];
+        state.units = null;
       })
       .addCase(getUnit.pending, (state) => {
-        state.isError = false;
         state.isSuccess = false;
+        state.isError = false;
         state.loading = true;
       })
       .addCase(getUnit.fulfilled, (state, action) => {
@@ -165,16 +163,17 @@ export const unitSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.unit = [];
+        state.unit = null;
       })
       .addCase(updateUnit.pending, (state) => {
+        state.isSuccess = false;
         state.isError = false;
         state.loading = true;
       })
       .addCase(updateUnit.fulfilled, (state, action) => {
         state.unit = action.payload.data.data;
-        state.loading = false;
         state.isSuccess = true;
+        state.loading = false;
       })
       .addCase(updateUnit.rejected, (state, action) => {
         state.isError = true;
@@ -182,6 +181,7 @@ export const unitSlice = createSlice({
         state.loading = false;
       })
       .addCase(deleteUnit.pending, (state) => {
+        state.isSuccess = false;
         state.isError = false;
         state.loading = true;
       })

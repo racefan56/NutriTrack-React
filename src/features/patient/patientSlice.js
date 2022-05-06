@@ -8,6 +8,7 @@ const initialState = {
   loading: true,
   isError: false,
   isSuccess: false,
+  message: '',
 };
 
 //Create patient
@@ -18,7 +19,6 @@ export const createPatient = createAsyncThunk(
       const token = thunkAPI.getState().auth.token;
       return await patientService.createPatient(formData, token);
     } catch (error) {
-      console.log(error.response);
       const message =
         (error.response &&
           error.response.data &&
@@ -134,7 +134,6 @@ export const patientSlice = createSlice({
       })
       .addCase(createPatient.rejected, (state, action) => {
         state.isError = true;
-        state.isSuccess = false;
         state.message = action.payload;
         state.loading = false;
       })
@@ -144,13 +143,12 @@ export const patientSlice = createSlice({
         state.loading = true;
       })
       .addCase(getPatients.fulfilled, (state, action) => {
-        state.isSuccess = false;
         state.patients = action.payload.data.data;
         state.loading = false;
       })
-      .addCase(getPatients.rejected, (state) => {
+      .addCase(getPatients.rejected, (state, action) => {
         state.isError = true;
-        state.isSuccess = false;
+        state.message = action.payload;
         state.loading = false;
         state.patients = null;
       })
@@ -160,15 +158,14 @@ export const patientSlice = createSlice({
         state.loading = true;
       })
       .addCase(getPatient.fulfilled, (state, action) => {
-        state.isSuccess = false;
         state.patient = action.payload.data.data;
         state.loading = false;
       })
-      .addCase(getPatient.rejected, (state) => {
-        state.patient = null;
+      .addCase(getPatient.rejected, (state, action) => {
         state.isError = true;
-        state.isSuccess = false;
+        state.message = action.payload;
         state.loading = false;
+        state.patient = null;
       })
       .addCase(updatePatient.pending, (state) => {
         state.isSuccess = false;
@@ -182,7 +179,6 @@ export const patientSlice = createSlice({
       })
       .addCase(updatePatient.rejected, (state, action) => {
         state.isError = true;
-        state.isSuccess = false;
         state.message = action.payload;
         state.loading = false;
       })
@@ -198,7 +194,6 @@ export const patientSlice = createSlice({
       })
       .addCase(deletePatient.rejected, (state, action) => {
         state.isError = true;
-        state.isSuccess = false;
         state.message = action.payload;
         state.loading = false;
       })

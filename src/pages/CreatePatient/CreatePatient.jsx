@@ -275,15 +275,6 @@ const CreatePatient = (props) => {
               required
             />
             <FormGroup
-              id='supplements'
-              inputType='text'
-              className='col-12 col-lg-6'
-              label='Supplements'
-              value={supplements.toString()}
-              onChange={handleChange}
-              editable
-            />
-            <FormGroup
               id='knownAllergies'
               inputType='checkbox'
               checkboxOptions={[

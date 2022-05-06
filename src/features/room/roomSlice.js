@@ -121,25 +121,23 @@ export const roomSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createRoom.pending, (state) => {
-        state.loading = true;
-        state.isError = false;
         state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
       })
       .addCase(createRoom.fulfilled, (state, action) => {
         state.room = action.payload.data.data;
-        state.loading = false;
         state.isSuccess = true;
-        state.isError = false;
+        state.loading = false;
       })
       .addCase(createRoom.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
-        state.isSuccess = false;
         state.loading = false;
       })
       .addCase(getRooms.pending, (state) => {
-        state.isError = false;
         state.isSuccess = false;
+        state.isError = false;
         state.loading = true;
       })
       .addCase(getRooms.fulfilled, (state, action) => {
@@ -153,8 +151,8 @@ export const roomSlice = createSlice({
         state.rooms = null;
       })
       .addCase(getRoom.pending, (state) => {
-        state.isError = false;
         state.isSuccess = false;
+        state.isError = false;
         state.loading = true;
       })
       .addCase(getRoom.fulfilled, (state, action) => {
@@ -168,13 +166,14 @@ export const roomSlice = createSlice({
         state.room = null;
       })
       .addCase(updateRoom.pending, (state) => {
+        state.isSuccess = false;
         state.isError = false;
         state.loading = true;
       })
       .addCase(updateRoom.fulfilled, (state, action) => {
         state.room = action.payload.data.data;
-        state.loading = false;
         state.isSuccess = true;
+        state.loading = false;
       })
       .addCase(updateRoom.rejected, (state, action) => {
         state.isError = true;
@@ -182,6 +181,7 @@ export const roomSlice = createSlice({
         state.loading = false;
       })
       .addCase(deleteRoom.pending, (state) => {
+        state.isSuccess = false;
         state.isError = false;
         state.loading = true;
       })

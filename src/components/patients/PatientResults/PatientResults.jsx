@@ -5,13 +5,15 @@ import Table from '../../layout/Table/Table';
 import TableDataItem from '../../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../../Spinner/Spinner';
 import ButtonMain from '../../layout/Button/ButtonMain/ButtonMain';
+import NoResults from '../../NoResults/NoResults';
+import Error from '../../Error/Error';
 
 import classes from './PatientResults.module.css';
 
 function PatientResults() {
   const dispatch = useDispatch();
 
-  const { patients, loading } = useSelector((state) => state.patient);
+  const { patients, loading, isError } = useSelector((state) => state.patient);
 
   useEffect(() => {
     dispatch(getPatients());
@@ -21,8 +23,12 @@ function PatientResults() {
     dispatch(getPatients());
   };
 
-  if (loading || !patients[0]) {
+  if (loading) {
     return <Spinner />;
+  }
+
+  if (!loading && isError) {
+    return <Error></Error>;
   } else {
     return (
       <>

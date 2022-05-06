@@ -122,20 +122,18 @@ export const menuItemSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createMenuItem.pending, (state) => {
-        state.loading = true;
-        state.isError = false;
         state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
       })
       .addCase(createMenuItem.fulfilled, (state, action) => {
         state.menuItem = action.payload.data.data;
-        state.loading = false;
         state.isSuccess = true;
-        state.isError = false;
+        state.loading = false;
       })
       .addCase(createMenuItem.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
-        state.isSuccess = false;
         state.loading = false;
       })
       .addCase(getMenuItems.pending, (state) => {
@@ -149,10 +147,9 @@ export const menuItemSlice = createSlice({
       })
       .addCase(getMenuItems.rejected, (state, action) => {
         state.isError = true;
-        state.isSuccess = false;
         state.message = action.payload;
         state.loading = false;
-        state.menuItems = [];
+        state.menuItems = null;
       })
       .addCase(getMenuItem.pending, (state) => {
         state.isSuccess = false;
@@ -165,10 +162,9 @@ export const menuItemSlice = createSlice({
       })
       .addCase(getMenuItem.rejected, (state, action) => {
         state.isError = true;
-        state.isSuccess = false;
         state.message = action.payload;
         state.loading = false;
-        state.menuItem = [];
+        state.menuItem = null;
       })
       .addCase(updateMenuItem.pending, (state) => {
         state.isSuccess = false;
@@ -177,15 +173,13 @@ export const menuItemSlice = createSlice({
       })
       .addCase(updateMenuItem.fulfilled, (state, action) => {
         state.menuItem = action.payload.data.data;
-        state.loading = false;
         state.isSuccess = true;
+        state.loading = false;
       })
       .addCase(updateMenuItem.rejected, (state, action) => {
-        state.isSuccess = false;
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.menuItem = [];
       })
       .addCase(deleteMenuItem.pending, (state) => {
         state.isSuccess = false;
@@ -193,13 +187,12 @@ export const menuItemSlice = createSlice({
         state.loading = true;
       })
       .addCase(deleteMenuItem.fulfilled, (state) => {
-        state.menuItem = [];
+        state.menuItem = null;
         state.loading = false;
         state.isSuccess = true;
       })
       .addCase(deleteMenuItem.rejected, (state, action) => {
         state.isError = true;
-        state.isSuccess = false;
         state.message = action.payload;
         state.loading = false;
       });

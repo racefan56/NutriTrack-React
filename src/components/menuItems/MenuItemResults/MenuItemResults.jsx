@@ -8,6 +8,8 @@ import TableDataItem from '../../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../../Spinner/Spinner';
 import ButtonSecondary from '../../layout/Button/ButtonSecondary/ButtonSecondary';
 import ButtonMain from '../../layout/Button/ButtonMain/ButtonMain';
+import NoResults from '../../NoResults/NoResults';
+import Error from '../../Error/Error';
 
 import { titleCase } from '../../helperFunctions/helperFunctions';
 
@@ -33,6 +35,10 @@ const MenuItemResults = (props) => {
 
   if (loading) {
     return <Spinner />;
+  }
+
+  if (!loading && isError) {
+    return <Error></Error>;
   } else {
     return (
       <>

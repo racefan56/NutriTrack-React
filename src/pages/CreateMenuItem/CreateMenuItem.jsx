@@ -22,6 +22,7 @@ import FormActionBtnContainer from '../../components/layout/Form/FormActionBtnCo
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 import Modal from '../../components/layout/Modal/Modal';
+import Error from '../../components/Error/Error';
 
 import classes from './CreateMenuItem.module.css';
 
@@ -39,7 +40,8 @@ const CreateMenuItem = () => {
 
   const initialFormState = {
     category: 'entree',
-    productionArea: productionAreas[0] ? productionAreas[0]._id : '',
+    productionArea:
+      productionAreas && productionAreas[0] ? productionAreas[0]._id : '',
     name: '',
     dietAvailability: [],
     portionSize: 1,
@@ -72,10 +74,10 @@ const CreateMenuItem = () => {
     dispatch(getDiets());
     dispatch(getProductionAreas());
     setfirstRender(false);
-  }, [dispatch, productionAreas]);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (productionAreas[0]) {
+    if (productionAreas && productionAreas.length > 0) {
       setFormData({ ...formData, productionArea: productionAreas[0]._id });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -133,8 +135,6 @@ const CreateMenuItem = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log(formData);
     if (
       name < 1 ||
       description.length < 1 ||
@@ -172,6 +172,10 @@ const CreateMenuItem = () => {
 
   if (loading || firstRender || !productionAreas) {
     return <Spinner />;
+  }
+
+  if (!loading && isError) {
+    return <Error />;
   } else {
     return (
       <>

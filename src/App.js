@@ -36,6 +36,10 @@ import Diets from './pages/Diets/Diets';
 import Diet from './pages/Diet/Diet';
 import CreateDiet from './pages/CreateDiet/CreateDiet';
 
+import Menus from './pages/Menus/Menus';
+import Menu from './pages/Menu/Menu';
+import CreateMenu from './pages/CreateMenu/CreateMenu';
+
 function App() {
   return (
     <>
@@ -251,6 +255,34 @@ function App() {
               path='/control-panel/menu-items/:menuItemId'
               element={<MenuItemPage />}
             />
+          </Route>
+
+          {/* MENU ROUTES */}
+          {/* View all menus */}
+          <Route
+            path='/control-panel/menus'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel/menus' element={<Menus />} />
+          </Route>
+
+          {/* Create menu */}
+          <Route
+            path='/control-panel/menus/create'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/control-panel/menus/create'
+              element={<CreateMenu />}
+            />
+          </Route>
+
+          {/* View/Edit/Delete menu */}
+          <Route
+            path='/control-panel/menus/:menuId'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel/menus/:menuId' element={<Menu />} />
           </Route>
 
           {/* PAGE NOT FOUND ROUTE */}
