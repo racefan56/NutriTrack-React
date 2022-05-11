@@ -39,7 +39,7 @@ const MenuResults = (props) => {
     return (
       <>
         <Table
-          headers={['Day', 'Meal Period', 'Diets', '']}
+          headers={['Day', 'Meal Period', 'Option', 'Diets', '']}
           heading='Menus'
           refresh={handleRefresh}
           createPath='create'
@@ -51,9 +51,12 @@ const MenuResults = (props) => {
                 dataPoints={[
                   menu.day,
                   menu.mealPeriod,
-                  menu.dietAvailability.map((diet) => {
-                    return diet.name;
-                  }),
+                  menu.option,
+                  menu.dietAvailability
+                    .map((diet) => {
+                      return diet.name;
+                    })
+                    .toString(),
                 ]}
               >
                 <td>

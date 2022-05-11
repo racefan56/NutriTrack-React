@@ -156,7 +156,7 @@ const CreateMenu = (props) => {
         <ContainerSideNav>
           <FormContainer
             category='Create Menu'
-            title={`${day} ${mealPeriod}`}
+            title={`${day} ${mealPeriod} : ${option} option`}
             onSubmit={handleSubmit}
           >
             <FormGroup
@@ -232,7 +232,62 @@ const CreateMenu = (props) => {
               onChange={handleChange}
               editable
             />
-
+            <FormGroup
+              id='sides'
+              inputType='checkbox'
+              checkboxOptions={menuItems.flatMap((menuItem) => {
+                return menuItem.category === 'side'
+                  ? { value: menuItem._id, label: menuItem.name }
+                  : [];
+              })}
+              label='Sides'
+              className='col-12 col-lg-6'
+              value={sides}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='dessert'
+              inputType='checkbox'
+              checkboxOptions={menuItems.flatMap((menuItem) => {
+                return menuItem.category === 'dessert'
+                  ? { value: menuItem._id, label: menuItem.name }
+                  : [];
+              })}
+              label='Dessert'
+              className='col-12 col-lg-6'
+              value={dessert}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='drinks'
+              inputType='checkbox'
+              checkboxOptions={menuItems.flatMap((menuItem) => {
+                return menuItem.category === 'drink'
+                  ? { value: menuItem._id, label: menuItem.name }
+                  : [];
+              })}
+              label='Drinks'
+              className='col-12 col-lg-6'
+              value={drinks}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='condiments'
+              inputType='checkbox'
+              checkboxOptions={menuItems.flatMap((menuItem) => {
+                return menuItem.category === 'condiment'
+                  ? { value: menuItem._id, label: menuItem.name }
+                  : [];
+              })}
+              label='Condiments'
+              className='col-12 col-lg-6'
+              value={condiments}
+              onChange={handleChange}
+              editable
+            />
             <FormActionBtnContainer>
               <ButtonMain
                 className='mx-3'

@@ -3,7 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { getMenu, createMenu, deleteMenu } from '../../features/menu/menuSlice';
+import {
+  getMenu,
+  createMenu,
+  deleteMenu,
+  updateMenu,
+} from '../../features/menu/menuSlice';
 import { getDiets } from '../../features/diet/dietSlice';
 import { getMenuItems } from '../../features/menuItem/menuItemSlice';
 
@@ -42,13 +47,12 @@ const Menu = (props) => {
     day: 'Sunday',
     mealPeriod: 'Breakfast',
     option: 'Cold',
-    entree: menuItems && menuItems[0] ? menuItems[0]._id : '',
+    entree: {},
     dietAvailability: [],
     sides: [],
     dessert: [],
     drinks: [],
     condiments: [],
-    createdOn: null,
   });
 
   const {
@@ -62,10 +66,9 @@ const Menu = (props) => {
     drinks,
     condiments,
   } = formData;
-
+  console.log(entree);
   useEffect(() => {
     if (menu) {
-      console.log(menu);
       setFormData({ ...menu });
     }
   }, [menu]);
@@ -82,25 +85,32 @@ const Menu = (props) => {
   }, [dispatch, menuId]);
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success('Menu successfully created!');
+    if (isSuccess && menu) {
+      toast.success('Menu successfully updated!');
+      navigate('/control-panel/menus');
+    }
+
+    if (isSuccess && !menu) {
+      toast.success('Menu successfully deleted!');
       navigate('/control-panel/menus');
     }
 
     if (isError) {
       setEditMode(true);
-      if (message.keyValue?.mealPeriod) {
+      if (message && message.keyValue?.mealPeriod) {
         toast.error(
           'A menu already exists for that day, meal period, option, &/or diets'
         );
         invalidInput('mealPeriod');
         invalidInput('day');
       }
-      if (message.message) {
+      if (message && message.message) {
         toast.error(message.message);
+      } else {
+        toast.error('Something went wrong. Please try again later.');
       }
     }
-  }, [isError, isSuccess, message, navigate]);
+  }, [isError, isSuccess, menu, message, navigate]);
 
   const handleChange = (e) => {
     const key = e.target.id;
@@ -141,8 +151,7 @@ const Menu = (props) => {
         toast.error('Please select diet availability for this menu');
       }
     } else {
-      console.log(formData);
-      dispatch(createMenu(formData));
+      dispatch(updateMenu([menuId, formData]));
     }
   };
 
@@ -169,8 +178,8 @@ const Menu = (props) => {
         <SideNav />
         <ContainerSideNav>
           <FormContainer
-            category='Create Menu'
-            title={`${day} ${mealPeriod}`}
+            category='Menu'
+            title={`${day} ${mealPeriod} : ${option} option`}
             onSubmit={handleSubmit}
           >
             <FormGroup
@@ -243,6 +252,70 @@ const Menu = (props) => {
               label='Entree'
               className='col-12 col-lg-6'
               value={entree}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='sides'
+              inputType='checkbox'
+              checkboxOptions={menuItems.flatMap((menuItem) => {
+                return menuItem.category === 'side'
+                  ? { value: menuItem._id, label: menuItem.name }
+                  : [];
+              })}
+              label='Sides'
+              className='col-12 col-lg-6'
+              value={sides.map((side) => {
+                return side._id;
+              })}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='dessert'
+              inputType='checkbox'
+              checkboxOptions={menuItems.flatMap((menuItem) => {
+                return menuItem.category === 'dessert'
+                  ? { value: menuItem._id, label: menuItem.name }
+                  : [];
+              })}
+              label='Dessert'
+              className='col-12 col-lg-6'
+              value={dessert.map((item) => {
+                return item._id;
+              })}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='drinks'
+              inputType='checkbox'
+              checkboxOptions={menuItems.flatMap((menuItem) => {
+                return menuItem.category === 'drink'
+                  ? { value: menuItem._id, label: menuItem.name }
+                  : [];
+              })}
+              label='Drinks'
+              className='col-12 col-lg-6'
+              value={drinks.map((drink) => {
+                return drink._id;
+              })}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='condiments'
+              inputType='checkbox'
+              checkboxOptions={menuItems.flatMap((menuItem) => {
+                return menuItem.category === 'condiment'
+                  ? { value: menuItem._id, label: menuItem.name }
+                  : [];
+              })}
+              label='Condiments'
+              className='col-12 col-lg-6'
+              value={condiments.map((condiment) => {
+                return condiment._id;
+              })}
               onChange={handleChange}
               editable
             />
