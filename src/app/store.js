@@ -8,6 +8,7 @@ import dietReducer from '../features/diet/dietSlice';
 import unitReducer from '../features/unit/unitSlice';
 import roomReducer from '../features/room/roomSlice';
 import menuReducer from '../features/menu/menuSlice';
+import userReducer from '../features/user/userSlice';
 
 export const store = configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export const store = configureStore({
     unit: unitReducer,
     room: roomReducer,
     menu: menuReducer,
+    user: userReducer,
   },
 });

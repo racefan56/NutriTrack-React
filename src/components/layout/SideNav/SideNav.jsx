@@ -14,8 +14,11 @@ const SideNav = () => {
     return (
       <div className={classes['cp-side-nav-container']}>
         <LinkSubSection title={'User Accounts'}>
-          <MenuLink to='/' text='View Users' />
-          <MenuLink to='/' text='Create New User' />
+          <MenuLink to='/control-panel/users' text='View Users' />
+          <MenuLink
+            to='/control-panel/users/create'
+            text='Create New User'
+          />
         </LinkSubSection>
 
         <LinkSubSection title={'Dietary'}>

@@ -40,6 +40,10 @@ import Menus from './pages/Menus/Menus';
 import Menu from './pages/Menu/Menu';
 import CreateMenu from './pages/CreateMenu/CreateMenu';
 
+import Users from './pages/Users/Users';
+import User from './pages/User/User';
+import CreateUser from './pages/CreateUser/CreateUser';
+
 function App() {
   return (
     <>
@@ -283,6 +287,34 @@ function App() {
             element={<PrivateRoute validRoles={['admin']} />}
           >
             <Route path='/control-panel/menus/:menuId' element={<Menu />} />
+          </Route>
+
+          {/* USER ROUTES */}
+          {/* View all users */}
+          <Route
+            path='/control-panel/users'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel/users' element={<Users />} />
+          </Route>
+
+          {/* Create user */}
+          <Route
+            path='/control-panel/users/create'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/control-panel/users/create'
+              element={<CreateUser />}
+            />
+          </Route>
+
+          {/* View/Edit/Delete user */}
+          <Route
+            path='/control-panel/users/:userId'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel/users/:userId' element={<User />} />
           </Route>
 
           {/* PAGE NOT FOUND ROUTE */}
