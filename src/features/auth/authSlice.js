@@ -8,6 +8,8 @@ const initialState = {
   isSuccess: true,
   userRole: null,
   loggedIn: false,
+  countDownAutoLogoutWarning: 10000,
+  countDownToWarningPopUp: 5000,
 };
 
 // Login user
@@ -33,9 +35,6 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.loading = false;
-    },
     logout: () => {
       return initialState;
     },
@@ -52,6 +51,7 @@ export const authSlice = createSlice({
         state.token = `Bearer ${action.payload.token}`;
         state.email = action.payload.data.user.email;
         state.userRole = action.payload.data.user.role;
+        state.lastClick = Date.now();
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
@@ -64,6 +64,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { reset, logout } = authSlice.actions;
+export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;

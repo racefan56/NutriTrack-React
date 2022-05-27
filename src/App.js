@@ -44,9 +44,12 @@ import Users from './pages/Users/Users';
 import User from './pages/User/User';
 import CreateUser from './pages/CreateUser/CreateUser';
 
+import AutoLogout from './components/AutoLogout/AutoLogout';
+
 function App() {
   return (
     <>
+      <AutoLogout />
       <ToastContainer />
       <Router>
         <Navbar />

@@ -10,10 +10,12 @@ const Modal = ({
   id,
   heading,
   message,
+  popUp,
   btnDelete,
   onDelete,
   handleCancel,
   handleConfirm,
+  confirmTxt,
   itemName,
 }) => {
   const openModal = () => {
@@ -36,7 +38,11 @@ const Modal = ({
         <></>
       )}
       {children ? children : <></>}
-      <div id={id} onClick={closeModal} className={classes.modalContainer}>
+      <div
+        id={id}
+        onClick={popUp ? handleCancel : closeModal}
+        className={popUp ? classes.modalContainerPopUp : classes.modalContainer}
+      >
         <div className={classes.modalContent}>
           <div>
             {btnDelete ? (
@@ -56,12 +62,16 @@ const Modal = ({
               <>
                 <h3 className={classes.modalHeading}>{heading}</h3>
                 <p>{message}</p>
-                <ButtonMain onClick={handleConfirm} text='Confirm' />
+                {handleConfirm ? (
+                  <ButtonMain
+                    onClick={handleConfirm}
+                    text={confirmTxt ? confirmTxt : 'Confirm'}
+                  />
+                ) : (
+                  <></>
+                )}
 
-                <ButtonSecondary
-                  onClick={handleCancel}
-                  text='Cancel'
-                />
+                <ButtonSecondary onClick={handleCancel} text='Cancel' />
               </>
             )}
           </div>
