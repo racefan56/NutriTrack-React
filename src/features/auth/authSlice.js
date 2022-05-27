@@ -8,8 +8,8 @@ const initialState = {
   isSuccess: true,
   userRole: null,
   loggedIn: false,
-  countDownAutoLogoutWarning: 10000,
-  countDownToWarningPopUp: 5000,
+  countDownAutoLogoutWarning: 30000,
+  countDownToWarningPopUp: 60000,
 };
 
 // Login user
