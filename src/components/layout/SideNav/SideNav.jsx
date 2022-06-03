@@ -15,10 +15,7 @@ const SideNav = () => {
       <div className={classes['cp-side-nav-container']}>
         <LinkSubSection title={'User Accounts'}>
           <MenuLink to='/control-panel/users' text='View Users' />
-          <MenuLink
-            to='/control-panel/users/create'
-            text='Create New User'
-          />
+          <MenuLink to='/control-panel/users/create' text='Create New User' />
         </LinkSubSection>
 
         <LinkSubSection title={'Dietary'}>
@@ -59,8 +56,8 @@ const SideNav = () => {
     return (
       <div className={classes['cp-side-nav-container']}>
         <LinkSubSection title={'My Account'}>
-          <MenuLink to='/' text='Account Details' />
-          <MenuLink to='/' text='Change Password' />
+          <MenuLink to='/my-account' text='Account Details' />
+          <MenuLink to='/my-account/change-password' text='Change Password' />
         </LinkSubSection>
       </div>
     );

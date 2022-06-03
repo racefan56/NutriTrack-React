@@ -13,8 +13,11 @@ import Patients from './pages/Patients/Patients';
 import Patient from './pages/Patient/Patient';
 import CreatePatient from './pages/CreatePatient/CreatePatient';
 import PatientOrders from './pages/PatientOrders';
-import MyAccount from './pages/MyAccount/MyAccount';
+
 import Notfound from './pages/NotFound/Notfound';
+
+import MyAccount from './pages/MyAccount/MyAccount';
+import ChangePassword from './pages/ChangePassword/ChangePassword';
 
 import MenuItems from './pages/MenuItems/MenuItems';
 import MenuItemPage from './pages/MenuItemPage/MenuItemPage';
@@ -56,12 +59,24 @@ function App() {
         <Routes>
           <Route path='/' element={<Login />} />
 
+          {/* MY ACCOUNT ROUTES */}
           <Route
             path='/my-account'
             element={<PrivateRoute validRoles={['admin']} />}
           >
             <Route path='/my-account' element={<MyAccount />} />
           </Route>
+          <Route
+            path='/my-account/change-password'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/my-account/change-password'
+              element={<ChangePassword />}
+            />
+          </Route>
+
+          {/* ALERTS/CENSUS ROUTES */}
           <Route
             path='/census'
             element={<PrivateRoute validRoles={['admin']} />}
@@ -75,6 +90,7 @@ function App() {
             <Route path='/alerts' element={<Alerts />} />
           </Route>
 
+          {/* CONTROL PANEL */}
           <Route
             path='/control-panel'
             element={<PrivateRoute validRoles={['admin']} />}

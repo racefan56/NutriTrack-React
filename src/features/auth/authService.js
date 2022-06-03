@@ -10,8 +10,27 @@ const loginUser = async (userObj) => {
   return currentUser;
 };
 
+//update user password
+const updateUserPassword = async (formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.patch(
+    `${SERVER}/users/updatePassword`,
+    formData,
+    config
+  );
+
+  const passwordUpdated = await response.data;
+  return passwordUpdated;
+};
+
 const authService = {
   loginUser,
+  updateUserPassword,
 };
 
 export default authService;

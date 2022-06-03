@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import ButtomMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 
 import classes from './Login.module.css';
+import { toast } from 'react-toastify';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -16,7 +17,20 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loggedIn } = useSelector((state) => state.auth);
+  const { loggedIn, message } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (message && message.includes('401')) {
+      toast.error(
+        'The email and/or password you provided is incorrect. Please try again.'
+      );
+    }
+    if (message && message.includes('500')) {
+      toast.error(
+        'There was a problem communicating with the server. Please try again later.'
+      );
+    }
+  }, [message]);
 
   useEffect(() => {
     if (loggedIn) {
