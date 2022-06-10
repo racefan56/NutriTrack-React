@@ -14,7 +14,6 @@ const createPatient = async (formData, token) => {
   const response = await axios.post(`${SERVER}/patients`, formData, config);
 
   const patient = await response.data;
-  console.log(patient);
   return patient;
 };
 
@@ -88,12 +87,28 @@ const deletePatient = async (patientId, token) => {
   return patient;
 };
 
+//get patient census report
+const getCensus = async (token) => {
+  console.log('HERE');
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.get(`${SERVER}/patients/census`, config);
+
+  const patientCensus = await response.data;
+  return patientCensus;
+};
+
 const patientService = {
   getPatients,
   getPatient,
   updatePatient,
   deletePatient,
   createPatient,
+  getCensus,
 };
 
 export default patientService;

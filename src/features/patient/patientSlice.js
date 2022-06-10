@@ -9,6 +9,7 @@ const initialState = {
   isError: false,
   isSuccess: false,
   message: '',
+  census: null,
 };
 
 //Create patient
@@ -56,6 +57,7 @@ export const getPatient = createAsyncThunk(
   'patient/getPatient',
   async (patientId, thunkAPI) => {
     try {
+      console.log(thunkAPI.getState());
       const token = thunkAPI.getState().auth.token;
       return await patientService.getPatient(patientId, token);
     } catch (error) {
@@ -99,6 +101,26 @@ export const deletePatient = createAsyncThunk(
     try {
       const token = thunkAPI.getState().auth.token;
       return await patientService.deletePatient(patientId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+//Get patient census report
+export const getCensus = createAsyncThunk(
+  'patient/getCensus',
+  async (patientId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await patientService.getCensus(token);
     } catch (error) {
       const message =
         (error.response &&
@@ -196,6 +218,21 @@ export const patientSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
+      })
+      .addCase(getCensus.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(getCensus.fulfilled, (state, action) => {
+        state.census = action.payload.data;
+        state.loading = false;
+      })
+      .addCase(getCensus.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
+        state.census = null;
       })
       // Return state to defaults on user logout
       .addCase(logout, () => {

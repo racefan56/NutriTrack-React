@@ -4,7 +4,6 @@ import { Navigate, Outlet } from 'react-router-dom';
 import Spinner from './Spinner/Spinner';
 
 const PrivateRoute = (props) => {
-
   const { loading, loggedIn, userRole } = useSelector((state) => state.auth);
 
   if (loading) {
@@ -16,7 +15,7 @@ const PrivateRoute = (props) => {
       if (props.validRoles.includes(userRole)) {
         return <Outlet />;
       } else {
-        return <Navigate to='/' />;
+        return <Navigate to='/patients' />;
       }
     }
     return <Outlet />;

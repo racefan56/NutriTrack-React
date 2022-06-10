@@ -91,7 +91,7 @@ function MyAccount() {
     formEditMode(false);
     setEditMode(false);
     //Reset menu item fields back to their original values
-    // setFormData({ ...patient });
+    setFormData({ ...user });
   };
 
   const handleDelete = (userId) => {

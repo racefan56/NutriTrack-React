@@ -90,7 +90,7 @@ const User = (props) => {
     if (email.length < 1 || role.length < 3) {
       if (email.length < 1) {
         invalidInput('email');
-        toast.error('Area name is required.');
+        toast.error('Email is required.');
       }
       if (role.length < 3) {
         invalidInput('role');

@@ -7,7 +7,7 @@ import Navbar from './components/layout/Navbar/Navbar';
 
 import Login from './pages/Login/Login';
 import ControlPanel from './pages/ControlPanel/ControlPanel';
-import Census from './pages/Census';
+import Census from './pages/Census/Census';
 import Alerts from './pages/Alerts';
 import Patients from './pages/Patients/Patients';
 import Patient from './pages/Patient/Patient';
@@ -60,34 +60,14 @@ function App() {
           <Route path='/' element={<Login />} />
 
           {/* MY ACCOUNT ROUTES */}
-          <Route
-            path='/my-account'
-            element={<PrivateRoute validRoles={['admin']} />}
-          >
+          <Route path='/my-account' element={<PrivateRoute />}>
             <Route path='/my-account' element={<MyAccount />} />
           </Route>
-          <Route
-            path='/my-account/change-password'
-            element={<PrivateRoute validRoles={['admin']} />}
-          >
+          <Route path='/my-account/change-password' element={<PrivateRoute />}>
             <Route
               path='/my-account/change-password'
               element={<ChangePassword />}
             />
-          </Route>
-
-          {/* ALERTS/CENSUS ROUTES */}
-          <Route
-            path='/census'
-            element={<PrivateRoute validRoles={['admin']} />}
-          >
-            <Route path='/census' element={<Census />} />
-          </Route>
-          <Route
-            path='/alerts'
-            element={<PrivateRoute validRoles={['admin']} />}
-          >
-            <Route path='/alerts' element={<Alerts />} />
           </Route>
 
           {/* CONTROL PANEL */}
@@ -217,11 +197,9 @@ function App() {
           </Route>
 
           {/* PATIENT ROUTES */}
+
           {/* View all patients */}
-          <Route
-            path='/patients'
-            element={<PrivateRoute validRoles={['admin']} />}
-          >
+          <Route path='/patients' element={<PrivateRoute />}>
             <Route path='/patients' element={<Patients />} />
           </Route>
 
@@ -234,11 +212,16 @@ function App() {
           </Route>
 
           {/* View/Edit/Delete patient */}
-          <Route
-            path='/patients/:patientId'
-            element={<PrivateRoute validRoles={['admin']} />}
-          >
+          <Route path='/patients/:patientId' element={<PrivateRoute />}>
             <Route path='/patients/:patientId' element={<Patient />} />
+          </Route>
+
+          {/* Patient Alerts/Census */}
+          <Route path='/patients/census' element={<PrivateRoute />}>
+            <Route path='/patients/census' element={<Census />} />
+          </Route>
+          <Route path='/patients/alerts' element={<PrivateRoute />}>
+            <Route path='/patients/alerts' element={<Alerts />} />
           </Route>
 
           {/* PATIENT ORDER ROUTES */}

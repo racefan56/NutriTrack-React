@@ -44,9 +44,7 @@ const SideNav = () => {
           <MenuLink to='/patients/orders' text='Orders' />
         </LinkSubSection>
         <LinkSubSection title={'Patient Data'}>
-          <MenuLink to='/patients' text='View Patients' />
-          <MenuLink to='/patients/new-patient' text='Add Patient' />
-          <MenuLink to='/patients/discharge' text='Discharge Patient' />
+          <MenuLink to='/patients/census' text='Census' />
         </LinkSubSection>
       </div>
     );
