@@ -53,6 +53,11 @@ const Census = (props) => {
     return count;
   };
 
+  const handleRefresh = () => {
+    dispatch(getCensus());
+    dispatch(getUnits());
+  };
+
   if (loadingCensus || loadingUnits || !census) {
     return <Spinner />;
   } else {
@@ -65,9 +70,10 @@ const Census = (props) => {
         <SideNav />
         <ContainerSideNav>
           <Table
+            refresh={handleRefresh}
             tableId='censusTable'
             headers={['Unit', 'Eating', 'NPO', 'Total']}
-            heading={`Census: ${getToday()}`}
+            heading={`Census As Of ${getToday()}`}
           >
             {tableData.map((unit) => {
               const eatingCount = censusCount('eating', unit, eatingTotalsArr);

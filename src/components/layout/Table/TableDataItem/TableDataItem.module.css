@@ -1,8 +1,9 @@
-.item-row {
+.item-row-link,
+.item-row-no-link {
   vertical-align: middle;
 }
 
-.item-row:hover {
+.item-row-link:hover {
   cursor: pointer;
   background-color: #e7f5ff;
 }

@@ -114,6 +114,21 @@ const FormGroup = ({
             {selectOptions ? (
               selectOptions.map((option, index) => {
                 // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
+                if (Object.keys(value).length === 0 && index === 0) {
+                  return (
+                    <React.Fragment key={'noValFragment'}>
+                      <option key={`noVal`} defaultValue>
+                        -- select an option --
+                      </option>
+                      <option
+                        key={`${option.label}${index}`}
+                        value={option.value}
+                      >
+                        {capitalizeWord(option.label)}
+                      </option>
+                    </React.Fragment>
+                  );
+                }
                 return (
                   <option key={`${option.label}${index}`} value={option.value}>
                     {capitalizeWord(option.label)}
@@ -139,7 +154,6 @@ const FormGroup = ({
 
           {checkboxOptions.map((option, index) => {
             // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
-
             return (
               <fieldset
                 className={`col-12 col-md-6`}

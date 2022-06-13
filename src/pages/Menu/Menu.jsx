@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -54,6 +54,7 @@ const Menu = (props) => {
     drinks: [],
     condiments: [],
   });
+  const [filteredMenuItems, setFilteredMenuItems] = useState(null);
 
   const {
     day,
@@ -66,7 +67,6 @@ const Menu = (props) => {
     drinks,
     condiments,
   } = formData;
-  console.log(entree);
   useEffect(() => {
     if (menu) {
       setFormData({ ...menu });
@@ -75,7 +75,23 @@ const Menu = (props) => {
 
   useEffect(() => {
     formEditMode(editMode);
-  }, [editMode]);
+    // When the filteredMenuItems change, rerun the formEditMode check. Otherwise, checkbox fields will be disabled by default when readded
+  }, [editMode, filteredMenuItems]);
+
+  useEffect(() => {
+    if (menu) {
+      if (editMode && dietAvailability !== menu.dietAvailability) {
+        setFormData((prevState) => ({
+          ...prevState,
+          sides: [],
+          dessert: [],
+          drinks: [],
+          condiments: [],
+          entree: {},
+        }));
+      }
+    }
+  }, [dietAvailability, editMode, menu]);
 
   useEffect(() => {
     dispatch(getDiets());
@@ -83,6 +99,38 @@ const Menu = (props) => {
     dispatch(getMenu(menuId));
     setfirstRender(false);
   }, [dispatch, menuId]);
+
+  useEffect(() => {
+    if (dietAvailability.length > 0 && menuItems) {
+      const selectedDietIds = dietAvailability.map((diet) => {
+        if (typeof diet === 'object') {
+          return diet._id;
+        } else {
+          return diet;
+        }
+      });
+
+      setFilteredMenuItems(
+        menuItems.filter((menuItem) => {
+          const menuItemDiets = menuItem.dietAvailability.map(
+            (diet) => diet._id
+          );
+
+          const menuItemAvailableOnSelectedDiets = selectedDietIds.every(
+            (diet) => {
+              return menuItemDiets.includes(diet);
+            }
+          );
+
+          if (menuItemAvailableOnSelectedDiets) {
+            return menuItem;
+          } else {
+            return false;
+          }
+        })
+      );
+    }
+  }, [dietAvailability, menuItems]);
 
   useEffect(() => {
     if (isSuccess && menu) {
@@ -170,7 +218,7 @@ const Menu = (props) => {
     setFormData({ ...menu });
   };
 
-  if (loading || !diets || !menuItems || !menu || firstRender) {
+  if (loading || !diets || !filteredMenuItems || !menu || firstRender) {
     return <Spinner />;
   } else {
     return (
@@ -244,7 +292,7 @@ const Menu = (props) => {
             <FormGroup
               id='entree'
               inputType='select'
-              selectOptions={menuItems.flatMap((menuItem) => {
+              selectOptions={filteredMenuItems.flatMap((menuItem) => {
                 return menuItem.category === 'entree'
                   ? { value: menuItem._id, label: menuItem.name }
                   : [];
@@ -258,7 +306,7 @@ const Menu = (props) => {
             <FormGroup
               id='sides'
               inputType='checkbox'
-              checkboxOptions={menuItems.flatMap((menuItem) => {
+              checkboxOptions={filteredMenuItems.flatMap((menuItem) => {
                 return menuItem.category === 'side'
                   ? { value: menuItem._id, label: menuItem.name }
                   : [];
@@ -274,7 +322,7 @@ const Menu = (props) => {
             <FormGroup
               id='dessert'
               inputType='checkbox'
-              checkboxOptions={menuItems.flatMap((menuItem) => {
+              checkboxOptions={filteredMenuItems.flatMap((menuItem) => {
                 return menuItem.category === 'dessert'
                   ? { value: menuItem._id, label: menuItem.name }
                   : [];
@@ -290,7 +338,7 @@ const Menu = (props) => {
             <FormGroup
               id='drinks'
               inputType='checkbox'
-              checkboxOptions={menuItems.flatMap((menuItem) => {
+              checkboxOptions={filteredMenuItems.flatMap((menuItem) => {
                 return menuItem.category === 'drink'
                   ? { value: menuItem._id, label: menuItem.name }
                   : [];
@@ -306,7 +354,7 @@ const Menu = (props) => {
             <FormGroup
               id='condiments'
               inputType='checkbox'
-              checkboxOptions={menuItems.flatMap((menuItem) => {
+              checkboxOptions={filteredMenuItems.flatMap((menuItem) => {
                 return menuItem.category === 'condiment'
                   ? { value: menuItem._id, label: menuItem.name }
                   : [];

@@ -69,40 +69,6 @@ function MyAccount() {
     setFormData((prevState) => ({ ...prevState, [key]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (email.length < 1) {
-      if (email.length < 1) {
-        invalidInput('email');
-        toast.error('Email is required.');
-      }
-    } else {
-      // dispatch(updatePatient([patientId, formData]));
-    }
-  };
-
-  const handleEdit = () => {
-    formEditMode(true);
-    setEditMode(true);
-  };
-
-  const handleCancel = () => {
-    formEditMode(false);
-    setEditMode(false);
-    //Reset menu item fields back to their original values
-    setFormData({ ...user });
-  };
-
-  const handleDelete = (userId) => {
-    // dispatch(deletePatient(userId));
-    //After a patient is deleted, return to patients page
-    if (isSuccess) {
-      navigate('/');
-      toast.success('Account successfully deactivated!');
-    }
-  };
-
   if (!user) {
     return <Spinner />;
   } else {
@@ -113,7 +79,6 @@ function MyAccount() {
           <FormContainer
             category='My Account'
             title={email}
-            onSubmit={handleSubmit}
           >
             <FormGroup
               id='email'
@@ -122,7 +87,6 @@ function MyAccount() {
               label='Email'
               value={email}
               onChange={handleChange}
-              editable
               required
               minLength='7'
             />
@@ -136,34 +100,6 @@ function MyAccount() {
               required
               minLength='3'
             />
-            {editMode ? (
-              <FormActionBtnContainer>
-                <ButtonMain
-                  className='mx-3'
-                  text='Submit'
-                  type='Submit'
-                  onClick={handleSubmit}
-                />
-                <ButtonSecondary
-                  className='m-3'
-                  text='Cancel'
-                  type='Button'
-                  onClick={handleCancel}
-                />
-              </FormActionBtnContainer>
-            ) : (
-              <FormActionBtnContainer>
-                <ButtonEdit onClick={handleEdit} />
-                <Modal
-                  id={user._id}
-                  itemName={email}
-                  onDelete={() => {
-                    handleDelete(user._id);
-                  }}
-                  btnDelete
-                />
-              </FormActionBtnContainer>
-            )}
           </FormContainer>
         </ContainerSideNav>
       </>

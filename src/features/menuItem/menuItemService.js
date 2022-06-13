@@ -27,7 +27,6 @@ const getMenuItems = async (queryString, token) => {
       Authorization: `${token}`,
     },
   };
-  console.log(queryString);
 
   const response = await axios.get(
     `${SERVER}/menus/menuItems?${queryString ? queryString : ''}`,

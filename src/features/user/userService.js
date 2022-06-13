@@ -64,6 +64,7 @@ const updateUser = async (userId, formData, token) => {
   };
 
   const response = await axios.patch(
+    //  `${SERVER}/users/updateUser/${userId}`,
     `${SERVER}/users/updateUser`,
     formData,
     config

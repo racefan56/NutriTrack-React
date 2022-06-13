@@ -10,14 +10,20 @@ const TableDataItem = ({ children, navigatePath, dataPoints }) => {
   const navigate = useNavigate();
 
   return (
-    <tr className={classes['item-row']}>
+    <tr
+      className={
+        navigatePath ? classes['item-row-link'] : classes['item-row-no-link']
+      }
+    >
       {dataPoints.map((dataPoint, index) => {
         if (index === 0) {
           return (
             <td
               onClick={() => {
-                dispatch(setPathname(`${navigatePath}`));
-                navigate(`${navigatePath}`);
+                if (navigatePath) {
+                  dispatch(setPathname(`${navigatePath}`));
+                  navigate(`${navigatePath}`);
+                }
               }}
               className={classes.rowHeader}
               key={index}
@@ -29,8 +35,10 @@ const TableDataItem = ({ children, navigatePath, dataPoints }) => {
         return (
           <td
             onClick={() => {
-              dispatch(setPathname(`${navigatePath}`));
-              navigate(`${navigatePath}`);
+              if (navigatePath) {
+                dispatch(setPathname(`${navigatePath}`));
+                navigate(`${navigatePath}`);
+              }
             }}
             key={index}
           >
