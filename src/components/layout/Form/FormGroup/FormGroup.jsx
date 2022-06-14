@@ -24,6 +24,7 @@ const FormGroup = ({
   groupValue,
   groupLabel,
   checkboxOptions,
+  noOptionsMessage,
   step,
   textarea,
   mealItemArr,
@@ -111,7 +112,10 @@ const FormGroup = ({
             ) : (
               <></>
             )}
-            {selectOptions ? (
+            {selectOptions.length === 0 ? (
+              // if no options are provided, display this message
+              <option>{noOptionsMessage}</option>
+            ) : (
               selectOptions.map((option, index) => {
                 // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
                 if (Object.keys(value).length === 0 && index === 0) {
@@ -135,8 +139,6 @@ const FormGroup = ({
                   </option>
                 );
               })
-            ) : (
-              <></>
             )}
           </select>
         </fieldset>
@@ -145,59 +147,66 @@ const FormGroup = ({
   }
 
   if (inputType === 'checkbox') {
+    if (checkboxOptions.length === 0) {
+      console.log('YERP');
+    }
     return (
       <div className={className ? className : ''}>
         <fieldset className={`row ${classes.groupContainer}`}>
           <label htmlFor={id} className={classes.groupLabel}>
             {label}
           </label>
-
-          {checkboxOptions.map((option, index) => {
-            // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
-            return (
-              <fieldset
-                className={`col-12 col-md-6`}
-                key={`${option.value}${index}`}
-              >
-                {value ? (
-                  value.includes(option.value) ? (
-                    <label>
-                      <input
-                        className={`${editable ? 'editable' : ''} ${
-                          classes.inputCheck
-                        }`}
-                        type='checkbox'
-                        id={id}
-                        name={id}
-                        value={option.value}
-                        onChange={onChange}
-                        defaultChecked
-                        disabled
-                      />
-                      {capitalizeWord(option.label)}
-                    </label>
+          {checkboxOptions.length === 0 ? (
+            // if no options are provided, display this message
+            <p>{noOptionsMessage}</p>
+          ) : (
+            checkboxOptions.map((option, index) => {
+              // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
+              return (
+                <fieldset
+                  className={`col-12 col-md-6`}
+                  key={`${option.value}${index}`}
+                >
+                  {value ? (
+                    value.includes(option.value) ? (
+                      <label>
+                        <input
+                          className={`${editable ? 'editable' : ''} ${
+                            classes.inputCheck
+                          }`}
+                          type='checkbox'
+                          id={id}
+                          name={id}
+                          value={option.value}
+                          onChange={onChange}
+                          defaultChecked
+                          disabled
+                        />
+                        {capitalizeWord(option.label)}
+                      </label>
+                    ) : (
+                      <label>
+                        <input
+                          className={`${editable ? 'editable' : ''} ${
+                            classes.inputCheck
+                          }`}
+                          type='checkbox'
+                          id={id}
+                          name={id}
+                          value={option.value}
+                          onChange={onChange}
+                          disabled
+                        />
+                        {capitalizeWord(option.label)}
+                      </label>
+                    )
                   ) : (
-                    <label>
-                      <input
-                        className={`${editable ? 'editable' : ''} ${
-                          classes.inputCheck
-                        }`}
-                        type='checkbox'
-                        id={id}
-                        name={id}
-                        value={option.value}
-                        onChange={onChange}
-                        disabled
-                      />
-                      {capitalizeWord(option.label)}
-                    </label>
-                  )
-                ) : (
-                  <></>
-                )}
-              </fieldset>
-            );
-          })}
+                    <></>
+                  )}
+                </fieldset>
+              );
+            })
+          )}
         </fieldset>
       </div>
     );

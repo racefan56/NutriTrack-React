@@ -11,13 +11,12 @@ const AutoLogout = (props) => {
   const [autoLogoutModal, setAutoLogoutModal] = useState(false);
   const [timeLeft, setTimeLeft] = useState(countDownAutoLogoutWarning);
 
-  let startWarningPopupTimer = useRef();
-  let startTimer = useRef();
-  let timeTracker;
+  let startWarningPopupTimer = useRef(null);
+  let startTimer = useRef(null);
   let warningPopup;
 
   //START TIMER
-  timeTracker = useCallback(() => {
+  const timeTracker = useCallback(() => {
     startTimer.current = setTimeout(() => {
       warningPopup();
     }, countDownToWarningPopUp);
@@ -25,6 +24,7 @@ const AutoLogout = (props) => {
 
   //RESET TIMER
   const resetTimer = useCallback(() => {
+    console.log('CLICKs');
     clearTimeout(startTimer.current);
 
     if (loggedIn) {
@@ -46,7 +46,7 @@ const AutoLogout = (props) => {
       setTimeLeft((prevState) => {
         if (prevState === 0) {
           clearInterval(startWarningPopupTimer.current);
-          window.removeEventListener('click', resetTimer);
+          document.body.removeEventListener('click', resetTimer);
           return;
         } else {
           return prevState - 1000;
@@ -57,13 +57,13 @@ const AutoLogout = (props) => {
 
   useEffect(() => {
     if (!loggedIn) {
-      window.removeEventListener('click', resetTimer);
+      document.body.removeEventListener('click', resetTimer);
       clearTimeout(startTimer.current);
       clearInterval(startWarningPopupTimer.current);
       return;
     } else {
       setAutoLogoutModal(false);
-      window.addEventListener('click', resetTimer);
+      document.body.addEventListener('click', resetTimer);
       timeTracker();
     }
   }, [loggedIn, resetTimer, timeTracker]);

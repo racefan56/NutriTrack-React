@@ -218,6 +218,10 @@ const Menu = (props) => {
     setFormData({ ...menu });
   };
 
+  const noOptionsTemplate = (item) => {
+    return `There are currently no ${item} available for the Diet Availability combination you have selected.`;
+  };
+
   if (loading || !diets || !filteredMenuItems || !menu || firstRender) {
     return <Spinner />;
   } else {
@@ -297,6 +301,7 @@ const Menu = (props) => {
                   ? { value: menuItem._id, label: menuItem.name }
                   : [];
               })}
+              noOptionsMessage='-- No options available --'
               label='Entree'
               className='col-12 col-lg-6'
               value={entree}
@@ -311,6 +316,7 @@ const Menu = (props) => {
                   ? { value: menuItem._id, label: menuItem.name }
                   : [];
               })}
+              noOptionsMessage={noOptionsTemplate('sides')}
               label='Sides'
               className='col-12 col-lg-6'
               value={sides.map((side) => {
@@ -327,7 +333,8 @@ const Menu = (props) => {
                   ? { value: menuItem._id, label: menuItem.name }
                   : [];
               })}
-              label='Dessert'
+              noOptionsMessage={noOptionsTemplate('desserts')}
+              label='Desserts'
               className='col-12 col-lg-6'
               value={dessert.map((item) => {
                 return item._id;
@@ -343,6 +350,7 @@ const Menu = (props) => {
                   ? { value: menuItem._id, label: menuItem.name }
                   : [];
               })}
+              noOptionsMessage={noOptionsTemplate('drinks')}
               label='Drinks'
               className='col-12 col-lg-6'
               value={drinks.map((drink) => {
@@ -359,6 +367,7 @@ const Menu = (props) => {
                   ? { value: menuItem._id, label: menuItem.name }
                   : [];
               })}
+              noOptionsMessage={noOptionsTemplate('condiments')}
               label='Condiments'
               className='col-12 col-lg-6'
               value={condiments.map((condiment) => {
