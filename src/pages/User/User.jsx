@@ -35,11 +35,12 @@ const User = (props) => {
 
   const [editMode, setEditMode] = useState();
   const [formData, setFormData] = useState({
+    userName: '',
     email: '',
     role: '',
   });
 
-  const { email, role } = formData;
+  const { userName, email, role } = formData;
 
   useEffect(() => {
     dispatch(getUser(userId));
@@ -131,11 +132,11 @@ const User = (props) => {
         <ContainerSideNav>
           <FormContainer category='User' title={email} onSubmit={handleSubmit}>
             <FormGroup
-              id='email'
+              id='userName'
               inputType='text'
-              className='col-12 col-lg-6'
-              label='Email'
-              value={email}
+              className='col-12 col-lg-6 col-xl-4'
+              label='Username'
+              value={userName}
               onChange={handleChange}
               editable
             />
@@ -149,11 +150,21 @@ const User = (props) => {
                 { value: 'nca', label: 'NCA' },
               ]}
               label='Role'
-              className='col-sm-6 col-lg-4 col-xl-4'
+              className='col-12 col-lg-6 col-xl-4'
               value={role}
               onChange={handleChange}
               editable
             />
+            <FormGroup
+              id='email'
+              inputType='text'
+              className='col-12 col-xl-4'
+              label='Email'
+              value={email}
+              onChange={handleChange}
+              editable
+            />
+
             {editMode ? (
               <FormActionBtnContainer>
                 <ButtonMain

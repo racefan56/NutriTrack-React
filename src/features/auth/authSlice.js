@@ -15,6 +15,25 @@ const initialState = {
   countDownToWarningPopUp: 60000,
 };
 
+// Create user
+export const createUser = createAsyncThunk(
+  'auth/createUser',
+  async (userObj, thunkAPI) => {
+    try {
+      return await authService.createUser(userObj);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 // Login user
 export const login = createAsyncThunk(
   'auth/login',
@@ -54,6 +73,14 @@ export const updateUserPassword = createAsyncThunk(
   }
 );
 
+// Reset isSuccess
+export const resetIsSuccess = createAsyncThunk(
+  'auth/resetIsSuccess',
+  async () => {
+    return;
+  }
+);
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -88,6 +115,20 @@ export const authSlice = createSlice({
         state.email = null;
         state.userRole = null;
       })
+      .addCase(createUser.pending, (state) => {
+        state.loading = true;
+        state.isSuccess = false;
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isSuccess = true;
+        state.message = 'create user successful';
+      })
+      .addCase(createUser.rejected, (state, action) => {
+        state.loading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
       .addCase(updateUserPassword.pending, (state) => {
         state.loading = true;
         state.isSuccess = false;
@@ -101,6 +142,9 @@ export const authSlice = createSlice({
         state.loading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(resetIsSuccess.fulfilled, (state) => {
+        state.isSuccess = false;
       });
   },
 });

@@ -39,7 +39,7 @@ const UserResults = (props) => {
     return (
       <>
         <Table
-          headers={['Email', 'Role', 'Created', '']}
+          headers={['User', 'Email', 'Role', '']}
           heading='Users'
           refresh={handleRefresh}
           createPath='create'
@@ -48,7 +48,11 @@ const UserResults = (props) => {
             <React.Fragment key={user._id}>
               <TableDataItem
                 navigatePath={`/control-panel/users/${user._id}`}
-                dataPoints={[user.email, user.role, user.createdAt]}
+                dataPoints={[
+                  user.userName,
+                  user.email,
+                  user.role,
+                ]}
               >
                 <td>
                   <ButtonMain

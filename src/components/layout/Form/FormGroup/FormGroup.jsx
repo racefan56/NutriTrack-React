@@ -278,6 +278,28 @@ const FormGroup = ({
                   onChange={onChange}
                 />
               )}
+              {inputType === 'password' && (
+                <input
+                  id={id}
+                  type='password'
+                  className={`${editable ? 'editable' : ''} ${classes.input}`}
+                  disabled
+                  placeholder={placeholder}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
+              {inputType === 'email' && (
+                <input
+                  id={id}
+                  type='email'
+                  className={`${editable ? 'editable' : ''} ${classes.input}`}
+                  disabled
+                  placeholder={placeholder}
+                  value={value}
+                  onChange={onChange}
+                />
+              )}
             </>
           ) : (
             <></>

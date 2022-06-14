@@ -2,6 +2,14 @@ import axios from 'axios';
 
 const SERVER = process.env.REACT_APP_SERVER;
 
+//Create user
+const createUser = async (userObj) => {
+  const response = await axios.post(`${SERVER}/users/register`, userObj);
+
+  const user = await response.data;
+  return user;
+};
+
 //Login user
 const loginUser = async (userObj) => {
   const response = await axios.post(`${SERVER}/users/login`, userObj);
@@ -29,6 +37,7 @@ const updateUserPassword = async (formData, token) => {
 };
 
 const authService = {
+  createUser,
   loginUser,
   updateUserPassword,
 };

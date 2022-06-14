@@ -71,14 +71,14 @@ function ChangePassword() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (updatedPassword.length < 1 || updatedPasswordConfirm < 1) {
-      if (updatedPassword.length < 1) {
+    if (updatedPassword.length < 8 || updatedPasswordConfirm < 8) {
+      if (updatedPassword.length < 8) {
         invalidInput('updatedPassword');
-        toast.error('New password is required.');
+        toast.error('New password must be a minimum of 8 characters');
       }
-      if (updatedPasswordConfirm.length < 1) {
+      if (updatedPasswordConfirm.length < 8) {
         invalidInput('updatedPasswordConfirm');
-        toast.error('Password confirmation is required.');
+        toast.error('New password must be a minimum of 8 characters');
       }
     } else if (updatedPassword !== updatedPasswordConfirm) {
       invalidInput('updatedPassword');
