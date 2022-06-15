@@ -52,6 +52,40 @@ const getPatient = async (patientId, token) => {
   return patient;
 };
 
+//get patient orders
+const getPatientOrders = async (queryString, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.get(
+    `${SERVER}/patients/allPatientOrders?${queryString ? queryString : ''}`,
+    config
+  );
+
+  const patients = await response.data;
+  return patients;
+};
+
+//get one patient order
+const getPatientOrder = async (orderId, patientId, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.get(
+    `${SERVER}/patients/${patientId}/menu/order/${orderId}`,
+    config
+  );
+
+  const patientOrder = await response.data;
+  return patientOrder;
+};
+
 //Update patient
 const updatePatient = async (patientId, formData, token) => {
   const config = {
@@ -105,6 +139,8 @@ const getCensus = async (token) => {
 const patientService = {
   getPatients,
   getPatient,
+  getPatientOrders,
+  getPatientOrder,
   updatePatient,
   deletePatient,
   createPatient,

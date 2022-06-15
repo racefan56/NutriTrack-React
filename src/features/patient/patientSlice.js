@@ -5,6 +5,8 @@ import { logout } from './../auth/authSlice';
 const initialState = {
   patients: null,
   patient: null,
+  patientOrders: null,
+  patientOrder: null,
   loading: true,
   isError: false,
   isSuccess: false,
@@ -19,6 +21,46 @@ export const createPatient = createAsyncThunk(
     try {
       const token = thunkAPI.getState().auth.token;
       return await patientService.createPatient(formData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+//Get all patient orders
+export const getPatientOrders = createAsyncThunk(
+  'patient/getPatientOrders',
+  async (queryString, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await patientService.getPatientOrders(queryString, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+//Get one patient order
+export const getPatientOrder = createAsyncThunk(
+  'patient/getPatientOrder',
+  async (orderId, patientId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await patientService.getPatientOrder(orderId, patientId, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -188,6 +230,36 @@ export const patientSlice = createSlice({
         state.message = action.payload;
         state.loading = false;
         state.patient = null;
+      })
+      .addCase(getPatientOrders.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(getPatientOrders.fulfilled, (state, action) => {
+        state.patientOrders = action.payload.data.data;
+        state.loading = false;
+      })
+      .addCase(getPatientOrders.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
+        state.patientOrders = null;
+      })
+      .addCase(getPatientOrder.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(getPatientOrder.fulfilled, (state, action) => {
+        state.patientOrder = action.payload.data.data;
+        state.loading = false;
+      })
+      .addCase(getPatientOrder.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
+        state.patientOrder = null;
       })
       .addCase(updatePatient.pending, (state) => {
         state.isSuccess = false;

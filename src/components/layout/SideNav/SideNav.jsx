@@ -39,12 +39,13 @@ const SideNav = () => {
   if (path.startsWith('/patients')) {
     return (
       <div className={classes['cp-side-nav-container']}>
-        <LinkSubSection title={'Updates & Orders'}>
+        {/* Future version feature */}
+        {/* <LinkSubSection title={'Updates'}>
           <MenuLink to='/patients/alerts' text='Alerts' />
-          <MenuLink to='/patients/orders' text='Orders' />
-        </LinkSubSection>
+        </LinkSubSection> */}
         <LinkSubSection title={'Patient Data'}>
           <MenuLink to='/patients' text='Patients' />
+          <MenuLink to='/patients/patient-orders' text='Orders' />
           <MenuLink to='/patients/census' text='Census' />
         </LinkSubSection>
       </div>

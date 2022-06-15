@@ -112,33 +112,40 @@ const FormGroup = ({
             ) : (
               <></>
             )}
-            {selectOptions.length === 0 ? (
-              // if no options are provided, display this message
-              <option>{noOptionsMessage}</option>
-            ) : (
-              selectOptions.map((option, index) => {
-                // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
-                if (Object.keys(value).length === 0 && index === 0) {
+            {selectOptions ? (
+              selectOptions.length === 0 ? (
+                // if an empty array of options are provided, display this message
+                <option>{noOptionsMessage}</option>
+              ) : (
+                selectOptions.map((option, index) => {
+                  // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
+                  if (Object.keys(value).length === 0 && index === 0) {
+                    return (
+                      <React.Fragment key={'noValFragment'}>
+                        <option key={`noVal`} defaultValue>
+                          -- select an option --
+                        </option>
+                        <option
+                          key={`${option.label}${index}`}
+                          value={option.value}
+                        >
+                          {capitalizeWord(option.label)}
+                        </option>
+                      </React.Fragment>
+                    );
+                  }
                   return (
-                    <React.Fragment key={'noValFragment'}>
-                      <option key={`noVal`} defaultValue>
-                        -- select an option --
-                      </option>
-                      <option
-                        key={`${option.label}${index}`}
-                        value={option.value}
-                      >
-                        {capitalizeWord(option.label)}
-                      </option>
-                    </React.Fragment>
+                    <option
+                      key={`${option.label}${index}`}
+                      value={option.value}
+                    >
+                      {capitalizeWord(option.label)}
+                    </option>
                   );
-                }
-                return (
-                  <option key={`${option.label}${index}`} value={option.value}>
-                    {capitalizeWord(option.label)}
-                  </option>
-                );
-              })
+                })
+              )
+            ) : (
+              <></>
             )}
           </select>
         </fieldset>

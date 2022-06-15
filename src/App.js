@@ -12,7 +12,8 @@ import Alerts from './pages/Alerts';
 import Patients from './pages/Patients/Patients';
 import Patient from './pages/Patient/Patient';
 import CreatePatient from './pages/CreatePatient/CreatePatient';
-import PatientOrders from './pages/PatientOrders';
+import PatientOrders from './pages/PatientOrders/PatientOrders';
+import PatientOrder from './pages/PatientOrder/PatientOrder';
 
 import Notfound from './pages/NotFound/Notfound';
 
@@ -226,10 +227,23 @@ function App() {
 
           {/* PATIENT ORDER ROUTES */}
           <Route
-            path='/patient-orders'
+            path='/patients/patient-orders'
             element={<PrivateRoute validRoles={['admin']} />}
           >
-            <Route path='/patient-orders' element={<PatientOrders />} />
+            <Route
+              path='/patients/patient-orders'
+              element={<PatientOrders />}
+            />
+          </Route>
+
+          <Route
+            path='/patients/patient-orders/:orderId'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/patients/patient-orders/:orderId'
+              element={<PatientOrder />}
+            />
           </Route>
 
           {/* MENU ITEM ROUTES */}
