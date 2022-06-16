@@ -16,6 +16,7 @@ const FormGroup = ({
   placeholder,
   defaultValue,
   editable,
+  alwaysEditable,
   readonly,
   onChange,
   inputType,
@@ -86,7 +87,7 @@ const FormGroup = ({
             id={id}
             name={id}
             className={`${editable ? 'editable' : ''} ${classes.input}`}
-            disabled
+            disabled={alwaysEditable ? false : true}
             value={value}
             onChange={onChange}
           >
@@ -155,7 +156,6 @@ const FormGroup = ({
 
   if (inputType === 'checkbox') {
     if (checkboxOptions.length === 0) {
-      console.log('YERP');
     }
     return (
       <div className={className ? className : ''}>

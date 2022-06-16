@@ -2,8 +2,8 @@ import React from 'react';
 import classes from './Table.module.css';
 
 import ButtonRefresh from '../Button/ButtonRefresh/ButtonRefresh';
-import ButtonMain from '../Button/ButtonMain/ButtonMain';
 import ButtonCreate from '../Button/ButtonCreate/ButtonCreate';
+import ButtonFilter from '../Button/ButtonFilter/ButtonFilter';
 
 const Table = ({
   children,
@@ -11,6 +11,7 @@ const Table = ({
   headers,
   heading,
   refresh,
+  filterOptions,
   createPath,
 }) => {
   return (
@@ -22,6 +23,11 @@ const Table = ({
             {' '}
             {refresh ? <ButtonRefresh refresh={refresh} /> : <></>}
             {createPath ? <ButtonCreate path={createPath} /> : <></>}
+            {filterOptions ? (
+              <ButtonFilter filterOptions={filterOptions} />
+            ) : (
+              <></>
+            )}
           </div>
         ) : (
           <></>

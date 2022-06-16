@@ -27,6 +27,23 @@ const PatientOrderResults = (props) => {
     dispatch(getPatientOrders());
   };
 
+  const filterOptions = {
+    Day: [
+      { value: 'Sunday', label: 'Sunday' },
+      { value: 'Monday', label: 'Monday' },
+      { value: 'Tuesday', label: 'Tuesday' },
+      { value: 'Wednesday', label: 'Wednesday' },
+      { value: 'Thursday', label: 'Thursday' },
+      { value: 'Friday', label: 'Friday' },
+      { value: 'Saturday', label: 'Saturday' },
+    ],
+    Meal: [
+      { value: 'Breakfast', label: 'Breakfast' },
+      { value: 'Lunch', label: 'Lunch' },
+      { value: 'Dinner', label: 'Dinner' },
+    ],
+  };
+
   if (loading || !patientOrders) {
     return <Spinner />;
   }
@@ -41,6 +58,7 @@ const PatientOrderResults = (props) => {
           heading='Patient Orders'
           refresh={handleRefresh}
           createPath='create'
+          filterOptions={filterOptions}
         >
           {patientOrders.map((order, index) => (
             <React.Fragment key={order._id}>
