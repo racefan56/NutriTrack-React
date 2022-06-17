@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+
+import { getDayOfWeek } from '../helperFunctions/helperFunctions';
 
 import { getPatientOrders } from '../../features/patient/patientSlice';
 import Table from '../layout/Table/Table';
@@ -16,19 +18,60 @@ const PatientOrderResults = (props) => {
     (state) => state.patient
   );
 
+  const [formData, setFormData] = useState({
+    day: getDayOfWeek(),
+    meal: '',
+  });
+
+  const { day, meal } = formData;
+
   useEffect(() => {
-    dispatch(getPatientOrders());
+    dispatch(getPatientOrders(`day=${day}`));
     if (isError) {
       toast.error(message);
     }
-  }, [dispatch, isError, message]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const handleRefresh = () => {
-    dispatch(getPatientOrders());
+  const handleFilterAndRefresh = () => {
+    let string = '';
+    if (day !== '') {
+      string = `day=${day}`;
+    }
+    if (meal) {
+      if (string !== '') {
+        string = `${string + `&mealPeriod=${meal}`}`;
+      } else {
+        string = `${string + `mealPeriod=${meal}`}`;
+      }
+    }
+    return dispatch(getPatientOrders(string));
+  };
+
+  const handleChange = (e) => {
+    const key = e.target.id;
+
+    //remove inline style added to invalid inputs on submit attempts when edited
+    if (e.target.style) {
+      e.target.removeAttribute('style');
+    }
+
+    if (e.target.type === 'checkbox') {
+      const checked = Array.from(
+        document.querySelectorAll(`input[type=checkbox][name=${key}]:checked`),
+        (e) => e.value
+      );
+      return setFormData((prevState) => ({
+        ...prevState,
+        [key]: [...checked],
+      }));
+    }
+
+    setFormData((prevState) => ({ ...prevState, [key]: e.target.value }));
   };
 
   const filterOptions = {
-    Day: [
+    day: [
       { value: 'Sunday', label: 'Sunday' },
       { value: 'Monday', label: 'Monday' },
       { value: 'Tuesday', label: 'Tuesday' },
@@ -37,7 +80,8 @@ const PatientOrderResults = (props) => {
       { value: 'Friday', label: 'Friday' },
       { value: 'Saturday', label: 'Saturday' },
     ],
-    Meal: [
+    meal: [
+      { value: '', label: 'All' },
       { value: 'Breakfast', label: 'Breakfast' },
       { value: 'Lunch', label: 'Lunch' },
       { value: 'Dinner', label: 'Dinner' },
@@ -56,9 +100,13 @@ const PatientOrderResults = (props) => {
         <Table
           headers={['Day', 'Meal', 'Unit', 'Room', 'Status', '']}
           heading='Patient Orders'
-          refresh={handleRefresh}
+          refresh={handleFilterAndRefresh}
           createPath='create'
+          filterHeading='Patient Orders'
           filterOptions={filterOptions}
+          filterValues={[day, meal]}
+          filterOnChange={handleChange}
+          filterSubmit={handleFilterAndRefresh}
         >
           {patientOrders.map((order, index) => (
             <React.Fragment key={order._id}>

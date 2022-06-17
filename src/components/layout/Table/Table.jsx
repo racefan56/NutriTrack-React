@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import classes from './Table.module.css';
 
 import ButtonRefresh from '../Button/ButtonRefresh/ButtonRefresh';
@@ -11,9 +11,18 @@ const Table = ({
   headers,
   heading,
   refresh,
+  filterHeading,
   filterOptions,
+  filterValues,
+  filterOnChange,
+  filterSubmit,
   createPath,
 }) => {
+  const table = useRef();
+  useEffect(() => {
+    table.current = document.getElementById(tableId);
+    console.log(table);
+  }, [tableId]);
   return (
     <>
       <div className={classes.headingContainer}>
@@ -24,7 +33,13 @@ const Table = ({
             {refresh ? <ButtonRefresh refresh={refresh} /> : <></>}
             {createPath ? <ButtonCreate path={createPath} /> : <></>}
             {filterOptions ? (
-              <ButtonFilter filterOptions={filterOptions} />
+              <ButtonFilter
+                filterHeading={filterHeading}
+                filterOptions={filterOptions}
+                filterValues={filterValues}
+                filterOnChange={filterOnChange}
+                filterSubmit={filterSubmit}
+              />
             ) : (
               <></>
             )}
@@ -47,7 +62,15 @@ const Table = ({
               })}
             </tr>
           </thead>
-          <tbody>{children}</tbody>
+          <tbody>
+            {children.length === 0 ? (
+              <td className={classes.noResults} colSpan='100%'>
+                No results were found
+              </td>
+            ) : (
+              children
+            )}
+          </tbody>
         </table>
       </div>
     </>

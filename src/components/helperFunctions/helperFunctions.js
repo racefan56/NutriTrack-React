@@ -63,6 +63,22 @@ export const getToday = () => {
   return today;
 };
 
+export const getDayOfWeek = () => {
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  const curDate = new Date();
+  const day = days[curDate.getDay()];
+  return day;
+};
+
 export const ISOdateOnly = (date) => {
   const dateOnly = date.split('T')[0];
   return dateOnly;
