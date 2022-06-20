@@ -12,6 +12,8 @@ import { v4 as uuidv4 } from 'uuid';
 const FormGroup = ({
   id,
   label,
+  internalLabel,
+  sideLabel,
   value,
   placeholder,
   defaultValue,
@@ -35,11 +37,18 @@ const FormGroup = ({
   if (mealItemArr) {
     return mealItemArr.map((item, index) => {
       return (
-        <fieldset className={classes.groupContainer} key={uuidv4()}>
+        <fieldset
+          className={
+            sideLabel ? classes.groupContainerSideLabel : classes.groupContainer
+          }
+          key={uuidv4()}
+        >
           {index === 0 ? (
             <label
               htmlFor={label.replace(/\s+/g, '')}
-              className={classes.groupLabel}
+              className={
+                internalLabel ? classes.internalLabel : classes.groupLabel
+              }
             >
               {label}:{' '}
             </label>
@@ -59,10 +68,14 @@ const FormGroup = ({
 
   if (mealItemObj) {
     return (
-      <fieldset className={classes.groupContainer}>
+      <fieldset
+        className={
+          sideLabel ? classes.groupContainerSideLabel : classes.groupContainer
+        }
+      >
         <label
           htmlFor={label.replace(/\s+/g, '')}
-          className={classes.groupLabel}
+          className={internalLabel ? classes.internalLabel : classes.groupLabel}
         >
           {label}:{' '}
         </label>
@@ -79,8 +92,17 @@ const FormGroup = ({
   if (inputType === 'select') {
     return (
       <div className={className ? className : ''}>
-        <fieldset className={classes.groupContainer}>
-          <label htmlFor={id} className={classes.groupLabel}>
+        <fieldset
+          className={
+            sideLabel ? classes.groupContainerSideLabel : classes.groupContainer
+          }
+        >
+          <label
+            htmlFor={id}
+            className={
+              internalLabel ? classes.internalLabel : classes.groupLabel
+            }
+          >
             {label}
           </label>
           <select
@@ -120,21 +142,24 @@ const FormGroup = ({
               ) : (
                 selectOptions.map((option, index) => {
                   // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
-                  if (Object.keys(value).length === 0 && index === 0) {
-                    return (
-                      <React.Fragment key={'noValFragment'}>
-                        <option key={`noVal`} defaultValue>
-                          -- select an option --
-                        </option>
-                        <option
-                          key={`${option.label}${index}`}
-                          value={option.value}
-                        >
-                          {capitalizeWord(option.label)}
-                        </option>
-                      </React.Fragment>
-                    );
+                  if (value) {
+                    if (Object.keys(value).length === 0 && index === 0) {
+                      return (
+                        <React.Fragment key={'noValFragment'}>
+                          <option key={`noVal`} defaultValue>
+                            -- select an option --
+                          </option>
+                          <option
+                            key={`${option.label}${index}`}
+                            value={option.value}
+                          >
+                            {capitalizeWord(option.label)}
+                          </option>
+                        </React.Fragment>
+                      );
+                    }
                   }
+
                   return (
                     <option
                       key={`${option.label}${index}`}
@@ -160,7 +185,12 @@ const FormGroup = ({
     return (
       <div className={className ? className : ''}>
         <fieldset className={`row ${classes.groupContainer}`}>
-          <label htmlFor={id} className={classes.groupLabel}>
+          <label
+            htmlFor={id}
+            className={
+              internalLabel ? classes.internalLabel : classes.groupLabel
+            }
+          >
             {label}
           </label>
           {checkboxOptions.length === 0 ? (
@@ -221,9 +251,18 @@ const FormGroup = ({
 
   return (
     <div className={className ? className : ''}>
-      <fieldset className={classes.groupContainer}>
+      <fieldset
+        className={
+          sideLabel ? classes.groupContainerSideLabel : classes.groupContainer
+        }
+      >
         {label ? (
-          <label htmlFor={id} className={classes.groupLabel}>
+          <label
+            htmlFor={id}
+            className={
+              internalLabel ? classes.internalLabel : classes.groupLabel
+            }
+          >
             {label}
           </label>
         ) : (

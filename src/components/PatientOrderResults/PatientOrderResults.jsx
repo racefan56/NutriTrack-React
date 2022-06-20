@@ -23,6 +23,8 @@ const PatientOrderResults = (props) => {
     meal: '',
   });
 
+  const [limit, setLimit] = useState(10);
+
   const { day, meal } = formData;
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const PatientOrderResults = (props) => {
     if (isError) {
       toast.error(message);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleFilterAndRefresh = () => {
@@ -51,23 +53,12 @@ const PatientOrderResults = (props) => {
   const handleChange = (e) => {
     const key = e.target.id;
 
-    //remove inline style added to invalid inputs on submit attempts when edited
-    if (e.target.style) {
-      e.target.removeAttribute('style');
-    }
-
-    if (e.target.type === 'checkbox') {
-      const checked = Array.from(
-        document.querySelectorAll(`input[type=checkbox][name=${key}]:checked`),
-        (e) => e.value
-      );
-      return setFormData((prevState) => ({
-        ...prevState,
-        [key]: [...checked],
-      }));
-    }
-
     setFormData((prevState) => ({ ...prevState, [key]: e.target.value }));
+  };
+
+  const handleLimitChange = (e) => {
+    setLimit(e.target.value);
+    dispatch(getPatientOrders(`limit=${e.target.value}`));
   };
 
   const filterOptions = {
@@ -92,9 +83,11 @@ const PatientOrderResults = (props) => {
     return <Spinner />;
   }
 
-  if (!loading && isError) {
+  if (isError) {
     return <Error></Error>;
-  } else {
+  }
+
+  if (!loading && patientOrders) {
     return (
       <>
         <Table
@@ -107,6 +100,9 @@ const PatientOrderResults = (props) => {
           filterValues={[day, meal]}
           filterOnChange={handleChange}
           filterSubmit={handleFilterAndRefresh}
+          limit
+          limitValue={limit}
+          limitOnChange={handleLimitChange}
         >
           {patientOrders.map((order, index) => (
             <React.Fragment key={order._id}>

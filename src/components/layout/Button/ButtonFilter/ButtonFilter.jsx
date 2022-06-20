@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BiFilter } from 'react-icons/bi';
 
 import { capitalizeWord } from '../../../helperFunctions/helperFunctions';
@@ -15,10 +15,9 @@ const ButtonFilter = ({
   filterValues,
   filterOnChange,
   filterSubmit,
+  filterReset,
 }) => {
   const [isVisibile, setIsVisibile] = useState(false);
-
-  console.log(filterOptions);
 
   return (
     <>
@@ -46,6 +45,7 @@ const ButtonFilter = ({
                     inputType='select'
                     selectOptions={option[1]}
                     onChange={filterOnChange}
+                    className={classes.filterFormGroup}
                     alwaysEditable
                   />
                 );
@@ -57,8 +57,11 @@ const ButtonFilter = ({
               <ButtonMain onClick={filterSubmit} text='Filter Results' />
               <ButtonSecondary
                 className={'my-3'}
-                text='Cancel'
-                onClick={() => setIsVisibile(false)}
+                text='Reset'
+                onClick={(e) => {
+                  setIsVisibile(false);
+                  filterReset.call(this, e);
+                }}
               />
             </div>
           </form>

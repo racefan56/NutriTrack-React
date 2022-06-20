@@ -23,11 +23,21 @@
   padding-bottom: 0.5rem;
 }
 
+.tableButtonsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .noResults {
   text-align: center;
   font-size: 24px;
   font-weight: 600;
   padding: 1rem;
+}
+
+.filtersAppliedDiv {
+  margin: 8px;
 }
 
 thead:first-child {

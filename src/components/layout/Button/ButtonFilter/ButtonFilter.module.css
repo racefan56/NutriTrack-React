@@ -57,6 +57,10 @@
   overflow-y: scroll;
 }
 
+.filterFormGroup {
+  padding: 8px 24px;
+}
+
 .btnContainer {
   margin: 16px;
   padding: 8px;

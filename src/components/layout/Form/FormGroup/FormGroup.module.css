@@ -1,4 +1,4 @@
-.groupContainer {
+.groupContainer .groupContainerSideLabel {
   color: #343a40;
   border-radius: 0.5rem;
   margin: 1rem;
@@ -6,10 +6,20 @@
   font-size: 18px;
 }
 
+.groupContainerSideLabel {
+  display: flex;
+  justify-content: center;
+  margin-right: 16px;
+}
+
 .groupLabel {
   font-size: 18px;
   font-weight: 600;
   padding: 8px 8px 8px 0px;
+}
+
+.internalLabel {
+  position: relative;
 }
 
 .groupData {

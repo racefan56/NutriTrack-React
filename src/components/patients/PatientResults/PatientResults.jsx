@@ -24,6 +24,9 @@ function PatientResults() {
   });
   const [unitValuesLabels, setUnitValuesLabels] = useState([]);
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
   const { unit, status } = formData;
 
   useEffect(() => {
@@ -41,41 +44,45 @@ function PatientResults() {
     }
   }, [units]);
 
-  const handleFilterAndRefresh = () => {
-    let string = '';
-    if (unit !== '') {
-      string = `unit=${unit}`;
+  const handleReset = () => {
+    console.log(formData);
+    if (
+      formData.unit !== '' || formData.status !== ''
+    ) {
+      setFormData({
+        unit: '',
+        status: '',
+      });
+      dispatch(getPatients());
     }
-    if (status) {
-      if (string !== '') {
-        string = `${string + `&status=${status}`}`;
-      } else {
-        string = `${string + `status=${status}`}`;
-      }
+  };
+
+  const handleRefresh = ({ limitChange }) => {
+    let string = '';
+
+    if (limitChange) {
+      string = `limit=${limitChange}`;
+    } else {
+      string = `limit=${limit}`;
+    }
+
+    if (unit !== '') {
+      string = `${string + `&unit=${unit}`}`;
+    }
+    if (status !== '') {
+      string = `${string + `&status=${status}`}`;
     }
     return dispatch(getPatients(string));
   };
 
   const handleChange = (e) => {
     const key = e.target.id;
-
-    //remove inline style added to invalid inputs on submit attempts when edited
-    if (e.target.style) {
-      e.target.removeAttribute('style');
-    }
-
-    if (e.target.type === 'checkbox') {
-      const checked = Array.from(
-        document.querySelectorAll(`input[type=checkbox][name=${key}]:checked`),
-        (e) => e.value
-      );
-      return setFormData((prevState) => ({
-        ...prevState,
-        [key]: [...checked],
-      }));
-    }
-
     setFormData((prevState) => ({ ...prevState, [key]: e.target.value }));
+  };
+
+  const handleLimitChange = (e) => {
+    setLimit(e.target.value);
+    handleRefresh({ limitChange: e.target.value });
   };
 
   const filterOptions = {
@@ -100,13 +107,18 @@ function PatientResults() {
           tableId='patientResultsTable'
           headers={['Room', 'First', 'Last', 'Diet', 'Status', '']}
           heading='Patients'
-          refresh={handleFilterAndRefresh}
+          refresh={handleRefresh}
           createPath='create'
           filterHeading='Patients'
           filterOptions={filterOptions}
           filterValues={[unit, status]}
           filterOnChange={handleChange}
-          filterSubmit={handleFilterAndRefresh}
+          filterSubmit={handleRefresh}
+          filterReset={handleReset}
+          limit
+          limitValue={limit}
+          limitOnChange={handleLimitChange}
+          paginatePage={page}
         >
           {patients.map((patient) => (
             <TableDataItem
