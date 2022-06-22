@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import classes from './Table.module.css';
 
+import ButtonMain from '../Button/ButtonMain/ButtonMain';
 import ButtonRefresh from '../Button/ButtonRefresh/ButtonRefresh';
 import ButtonCreate from '../Button/ButtonCreate/ButtonCreate';
 import ButtonFilter from '../Button/ButtonFilter/ButtonFilter';
@@ -22,12 +23,17 @@ const Table = ({
   limitValue,
   limitOnChange,
   limitOptions,
+  paginate,
+  paginateCurPage,
+  paginateNext,
+  paginatePrevious,
   createPath,
 }) => {
   const table = useRef();
   useEffect(() => {
     table.current = document.getElementById(tableId);
   }, [tableId]);
+  console.log(children.length, limitValue);
   return (
     <>
       <div className={classes.headingContainer}>
@@ -96,6 +102,38 @@ const Table = ({
           </tbody>
         </table>
       </div>
+      {paginate ? (
+        <div className={classes.paginateContainer}>
+          {paginateCurPage !== 1 ? (
+            <ButtonMain
+              className='m-0 w-25'
+              type='Button'
+              text='Previous'
+              onClick={paginatePrevious}
+            />
+          ) : (
+            <></>
+          )}
+
+          <div>
+            Page {paginateCurPage}
+            {children.length !== +limitValue ? ` of ${paginateCurPage}` : ''}
+          </div>
+          {children.length === +limitValue ? (
+            <ButtonMain
+              id='nextBtn'
+              className='m-0 w-25'
+              type='Button'
+              text='Next'
+              onClick={paginateNext}
+            />
+          ) : (
+            <></>
+          )}
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

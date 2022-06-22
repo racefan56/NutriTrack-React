@@ -142,12 +142,13 @@ const FormGroup = ({
               ) : (
                 selectOptions.map((option, index) => {
                   // Each element in the array is an object with two keys. The first key is the actual value that will be sent to the database on a file CRUD (usually an ID), the second key is the label used on the client side page.
+                  console.log(value)
                   if (value) {
                     if (Object.keys(value).length === 0 && index === 0) {
                       return (
                         <React.Fragment key={'noValFragment'}>
                           <option key={`noVal`} defaultValue>
-                            -- select an option --
+                            --select--
                           </option>
                           <option
                             key={`${option.label}${index}`}

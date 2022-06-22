@@ -1,4 +1,6 @@
 .btnMain {
+  display: flex;
+  justify-content: center;
   color: #e7f5ff;
   width: 100%;
   font-weight: 600;
@@ -13,4 +15,15 @@
 .btnMain:hover {
   background-color: #ffff;
   color: #228be6;
+}
+
+.btnTextSpan {
+  margin: 0px 10px;
+}
+
+.arrowRight,
+.arrowLeft {
+  margin: 0px 10px;
+  font-size: 25px;
+  font-weight: 600;
 }

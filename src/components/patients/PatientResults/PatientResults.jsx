@@ -24,15 +24,17 @@ function PatientResults() {
   });
   const [unitValuesLabels, setUnitValuesLabels] = useState([]);
 
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [curPage, setCurPage] = useState(1);
+
+  const [limit, setLimit] = useState(5);
 
   const { unit, status } = formData;
 
   useEffect(() => {
     dispatch(getUnits());
-    dispatch(getPatients());
-  }, [dispatch]);
+    dispatch(getPatients(`limit=${limit}`));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (units) {
@@ -45,10 +47,7 @@ function PatientResults() {
   }, [units]);
 
   const handleReset = () => {
-    console.log(formData);
-    if (
-      formData.unit !== '' || formData.status !== ''
-    ) {
+    if (formData.unit !== '' || formData.status !== '') {
       setFormData({
         unit: '',
         status: '',
@@ -57,13 +56,19 @@ function PatientResults() {
     }
   };
 
-  const handleRefresh = ({ limitChange }) => {
+  const handleRefresh = ({ limitChange, pageChange }) => {
     let string = '';
 
     if (limitChange) {
       string = `limit=${limitChange}`;
     } else {
       string = `limit=${limit}`;
+    }
+
+    if (pageChange) {
+      string = `${string + `&page=${pageChange}`}`;
+    } else {
+      string = `${string + `&page=${curPage}`}`;
     }
 
     if (unit !== '') {
@@ -83,6 +88,22 @@ function PatientResults() {
   const handleLimitChange = (e) => {
     setLimit(e.target.value);
     handleRefresh({ limitChange: e.target.value });
+  };
+
+  const handlePaginateOnChange = (e) => {
+    const action = e.target.innerHTML;
+
+    if (action === 'Previous') {
+      if (curPage > 1) {
+        setCurPage((prevState) => prevState - 1);
+        handleRefresh({ pageChange: curPage - 1 });
+      }
+    }
+
+    if (action === 'Next') {
+      setCurPage((prevState) => prevState + 1);
+      handleRefresh({ pageChange: curPage + 1 });
+    }
   };
 
   const filterOptions = {
@@ -118,7 +139,10 @@ function PatientResults() {
           limit
           limitValue={limit}
           limitOnChange={handleLimitChange}
-          paginatePage={page}
+          paginate
+          paginateCurPage={curPage}
+          paginateNext={handlePaginateOnChange}
+          paginatePrevious={handlePaginateOnChange}
         >
           {patients.map((patient) => (
             <TableDataItem

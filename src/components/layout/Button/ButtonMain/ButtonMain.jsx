@@ -2,15 +2,28 @@ import React from 'react';
 import classes from './ButtonMain.module.css';
 
 import { Link } from 'react-router-dom';
+import { BiArrowFromRight, BiArrowFromLeft } from 'react-icons/bi';
 
-const ButtonMain = ({ type, text, onClick, path, className }) => {
+const ButtonMain = ({
+  type,
+  text,
+  onClick,
+  path,
+  className,
+  previous,
+  next,
+  value,
+}) => {
   if (type === 'Link') {
     return (
       <Link
         className={`btn ${classes.btnMain} ${className ? className : ''}`}
+        onClick={onClick}
         to={path}
       >
+        {next ? <BiArrowFromRight className={classes.arrowRight} /> : <></>}
         {text}
+        {previous ? <BiArrowFromLeft className={classes.arrowLeft} /> : <></>}
       </Link>
     );
   }
@@ -19,8 +32,15 @@ const ButtonMain = ({ type, text, onClick, path, className }) => {
       type={type ? type : 'button'}
       onClick={onClick}
       className={`btn ${classes.btnMain} ${className ? className : ''}`}
+      value={value}
     >
-      {text}
+      {previous ? (
+        <BiArrowFromRight className={classes.arrowRight} />
+      ) : (
+        <></>
+      )}
+     {text}
+      {next ? <BiArrowFromLeft className={classes.arrowLeft} /> : <></>}
     </button>
   );
 };
