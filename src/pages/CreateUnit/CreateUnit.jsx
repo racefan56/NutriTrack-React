@@ -5,10 +5,7 @@ import { toast } from 'react-toastify';
 
 import { createUnit } from '../../features/unit/unitSlice';
 
-import {
-  formEditMode,
-  invalidInput,
-} from '../../components/helperFunctions/helperFunctions';
+import { invalidInput } from '../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
@@ -37,17 +34,12 @@ const CreateUnit = (props) => {
   const { unitName, description } = formData;
 
   useEffect(() => {
-    formEditMode(true);
-  }, []);
-
-  useEffect(() => {
     if (isSuccess) {
       toast.success('Unit successfully created!');
       navigate('/control-panel/units');
     }
 
     if (isError) {
-      formEditMode(true);
       if (message.keyValue?.unitName) {
         toast.error('That unit name is already taken.');
         invalidInput('unitName');
@@ -121,7 +113,7 @@ const CreateUnit = (props) => {
               label='Area Name'
               value={unitName}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='description'
@@ -130,7 +122,7 @@ const CreateUnit = (props) => {
               label='Description'
               value={description}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
 
             <FormActionBtnContainer>

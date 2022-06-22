@@ -5,10 +5,7 @@ import { toast } from 'react-toastify';
 
 import { logout, updateUserPassword } from '../../features/auth/authSlice';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
-import {
-  formEditMode,
-  invalidInput,
-} from '../../components/helperFunctions/helperFunctions';
+import { invalidInput } from '../../components/helperFunctions/helperFunctions';
 import Spinner from '../../components/Spinner/Spinner';
 import { Link } from 'react-router-dom';
 import SideNav from '../../components/layout/SideNav/SideNav';
@@ -30,10 +27,6 @@ function ChangePassword() {
     updatedPassword: '',
     updatedPasswordConfirm: '',
   });
-
-  useEffect(() => {
-    formEditMode(true);
-  }, []);
 
   useEffect(() => {
     if (isSuccess) {
@@ -127,7 +120,7 @@ function ChangePassword() {
               label='Current Password'
               value={passwordCurrent}
               onChange={handleChange}
-              editable
+              alwaysEditable
               required
               minLength='7'
             />
@@ -138,7 +131,7 @@ function ChangePassword() {
               label='New Password'
               value={updatedPassword}
               onChange={handleChange}
-              editable
+              alwaysEditable
               required
               minLength='3'
             />
@@ -149,7 +142,7 @@ function ChangePassword() {
               label='Confirm New Password'
               value={updatedPasswordConfirm}
               onChange={handleChange}
-              editable
+              alwaysEditable
               required
               minLength='3'
             />

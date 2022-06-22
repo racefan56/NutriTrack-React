@@ -5,10 +5,7 @@ import { toast } from 'react-toastify';
 
 import { createDiet } from '../../features/diet/dietSlice';
 
-import {
-  formEditMode,
-  invalidInput,
-} from '../../components/helperFunctions/helperFunctions';
+import { invalidInput } from '../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
@@ -18,7 +15,6 @@ import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
 import FormActionBtnContainer from '../../components/layout/Form/FormActionBtnContainer/FormActionBtnContainer';
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
-import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
 import classes from './CreateDiet.module.css';
@@ -40,17 +36,12 @@ const CreateDiet = (props) => {
   const { name, sodiumInMG, carbsInGrams, description } = formData;
 
   useEffect(() => {
-    formEditMode(true);
-  }, []);
-
-  useEffect(() => {
     if (isSuccess) {
       toast.success('Diet successfully created!');
       navigate('/control-panel/diets');
     }
 
     if (isError) {
-      formEditMode(true);
       if (message.keyValue?.name) {
         toast.error('That diet name is already taken.');
         invalidInput('name');
@@ -137,7 +128,7 @@ const CreateDiet = (props) => {
               label='Area Name'
               value={name}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='sodiumInMG'
@@ -146,7 +137,7 @@ const CreateDiet = (props) => {
               label='Sodium (miligrams/meal)'
               value={sodiumInMG}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='carbsInGrams'
@@ -155,7 +146,7 @@ const CreateDiet = (props) => {
               label='Carbs (grams/meal)'
               value={carbsInGrams}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='description'
@@ -164,7 +155,7 @@ const CreateDiet = (props) => {
               label='Description'
               value={description}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
 
             <FormActionBtnContainer>

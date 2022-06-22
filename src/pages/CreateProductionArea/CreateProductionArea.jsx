@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 import { createProductionArea } from '../../features/productionArea/productionAreaSlice';
 
 import {
-  formEditMode,
   invalidInput,
 } from '../../components/helperFunctions/helperFunctions';
 
@@ -18,7 +17,6 @@ import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
 import FormActionBtnContainer from '../../components/layout/Form/FormActionBtnContainer/FormActionBtnContainer';
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
-import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
 import classes from './CreateProductionArea.module.css';
@@ -38,17 +36,12 @@ const CreateProductionArea = (props) => {
   const { areaName, description } = formData;
 
   useEffect(() => {
-    formEditMode(true);
-  }, []);
-
-  useEffect(() => {
     if (isSuccess) {
       toast.success('Production area successfully created!');
       navigate('/control-panel/production-areas');
     }
 
     if (isError) {
-      formEditMode(true);
       if (message.keyValue?.areaName) {
         toast.error('That area name is already taken.');
         invalidInput('areaName');
@@ -122,7 +115,7 @@ const CreateProductionArea = (props) => {
               label='Area Name'
               value={areaName}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='description'
@@ -131,7 +124,7 @@ const CreateProductionArea = (props) => {
               label='Description'
               value={description}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
 
             <FormActionBtnContainer>

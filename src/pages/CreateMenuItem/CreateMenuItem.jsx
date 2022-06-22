@@ -7,11 +7,7 @@ import { createMenuItem } from '../../features/menuItem/menuItemSlice';
 import { getProductionAreas } from '../../features/productionArea/productionAreaSlice';
 import { getDiets } from '../../features/diet/dietSlice';
 
-import {
-  titleCase,
-  formEditMode,
-  invalidInput,
-} from './../../components/helperFunctions/helperFunctions';
+import { invalidInput } from './../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
@@ -29,8 +25,6 @@ import classes from './CreateMenuItem.module.css';
 const CreateMenuItem = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  formEditMode(true);
 
   const { loading, isError, isSuccess, message } = useSelector(
     (state) => state.menuItem
@@ -90,7 +84,6 @@ const CreateMenuItem = () => {
     }
 
     if (isError) {
-      formEditMode(true);
       if (message.keyValue?.name) {
         toast.error('That name is already taken.');
         invalidInput('name');
@@ -194,7 +187,7 @@ const CreateMenuItem = () => {
               value={name}
               onChange={handleChange}
               placeholder='Enter item name'
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='category'
@@ -211,7 +204,7 @@ const CreateMenuItem = () => {
               className='col-12 col-md-6 col-lg-3'
               value={category}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='productionArea'
@@ -223,7 +216,7 @@ const CreateMenuItem = () => {
               className='col-12 col-md-6 col-lg-3'
               value={productionArea}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='description'
@@ -232,7 +225,7 @@ const CreateMenuItem = () => {
               value={description}
               placeholder='Description...'
               onChange={handleChange}
-              editable
+              alwaysEditable
               textarea
             />
             <FormGroup
@@ -247,7 +240,7 @@ const CreateMenuItem = () => {
                 return diet._id;
               })}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='majorAllergens'
@@ -266,7 +259,7 @@ const CreateMenuItem = () => {
               className='col-12 col-lg-6'
               value={majorAllergens}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='portionSize'
@@ -275,7 +268,7 @@ const CreateMenuItem = () => {
               label='Portion Size'
               value={portionSize}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='portionUnit'
@@ -289,7 +282,7 @@ const CreateMenuItem = () => {
               className='col-sm-6 col-lg-4 col-xl-4'
               value={portionUnit}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='isLiquid'
@@ -302,7 +295,7 @@ const CreateMenuItem = () => {
               className='col-12 col-lg-4 col-xl-4'
               value={isLiquid}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='carbsInGrams'
@@ -312,7 +305,7 @@ const CreateMenuItem = () => {
               step={10}
               value={carbsInGrams}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='sodiumInMG'
@@ -322,7 +315,7 @@ const CreateMenuItem = () => {
               step={100}
               value={sodiumInMG}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormActionBtnContainer>
               <ButtonMain

@@ -9,9 +9,7 @@ import { getRooms } from './../../features/room/roomSlice';
 import { getMenuItems } from '../../features/menuItem/menuItemSlice';
 
 import {
-  formEditMode,
   ISOdateOnly,
-  titleCase,
   getToday,
   invalidInput,
   roomsAvailableByUnit,
@@ -100,7 +98,6 @@ const CreatePatient = (props) => {
       navigate('/patients');
     }
     if (isError) {
-      formEditMode(true);
       if (message.keyValue?.roomNumber) {
         toast.error('That room is currently occupied.');
       }
@@ -110,9 +107,6 @@ const CreatePatient = (props) => {
       }
     }
   }, [isError, isSuccess, message, navigate, patient]);
-
-  //Always enable all editable form fields for create type pages
-  formEditMode(enableForm);
 
   const openModal = (id) => {
     document.getElementById(id).style.display = 'flex';
@@ -191,7 +185,7 @@ const CreatePatient = (props) => {
               label='First Name'
               value={firstName}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='lastName'
@@ -200,7 +194,7 @@ const CreatePatient = (props) => {
               label='Last Name'
               value={lastName}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='dob'
@@ -209,7 +203,7 @@ const CreatePatient = (props) => {
               label='DOB'
               value={ISOdateOnly(dob)}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='status'
@@ -222,7 +216,7 @@ const CreatePatient = (props) => {
               label='Status'
               value={status}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='roomNumber'
@@ -234,7 +228,7 @@ const CreatePatient = (props) => {
               label='Room'
               value={roomNumber._id}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='isHighRisk'
@@ -247,7 +241,7 @@ const CreatePatient = (props) => {
               label='High Risk'
               value={isHighRisk.toString()}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='currentDiet'
@@ -259,7 +253,7 @@ const CreatePatient = (props) => {
               label='Diet'
               value={currentDiet._id}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='supplements'
@@ -271,7 +265,7 @@ const CreatePatient = (props) => {
               label='Supplements'
               value={supplements}
               onChange={handleChange}
-              editable
+              alwaysEditable
               required
             />
             <FormGroup
@@ -291,7 +285,7 @@ const CreatePatient = (props) => {
               label='Allergies'
               value={knownAllergies}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormActionBtnContainer>
               <ButtonMain

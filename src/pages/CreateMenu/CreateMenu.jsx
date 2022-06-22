@@ -7,10 +7,7 @@ import { createMenu } from '../../features/menu/menuSlice';
 import { getDiets } from '../../features/diet/dietSlice';
 import { getMenuItems } from '../../features/menuItem/menuItemSlice';
 
-import {
-  formEditMode,
-  invalidInput,
-} from '../../components/helperFunctions/helperFunctions';
+import { invalidInput } from '../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
@@ -61,10 +58,6 @@ const CreateMenu = (props) => {
   } = formData;
 
   useEffect(() => {
-    formEditMode(true);
-  });
-
-  useEffect(() => {
     dispatch(getDiets());
     dispatch(getMenuItems());
     setfirstRender(false);
@@ -77,7 +70,6 @@ const CreateMenu = (props) => {
     }
 
     if (isError) {
-      formEditMode(true);
       if (message.keyValue?.mealPeriod) {
         toast.error(
           'A menu already exists for that day, meal period, option, &/or diets'
@@ -175,7 +167,7 @@ const CreateMenu = (props) => {
               label='Day'
               value={day}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='mealPeriod'
@@ -189,7 +181,7 @@ const CreateMenu = (props) => {
               label='Meal Period'
               value={mealPeriod}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='option'
@@ -202,7 +194,7 @@ const CreateMenu = (props) => {
               label='Option'
               value={option}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='dietAvailability'
@@ -216,7 +208,7 @@ const CreateMenu = (props) => {
                 return diet._id;
               })}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='entree'
@@ -230,7 +222,7 @@ const CreateMenu = (props) => {
               className='col-12 col-lg-6'
               value={entree}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='sides'
@@ -244,7 +236,7 @@ const CreateMenu = (props) => {
               className='col-12 col-lg-6'
               value={sides}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='dessert'
@@ -258,7 +250,7 @@ const CreateMenu = (props) => {
               className='col-12 col-lg-6'
               value={dessert}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='drinks'
@@ -272,7 +264,7 @@ const CreateMenu = (props) => {
               className='col-12 col-lg-6'
               value={drinks}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='condiments'
@@ -286,7 +278,7 @@ const CreateMenu = (props) => {
               className='col-12 col-lg-6'
               value={condiments}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormActionBtnContainer>
               <ButtonMain

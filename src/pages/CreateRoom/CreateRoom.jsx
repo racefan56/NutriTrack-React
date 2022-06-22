@@ -6,10 +6,7 @@ import { toast } from 'react-toastify';
 import { createRoom } from '../../features/room/roomSlice';
 import { getUnits } from '../../features/unit/unitSlice';
 
-import {
-  formEditMode,
-  invalidInput,
-} from '../../components/helperFunctions/helperFunctions';
+import { invalidInput } from '../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
@@ -46,7 +43,6 @@ const CreateRoom = (props) => {
   useEffect(() => {
     if (units && units[0]) {
       setFormData({ ...formData, unit: units[0]._id });
-      formEditMode(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [units]);
@@ -58,7 +54,6 @@ const CreateRoom = (props) => {
     }
 
     if (isError) {
-      formEditMode(true);
       if (message.keyValue?.roomNumber) {
         toast.error('That room number is already taken for that unit.');
         invalidInput('roomNumber');
@@ -132,7 +127,7 @@ const CreateRoom = (props) => {
               label='Unit'
               value={unit._id}
               onChange={handleChange}
-              editable
+              alwaysEditable
               required
             />
             <FormGroup
@@ -142,7 +137,7 @@ const CreateRoom = (props) => {
               label='Room Number'
               value={roomNumber}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormActionBtnContainer>
               <ButtonMain

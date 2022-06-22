@@ -217,7 +217,7 @@ const FormGroup = ({
                           value={option.value}
                           onChange={onChange}
                           defaultChecked
-                          disabled
+                          disabled={alwaysEditable ? false : true}
                         />
                         {capitalizeWord(option.label)}
                       </label>
@@ -232,7 +232,7 @@ const FormGroup = ({
                           name={id}
                           value={option.value}
                           onChange={onChange}
-                          disabled
+                          disabled={alwaysEditable ? false : true}
                         />
                         {capitalizeWord(option.label)}
                       </label>
@@ -279,7 +279,7 @@ const FormGroup = ({
                     readonly ? classes.readonly : ''
                   }`}
                   defaultValue={defaultValue}
-                  disabled={editable ? true : false}
+                  disabled={alwaysEditable ? false : editable ? true : false}
                   readOnly={readonly ? true : false}
                 />
               )}
@@ -294,7 +294,7 @@ const FormGroup = ({
                   id={id}
                   className={`${editable ? 'editable' : ''} ${classes.input}`}
                   placeholder={placeholder}
-                  disabled
+                  disabled={alwaysEditable ? false : editable ? true : false}
                   value={value}
                   onChange={onChange}
                 />
@@ -305,7 +305,7 @@ const FormGroup = ({
                   type='number'
                   step={step ? step : ''}
                   className={`${editable ? 'editable' : ''} ${classes.input}`}
-                  disabled
+                  disabled={alwaysEditable ? false : editable ? true : false}
                   value={value}
                   placeholder={placeholder}
                   onChange={onChange}
@@ -316,7 +316,7 @@ const FormGroup = ({
                   id={id}
                   type='text'
                   className={`${editable ? 'editable' : ''} ${classes.input}`}
-                  disabled
+                  disabled={alwaysEditable ? false : editable ? true : false}
                   placeholder={placeholder}
                   value={value}
                   onChange={onChange}
@@ -327,7 +327,7 @@ const FormGroup = ({
                   id={id}
                   type='date'
                   className={`${editable ? 'editable' : ''} ${classes.input}`}
-                  disabled
+                  disabled={alwaysEditable ? false : editable ? true : false}
                   placeholder={placeholder}
                   value={value}
                   onChange={onChange}
@@ -338,7 +338,7 @@ const FormGroup = ({
                   id={id}
                   type='password'
                   className={`${editable ? 'editable' : ''} ${classes.input}`}
-                  disabled
+                  disabled={alwaysEditable ? false : editable ? true : false}
                   placeholder={placeholder}
                   value={value}
                   onChange={onChange}
@@ -349,7 +349,7 @@ const FormGroup = ({
                   id={id}
                   type='email'
                   className={`${editable ? 'editable' : ''} ${classes.input}`}
-                  disabled
+                  disabled={alwaysEditable ? false : editable ? true : false}
                   placeholder={placeholder}
                   value={value}
                   onChange={onChange}

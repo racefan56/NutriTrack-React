@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 import { createUser, resetIsSuccess } from '../../features/auth/authSlice';
 
 import {
-  formEditMode,
   invalidInput,
 } from '../../components/helperFunctions/helperFunctions';
 
@@ -39,9 +38,6 @@ const CreateUser = (props) => {
 
   const { userName, email, role, password, passwordConfirm } = formData;
 
-  useEffect(() => {
-    formEditMode(true);
-  }, []);
 
   useEffect(() => {
     if (isSuccess) {
@@ -51,7 +47,6 @@ const CreateUser = (props) => {
     }
 
     if (isError) {
-      formEditMode(true);
       if (message.keyValue?.userName) {
         toast.error('That username is already taken.');
         invalidInput('userName');
@@ -140,7 +135,7 @@ const CreateUser = (props) => {
               label='Username'
               value={userName}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='role'
@@ -156,7 +151,7 @@ const CreateUser = (props) => {
               label='Role'
               value={role}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='email'
@@ -165,7 +160,7 @@ const CreateUser = (props) => {
               label='Email'
               value={email}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
 
             <FormGroup
@@ -175,7 +170,7 @@ const CreateUser = (props) => {
               label='Password'
               value={password}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormGroup
               id='passwordConfirm'
@@ -184,7 +179,7 @@ const CreateUser = (props) => {
               label='Password Confirm'
               value={passwordConfirm}
               onChange={handleChange}
-              editable
+              alwaysEditable
             />
             <FormActionBtnContainer>
               <ButtonMain
