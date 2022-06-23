@@ -6,6 +6,7 @@ import ButtonRefresh from '../Button/ButtonRefresh/ButtonRefresh';
 import ButtonCreate from '../Button/ButtonCreate/ButtonCreate';
 import ButtonFilter from '../Button/ButtonFilter/ButtonFilter';
 import ButtonLimit from '../Button/ButtonLimit/ButtonLimit';
+import ButtonSort from '../Button/ButtonSort/ButtonSort';
 
 const Table = ({
   children,
@@ -27,13 +28,17 @@ const Table = ({
   paginateCurPage,
   paginateNext,
   paginatePrevious,
+  sort,
+  sortValue,
+  sortOptions,
+  sortOnChange,
   createPath,
 }) => {
   const table = useRef();
   useEffect(() => {
     table.current = document.getElementById(tableId);
   }, [tableId]);
-  console.log(children.length, limitValue);
+  console.log(filterValues);
   return (
     <>
       <div className={classes.headingContainer}>
@@ -71,9 +76,17 @@ const Table = ({
           <></>
         )}
       </div>
-      {filterValues?.join('').length > 0 ? (
-        <div className={classes.filtersAppliedDiv}>
-          Filters: {filterValues.join(' ')}{' '}
+      {filterValues?.join('').length > 0 || sort ? (
+        <div className={classes.filtersAndSortContainer}>
+          {filterValues?.join('').length > 0
+            ? `Filters: ${filterValues.join(' ')}`
+            : 'Filters: No Filters'}
+          <ButtonSort
+            sortId={tableId + 'sortBtn'}
+            sortOnChange={sortOnChange}
+            sortValue={sortValue}
+            sortOptions={sortOptions}
+          />
         </div>
       ) : (
         <></>

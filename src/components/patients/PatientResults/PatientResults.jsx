@@ -25,14 +25,14 @@ function PatientResults() {
   const [unitValuesLabels, setUnitValuesLabels] = useState([]);
 
   const [curPage, setCurPage] = useState(1);
-
   const [limit, setLimit] = useState(5);
+  const [sort, setSort] = useState('+lastName');
 
   const { unit, status } = formData;
 
   useEffect(() => {
     dispatch(getUnits());
-    dispatch(getPatients(`limit=${limit}`));
+    dispatch(getPatients(`limit=${limit}&sort=${sort}`));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -52,11 +52,11 @@ function PatientResults() {
         unit: '',
         status: '',
       });
-      dispatch(getPatients());
+      dispatch(getPatients(`limit=${limit}&sort=${sort}`));
     }
   };
 
-  const handleRefresh = ({ limitChange, pageChange }) => {
+  const handleRefresh = ({ limitChange, pageChange, sortChange }) => {
     let string = '';
 
     if (limitChange) {
@@ -69,6 +69,16 @@ function PatientResults() {
       string = `${string + `&page=${pageChange}`}`;
     } else {
       string = `${string + `&page=${curPage}`}`;
+    }
+
+    if (sort !== '' || sortChange) {
+      if (sortChange) {
+        if (sortChange !== '') {
+          string = `${string + `&sort=${sortChange}`}`;
+        }
+      } else {
+        string = `${string + `&sort=${sort}`}`;
+      }
     }
 
     if (unit !== '') {
@@ -88,6 +98,11 @@ function PatientResults() {
   const handleLimitChange = (e) => {
     setLimit(e.target.value);
     handleRefresh({ limitChange: e.target.value });
+  };
+
+  const handleSortChange = (e) => {
+    setSort(e.target.value);
+    handleRefresh({ sortChange: e.target.value });
   };
 
   const handlePaginateOnChange = (e) => {
@@ -143,6 +158,15 @@ function PatientResults() {
           paginateCurPage={curPage}
           paginateNext={handlePaginateOnChange}
           paginatePrevious={handlePaginateOnChange}
+          sort
+          sortOnChange={handleSortChange}
+          sortValue={sort}
+          sortOptions={[
+            { value: '+lastName', label: 'Last name A-Z' },
+            { value: '-lastName', label: 'Last name Z-A' },
+            { value: '+status', label: 'Status A-Z' },
+            { value: '-status', label: 'Status Z-A' },
+          ]}
         >
           {patients.map((patient) => (
             <TableDataItem

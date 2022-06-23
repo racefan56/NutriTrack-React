@@ -24,6 +24,7 @@ const getPatients = async (queryString, token) => {
       Authorization: `${token}`,
     },
   };
+  console.log(queryString);
 
   const response = await axios.get(
     `${SERVER}/patients?${queryString ? queryString : ''}`,

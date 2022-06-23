@@ -1,13 +1,24 @@
 import React from 'react';
 import { BiSortAlt2 } from 'react-icons/bi';
 
+import FormGroup from '../../Form/FormGroup/FormGroup';
+
 import classes from './ButtonSort.module.css';
 
-const ButtonSort = (props) => {
+const ButtonSort = ({ sortId, sortValue, sortOptions, sortOnChange }) => {
   return (
-    <>
-      <h1>ButtonSort</h1>
-    </>
+    <form className={classes.formContainer}>
+      <FormGroup
+        id={sortId}
+        sideLabel
+        label={'Sort'}
+        value={sortValue}
+        inputType='select'
+        selectOptions={sortOptions}
+        onChange={sortOnChange}
+        alwaysEditable
+      />
+    </form>
   );
 };
 

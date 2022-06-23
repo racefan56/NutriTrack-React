@@ -36,8 +36,11 @@
   padding: 1rem;
 }
 
-.filtersAppliedDiv {
-  margin: 8px;
+.filtersAndSortContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
 .paginateContainer {
