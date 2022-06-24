@@ -31,9 +31,8 @@ import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
-
-import classes from './Patient.module.css';
 import MealResults from '../../components/meal/MealResults/MealResults';
+
 import { getMenuItems } from '../../features/menuItem/menuItemSlice';
 
 const Patient = (props) => {
@@ -78,6 +77,7 @@ const Patient = (props) => {
     createdAt,
     updatedAt,
   } = formData;
+  console.log(mealOrders);
 
   useEffect(() => {
     dispatch(getPatient(patientId));
@@ -124,7 +124,7 @@ const Patient = (props) => {
         toast.error(message.message);
       }
     }
-  }, [isError, isSuccess, message, navigate]);
+  }, [isError, isSuccess, message, navigate, patient]);
 
   const handleChange = (e) => {
     const key = e.target.id;
@@ -337,7 +337,7 @@ const Patient = (props) => {
               inputType='text'
               className='col-12 col-md-6'
               label='Created'
-              value={formatDate(createdAt)}
+              defaultValue={formatDate(createdAt)}
               readonly
             />
             <FormGroup
@@ -345,7 +345,7 @@ const Patient = (props) => {
               inputType='text'
               className='col-12 col-md-6'
               label='Updated'
-              value={formatDate(updatedAt)}
+              defaultValue={formatDate(updatedAt)}
               readonly
             />
             {editMode ? (
@@ -379,17 +379,9 @@ const Patient = (props) => {
           </FormContainer>
 
           {mealOrders ? (
-            mealOrders.length > 0 ? (
-              <SubContainer title='Meal Orders' altHeading='true'>
-                <MealResults meals={mealOrders} />
-              </SubContainer>
-            ) : (
-              <SubContainer
-                className='mt-3'
-                altHeading
-                text='This patient has no meal orders.'
-              />
-            )
+            <SubContainer title='Meal Orders' altHeading='true'>
+              <MealResults meals={mealOrders} patientId={patient._id} />
+            </SubContainer>
           ) : (
             <></>
           )}

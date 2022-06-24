@@ -38,7 +38,6 @@ const Table = ({
   useEffect(() => {
     table.current = document.getElementById(tableId);
   }, [tableId]);
-  console.log(filterValues);
   return (
     <>
       <div className={classes.headingContainer}>

@@ -22,7 +22,7 @@ export function titleCase(string) {
   }
 }
 
-export const formatDate = (date, dateOnly) => {
+export const formatDate = (date, dateOnly, expandedDateForm) => {
   const dateInput = new Date(date);
 
   const year = dateInput.getFullYear();
@@ -33,6 +33,34 @@ export const formatDate = (date, dateOnly) => {
   const seconds = String(dateInput.getSeconds()).padStart(2, '0');
 
   if (dateOnly) {
+    if (expandedDateForm) {
+      const months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ];
+
+      const days = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ];
+      const formatedDateExpanded = `${months[month]} ${days[day]}, ${year}`;
+      return formatedDateExpanded;
+    }
     const formatedDateOnly = `${month}/${day}/${year}`;
     return formatedDateOnly;
   }
@@ -63,7 +91,7 @@ export const getToday = () => {
   return today;
 };
 
-export const getDayOfWeek = () => {
+export const getDayOfWeek = (date) => {
   const days = [
     'Sunday',
     'Monday',
@@ -74,9 +102,14 @@ export const getDayOfWeek = () => {
     'Saturday',
   ];
 
-  const curDate = new Date();
-  const day = days[curDate.getDay()];
-  return day;
+  if (!date) {
+    const curDate = new Date();
+    const day = days[curDate.getDay()];
+    return day;
+  } else {
+    const day = days[date.getDay()];
+    return day;
+  }
 };
 
 export const ISOdateOnly = (date) => {

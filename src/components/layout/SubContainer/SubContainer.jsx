@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './SubContainer.module.css';
 
-const SubContainer = ({ altHeading, title, text, className }) => {
+const SubContainer = ({ children, altHeading, title, text, className }) => {
   return (
     <div className={`${className ? className : ''} ${classes.subContainer}`}>
       <div className={altHeading ? classes.altHeading : classes.heading}>
@@ -10,6 +10,7 @@ const SubContainer = ({ altHeading, title, text, className }) => {
         </div>
       </div>
       {text}
+      {children}
     </div>
   );
 };

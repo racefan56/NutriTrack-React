@@ -1,36 +1,83 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { setPathname } from '../../../features/navigation/navigationSlice';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { BiCheckCircle, BiXCircle } from 'react-icons/bi';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { formatDate } from '../../helperFunctions/helperFunctions';
+import {
+  formatDate,
+  getDayOfWeek,
+  getToday,
+} from '../../helperFunctions/helperFunctions';
 import Meal from '../Meal/Meal';
 
 import classes from './MealResults.module.css';
 
-const MealResults = ({ meals }) => {
+const MealResults = ({ meals, patientId }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   if (!meals) {
-    return <></>;
+    return;
   }
-  const mealDaysPeriods = meals.map((meal) => {
-    return [formatDate(meal.mealDate, { dateOnly: true }), meal.mealPeriod];
+
+  const handleOrderClick = (mealData) => {
+    if (!mealData) {
+      return;
+    }
+    if (mealData.length === 2) {
+      // Order not yet taken. Will contain the date in element 0 & the mealPeriod in element 1
+      const dayOfWeek = getDayOfWeek(new Date(`${mealData[0]} 00:00`));
+      const navigatePath = `/patients/${patientId}/orders/createOrder?day=${dayOfWeek}&mealPeriod=${mealData[1]}`;
+      dispatch(setPathname(navigatePath));
+      navigate(navigatePath);
+    }
+    if (mealData.length === 1) {
+      // Order taken. Will contain the mealOrder ID in the single element
+      const navigatePath = `/patients/${patientId}/orders/${mealData[0]}`;
+      dispatch(setPathname(navigatePath));
+      navigate(navigatePath);
+    }
+  };
+
+  const mealDaysPeriodsIds = meals.map((meal) => {
+    return [
+      formatDate(meal.mealDate, { dateOnly: true }),
+      meal.mealPeriod,
+      meal._id,
+      meal.patientID._id,
+    ];
   });
 
   const mealDaySet = [
     ...new Set(
-      mealDaysPeriods.map((item) => {
+      mealDaysPeriodsIds.map((item) => {
         return item[0];
       })
     ),
   ];
 
   const isOrderTaken = (day, meal) => {
-    return mealDaysPeriods.find((el) => el[0] === day && el[1] === meal) ? (
-      <span className={classes.mealCheckSpan}>
+    const findOrder = () => {
+      return mealDaysPeriodsIds.find((el) => el[0] === day && el[1] === meal);
+    };
+
+    const order = findOrder();
+
+    return order ? (
+      <span
+        onClick={() => handleOrderClick([order[2]])}
+        className={classes.mealCheckSpan}
+      >
         {meal[0]}: <BiCheckCircle className={classes.iconCheck} />
       </span>
     ) : (
-      <span className={classes.mealXSpan}>
+      <span
+        onClick={() => handleOrderClick([day, meal])}
+        className={classes.mealXSpan}
+      >
         {meal[0]}: <BiXCircle className={classes.iconX}></BiXCircle>
       </span>
     );
@@ -63,6 +110,38 @@ const MealResults = ({ meals }) => {
         );
       });
   });
+
+  if (meals.length === 0) {
+    const today = getToday();
+    console.log(today);
+    return (
+      <div className={classes.dayContainer} key={uuidv4()}>
+        <div className={classes.dayHeading} key={uuidv4()}>
+          <div className={classes.orderDate}>{today}</div>
+          <div className={classes.orderTakenContainer}>
+            <span
+              onClick={() => handleOrderClick([today, 'Breakfast'])}
+              className={classes.mealXSpan}
+            >
+              B: <BiXCircle className={classes.iconX}></BiXCircle>
+            </span>
+            <span
+              onClick={() => handleOrderClick([today, 'Lunch'])}
+              className={classes.mealXSpan}
+            >
+              L: <BiXCircle className={classes.iconX}></BiXCircle>
+            </span>
+            <span
+              onClick={() => handleOrderClick([today, 'Dinner'])}
+              className={classes.mealXSpan}
+            >
+              D: <BiXCircle className={classes.iconX}></BiXCircle>
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return mealDaySet.map((day, index) => {
     return (

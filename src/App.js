@@ -9,11 +9,14 @@ import Login from './pages/Login/Login';
 import ControlPanel from './pages/ControlPanel/ControlPanel';
 import Census from './pages/Census/Census';
 import Alerts from './pages/Alerts';
+
 import Patients from './pages/Patients/Patients';
 import Patient from './pages/Patient/Patient';
 import CreatePatient from './pages/CreatePatient/CreatePatient';
+
 import PatientOrders from './pages/PatientOrders/PatientOrders';
 import PatientOrder from './pages/PatientOrder/PatientOrder';
+import CreatePatientOrder from './pages/CreatePatientOrder/CreatePatientOrder';
 
 import Notfound from './pages/NotFound/Notfound';
 
@@ -226,6 +229,7 @@ function App() {
           </Route>
 
           {/* PATIENT ORDER ROUTES */}
+          {/* View all patient orders */}
           <Route
             path='/patients/patient-orders'
             element={<PrivateRoute validRoles={['admin']} />}
@@ -236,13 +240,25 @@ function App() {
             />
           </Route>
 
+          {/* View a single patient order */}
           <Route
-            path='/patients/patient-orders/:orderId'
+            path='/patients/:patientId/orders/:orderId'
             element={<PrivateRoute validRoles={['admin']} />}
           >
             <Route
-              path='/patients/patient-orders/:orderId'
+              path='/patients/:patientId/orders/:orderId'
               element={<PatientOrder />}
+            />
+          </Route>
+
+          {/* Create a patient order */}
+          <Route
+            path='/patients/:patientId/orders/createOrder'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route
+              path='/patients/:patientId/orders/createOrder'
+              element={<CreatePatientOrder />}
             />
           </Route>
 

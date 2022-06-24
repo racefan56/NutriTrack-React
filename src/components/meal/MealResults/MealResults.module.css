@@ -58,6 +58,13 @@
   border-radius: 0.5rem;
 }
 
+.mealCheckSpan:hover,
+.mealXSpan:hover {
+  border: 3px solid #ffff;
+  padding: 0.6rem;
+  font-size: 18px;
+}
+
 .orderTakenContainer {
   padding: 5px;
 }
