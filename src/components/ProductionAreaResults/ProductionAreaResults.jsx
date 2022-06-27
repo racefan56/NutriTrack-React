@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -20,17 +20,15 @@ const ProductionAreaResults = (props) => {
   const { productionAreas, loading, isError, message } = useSelector(
     (state) => state.productionArea
   );
+  const [curPage, setCurPage] = useState(1);
+  const [limit, setLimit] = useState(5);
 
   useEffect(() => {
-    dispatch(getProductionAreas());
+    dispatch(getProductionAreas(`limit=${limit}`));
     if (isError) {
       toast.error(message);
     }
-  }, [dispatch, isError, message]);
-
-  const handleRefresh = () => {
-    dispatch(getProductionAreas());
-  };
+  }, [dispatch, isError, limit, message]);
 
   if (loading) {
     return <Spinner />;
@@ -44,8 +42,15 @@ const ProductionAreaResults = (props) => {
         <Table
           headers={['Area name', 'Description', '']}
           heading='Production Areas'
-          refresh={handleRefresh}
+          refresh
+          refreshDispatch={getProductionAreas}
           createPath='create'
+          limit
+          limitValue={limit}
+          limitSetLimit={setLimit}
+          paginate
+          paginateCurPage={curPage}
+          paginateSetPage={setCurPage}
         >
           {productionAreas.map((productionArea, index) => (
             <React.Fragment key={productionArea._id}>

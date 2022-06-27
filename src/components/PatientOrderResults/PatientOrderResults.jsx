@@ -18,47 +18,54 @@ const PatientOrderResults = (props) => {
     (state) => state.patient
   );
 
+  const [curPage, setCurPage] = useState(1);
+  const [limit, setLimit] = useState(5);
   const [formData, setFormData] = useState({
     day: getDayOfWeek(),
     meal: '',
+    option: '',
   });
 
-  const [limit, setLimit] = useState(10);
-
-  const { day, meal } = formData;
+  const { day, meal, option } = formData;
 
   useEffect(() => {
-    dispatch(getPatientOrders(`day=${day}`));
+    dispatch(getPatientOrders(`limit=${limit}&day=${day}`));
     if (isError) {
       toast.error(message);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleFilterAndRefresh = () => {
+  const handleReset = () => {
+    if (day !== '' || meal !== '' || option !== '') {
+      setFormData({
+        day: '',
+        meal: '',
+        option: '',
+      });
+      dispatch(getPatientOrders(`limit=${limit}&day=${day}`));
+    }
+  };
+
+  const handleFilterString = () => {
     let string = '';
+
     if (day !== '') {
-      string = `day=${day}`;
+      string = `${string + `&day=${day}`}`;
     }
-    if (meal) {
-      if (string !== '') {
-        string = `${string + `&mealPeriod=${meal}`}`;
-      } else {
-        string = `${string + `mealPeriod=${meal}`}`;
-      }
+    if (meal !== '') {
+      string = `${string + `&mealPeriod=${meal}`}`;
     }
-    return dispatch(getPatientOrders(string));
+    if (option !== '') {
+      string = `${string + `&option=${option}`}`;
+    }
+
+    return string;
   };
 
   const handleChange = (e) => {
     const key = e.target.id;
-
     setFormData((prevState) => ({ ...prevState, [key]: e.target.value }));
-  };
-
-  const handleLimitChange = (e) => {
-    setLimit(e.target.value);
-    dispatch(getPatientOrders(`limit=${e.target.value}`));
   };
 
   const filterOptions = {
@@ -77,6 +84,11 @@ const PatientOrderResults = (props) => {
       { value: 'Lunch', label: 'Lunch' },
       { value: 'Dinner', label: 'Dinner' },
     ],
+    option: [
+      { value: '', label: 'All' },
+      { value: 'hot', label: 'Hot' },
+      { value: 'cold', label: 'Cold' },
+    ],
   };
 
   if (loading || !patientOrders) {
@@ -93,16 +105,21 @@ const PatientOrderResults = (props) => {
         <Table
           headers={['Day', 'Meal', 'Unit', 'Room', 'Status', '']}
           heading='Patient Orders'
-          refresh={handleFilterAndRefresh}
+          refresh
+          refreshDispatch={getPatientOrders}
           createPath='create'
           filterHeading='Patient Orders'
           filterOptions={filterOptions}
-          filterValues={[day, meal]}
+          filterValues={[day, meal, option]}
           filterOnChange={handleChange}
-          filterSubmit={handleFilterAndRefresh}
+          filterReset={handleReset}
+          filterString={handleFilterString}
           limit
           limitValue={limit}
-          limitOnChange={handleLimitChange}
+          limitSetLimit={setLimit}
+          paginate
+          paginateCurPage={curPage}
+          paginateSetPage={setCurPage}
         >
           {patientOrders.map((order, index) => (
             <React.Fragment key={order._id}>

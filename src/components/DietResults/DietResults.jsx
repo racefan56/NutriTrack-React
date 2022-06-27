@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -18,16 +18,15 @@ const DietResults = (props) => {
     (state) => state.diet
   );
 
+  const [curPage, setCurPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+
   useEffect(() => {
-    dispatch(getDiets());
+    dispatch(getDiets(`limit=${limit}`));
     if (isError) {
       toast.error(message);
     }
-  }, [dispatch, isError, message]);
-
-  const handleRefresh = () => {
-    dispatch(getDiets());
-  };
+  }, [dispatch, isError, limit, message]);
 
   if (loading) {
     return <Spinner />;
@@ -41,8 +40,15 @@ const DietResults = (props) => {
         <Table
           headers={['Diet Name', 'Sodium', 'Carbs', '']}
           heading='Diets'
-          refresh={handleRefresh}
+          refresh
+          refreshDispatch={getDiets}
           createPath='create'
+          limit
+          limitValue={limit}
+          limitSetLimit={setLimit}
+          paginate
+          paginateCurPage={curPage}
+          paginateSetPage={setCurPage}
         >
           {diets.map((diet, index) => (
             <React.Fragment key={diet._id}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -17,17 +17,59 @@ const UserResults = (props) => {
   const { users, loading, isError, message } = useSelector(
     (state) => state.user
   );
+  const [curPage, setCurPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [sort, setSort] = useState('+userName');
+  const [formData, setFormData] = useState({
+    role: '',
+  });
+  const { role } = formData;
 
   useEffect(() => {
-    dispatch(getUsers());
+    dispatch(getUsers(`limit=${limit}&sort=${sort}`));
     if (isError) {
       toast.error(message);
     }
-  }, [dispatch, isError, message]);
+  }, [dispatch, isError, limit, message, sort]);
 
-  const handleRefresh = () => {
-    dispatch(getUsers());
+  const handleReset = () => {
+    if (formData.role !== '') {
+      setFormData({
+        role: '',
+      });
+      dispatch(getUsers(`limit=${limit}&sort=${sort}`));
+    }
   };
+
+  const handleFilterString = () => {
+    let string = '';
+
+    if (role !== '') {
+      string = `${string + `&role=${role}`}`;
+    }
+    return string;
+  };
+
+  const handleChange = (e) => {
+    const key = e.target.id;
+    setFormData((prevState) => ({ ...prevState, [key]: e.target.value }));
+  };
+
+  const filterOptions = {
+    role: [
+      { value: '', label: 'All' },
+      { value: 'admin', label: 'Admin' },
+      { value: 'nca', label: 'NCA' },
+      { value: 'lead-nca', label: 'Lead-NCA' },
+      { value: 'dietitian', label: 'Dietitian' },
+      { value: 'nurse', label: 'Nurse' },
+    ],
+  };
+
+  const sortOptions = [
+    { value: '+userName', label: 'Username A-Z' },
+    { value: '-userName', label: 'Username Z-A' },
+  ];
 
   if (loading) {
     return <Spinner />;
@@ -41,18 +83,32 @@ const UserResults = (props) => {
         <Table
           headers={['User', 'Email', 'Role', '']}
           heading='Users'
-          refresh={handleRefresh}
+          refresh
+          refreshDispatch={getUsers}
           createPath='create'
+          filterHeading='Users'
+          filterOptions={filterOptions}
+          filterValues={[role]}
+          filterOnChange={handleChange}
+          filterReset={handleReset}
+          filterString={handleFilterString}
+          limit
+          limitValue={limit}
+          limitSetLimit={setLimit}
+          paginate
+          paginateCurPage={curPage}
+          paginateSetPage={setCurPage}
+          sort
+          sortInitialVal='+lastName'
+          sortValue={sort}
+          sortSetSort={setSort}
+          sortOptions={sortOptions}
         >
           {users.map((user, index) => (
             <React.Fragment key={user._id}>
               <TableDataItem
                 navigatePath={`/control-panel/users/${user._id}`}
-                dataPoints={[
-                  user.userName,
-                  user.email,
-                  user.role,
-                ]}
+                dataPoints={[user.userName, user.email, user.role]}
               >
                 <td>
                   <ButtonMain

@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import classes from './Table.module.css';
 
 import ButtonMain from '../Button/ButtonMain/ButtonMain';
@@ -7,6 +9,7 @@ import ButtonCreate from '../Button/ButtonCreate/ButtonCreate';
 import ButtonFilter from '../Button/ButtonFilter/ButtonFilter';
 import ButtonLimit from '../Button/ButtonLimit/ButtonLimit';
 import ButtonSort from '../Button/ButtonSort/ButtonSort';
+import { compose } from '@reduxjs/toolkit';
 
 const Table = ({
   children,
@@ -14,26 +17,93 @@ const Table = ({
   headers,
   heading,
   refresh,
+  refreshDispatch,
   filterHeading,
   filterOptions,
   filterValues,
   filterOnChange,
-  filterSubmit,
+  filterString,
   filterReset,
   limit,
   limitValue,
-  limitOnChange,
+  limitSetLimit,
   limitOptions,
   paginate,
   paginateCurPage,
-  paginateNext,
-  paginatePrevious,
+  paginateSetPage,
   sort,
   sortValue,
+  sortSetSort,
   sortOptions,
-  sortOnChange,
   createPath,
 }) => {
+  const dispatch = useDispatch();
+
+  const handleRefreshAndQueryChange = ({
+    limitChange,
+    pageChange,
+    sortChange,
+  }) => {
+    let string = '';
+
+    if (limitChange) {
+      string = `limit=${limitChange}`;
+    } else {
+      string = `limit=${limitValue}`;
+    }
+
+    if (pageChange) {
+      string = `${string + `&page=${pageChange}`}`;
+    } else {
+      string = `${string + `&page=${paginateCurPage}`}`;
+    }
+
+    if (filterString) {
+      string += filterString();
+    }
+
+    if (sort || sortChange) {
+      if (sortChange) {
+        if (sortChange !== '') {
+          string = `${string + `&sort=${sortChange}`}`;
+        }
+      } else {
+        string = `${string + `&sort=${sortValue}`}`;
+      }
+    }
+
+    console.log(string);
+
+    return dispatch(refreshDispatch(string));
+  };
+
+  const handleLimitChange = (e) => {
+    limitSetLimit(e.target.value);
+    handleRefreshAndQueryChange({ limitChange: e.target.value });
+  };
+
+  const handleSortChange = (e) => {
+    sortSetSort(e.target.value);
+    handleRefreshAndQueryChange({ sortChange: e.target.value });
+  };
+
+  const handlePaginateOnChange = (e) => {
+    const action = e.target.innerHTML;
+
+    if (action === 'Previous') {
+      if (paginateCurPage > 1) {
+        paginateSetPage((prevState) => prevState - 1);
+        handleRefreshAndQueryChange({ pageChange: paginateCurPage - 1 });
+      }
+    }
+
+    if (action === 'Next') {
+      console.log(action);
+      paginateSetPage((prevState) => prevState + 1);
+      handleRefreshAndQueryChange({ pageChange: paginateCurPage + 1 });
+    }
+  };
+
   const table = useRef();
   useEffect(() => {
     table.current = document.getElementById(tableId);
@@ -47,7 +117,7 @@ const Table = ({
             <div className={classes.tableButtonsContainer}>
               {limit ? (
                 <ButtonLimit
-                  limitOnChange={limitOnChange}
+                  limitOnChange={handleLimitChange}
                   limitValue={limitValue}
                   limitId={tableId + 'limitBtn'}
                   limitOptions={limitOptions}
@@ -55,7 +125,11 @@ const Table = ({
               ) : (
                 <></>
               )}
-              {refresh ? <ButtonRefresh refresh={refresh} /> : <></>}
+              {refresh ? (
+                <ButtonRefresh refresh={handleRefreshAndQueryChange} />
+              ) : (
+                <></>
+              )}
               {createPath ? <ButtonCreate path={createPath} /> : <></>}
               {filterOptions ? (
                 <ButtonFilter
@@ -63,7 +137,7 @@ const Table = ({
                   filterOptions={filterOptions}
                   filterValues={filterValues}
                   filterOnChange={filterOnChange}
-                  filterSubmit={filterSubmit}
+                  filterSubmit={handleRefreshAndQueryChange}
                   filterReset={filterReset}
                 />
               ) : (
@@ -80,12 +154,16 @@ const Table = ({
           {filterValues?.join('').length > 0
             ? `Filters: ${filterValues.join(' ')}`
             : 'Filters: No Filters'}
-          <ButtonSort
-            sortId={tableId + 'sortBtn'}
-            sortOnChange={sortOnChange}
-            sortValue={sortValue}
-            sortOptions={sortOptions}
-          />
+          {sort ? (
+            <ButtonSort
+              sortId={tableId + 'sortBtn'}
+              sortOnChange={handleSortChange}
+              sortValue={sortValue}
+              sortOptions={sortOptions}
+            />
+          ) : (
+            <></>
+          )}
         </div>
       ) : (
         <></>
@@ -121,7 +199,7 @@ const Table = ({
               className='m-0 w-25'
               type='Button'
               text='Previous'
-              onClick={paginatePrevious}
+              onClick={handlePaginateOnChange}
             />
           ) : (
             <></>
@@ -137,7 +215,7 @@ const Table = ({
               className='m-0 w-25'
               type='Button'
               text='Next'
-              onClick={paginateNext}
+              onClick={handlePaginateOnChange}
             />
           ) : (
             <></>

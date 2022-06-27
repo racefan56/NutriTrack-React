@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -17,17 +17,15 @@ const UnitResults = (props) => {
   const { units, loading, isError, message } = useSelector(
     (state) => state.unit
   );
+  const [curPage, setCurPage] = useState(1);
+  const [limit, setLimit] = useState(5);
 
   useEffect(() => {
-    dispatch(getUnits());
+    dispatch(getUnits(`limit=${limit}`));
     if (isError) {
       toast.error(message);
     }
-  }, [dispatch, isError, message]);
-
-  const handleRefresh = () => {
-    dispatch(getUnits());
-  };
+  }, [dispatch, isError, limit, message]);
 
   if (loading) {
     return <Spinner />;
@@ -41,8 +39,15 @@ const UnitResults = (props) => {
         <Table
           headers={['Unit name', 'Description', '']}
           heading='Units'
-          refresh={handleRefresh}
+          refresh
+          refreshDispatch={getUnits}
           createPath='create'
+          limit
+          limitValue={limit}
+          limitSetLimit={setLimit}
+          paginate
+          paginateCurPage={curPage}
+          paginateSetPage={setCurPage}
         >
           {units.map((unit, index) => (
             <React.Fragment key={unit._id}>

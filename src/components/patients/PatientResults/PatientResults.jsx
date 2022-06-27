@@ -18,15 +18,14 @@ function PatientResults() {
 
   const { units } = useSelector((state) => state.unit);
 
+  const [curPage, setCurPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [sort, setSort] = useState('+lastName');
   const [formData, setFormData] = useState({
     unit: '',
     status: '',
   });
   const [unitValuesLabels, setUnitValuesLabels] = useState([]);
-
-  const [curPage, setCurPage] = useState(1);
-  const [limit, setLimit] = useState(5);
-  const [sort, setSort] = useState('+lastName');
 
   const { unit, status } = formData;
 
@@ -56,30 +55,8 @@ function PatientResults() {
     }
   };
 
-  const handleRefresh = ({ limitChange, pageChange, sortChange }) => {
+  const handleFilterString = () => {
     let string = '';
-
-    if (limitChange) {
-      string = `limit=${limitChange}`;
-    } else {
-      string = `limit=${limit}`;
-    }
-
-    if (pageChange) {
-      string = `${string + `&page=${pageChange}`}`;
-    } else {
-      string = `${string + `&page=${curPage}`}`;
-    }
-
-    if (sort !== '' || sortChange) {
-      if (sortChange) {
-        if (sortChange !== '') {
-          string = `${string + `&sort=${sortChange}`}`;
-        }
-      } else {
-        string = `${string + `&sort=${sort}`}`;
-      }
-    }
 
     if (unit !== '') {
       string = `${string + `&unit=${unit}`}`;
@@ -87,38 +64,12 @@ function PatientResults() {
     if (status !== '') {
       string = `${string + `&status=${status}`}`;
     }
-    return dispatch(getPatients(string));
+    return string;
   };
 
   const handleChange = (e) => {
     const key = e.target.id;
     setFormData((prevState) => ({ ...prevState, [key]: e.target.value }));
-  };
-
-  const handleLimitChange = (e) => {
-    setLimit(e.target.value);
-    handleRefresh({ limitChange: e.target.value });
-  };
-
-  const handleSortChange = (e) => {
-    setSort(e.target.value);
-    handleRefresh({ sortChange: e.target.value });
-  };
-
-  const handlePaginateOnChange = (e) => {
-    const action = e.target.innerHTML;
-
-    if (action === 'Previous') {
-      if (curPage > 1) {
-        setCurPage((prevState) => prevState - 1);
-        handleRefresh({ pageChange: curPage - 1 });
-      }
-    }
-
-    if (action === 'Next') {
-      setCurPage((prevState) => prevState + 1);
-      handleRefresh({ pageChange: curPage + 1 });
-    }
   };
 
   const filterOptions = {
@@ -129,6 +80,13 @@ function PatientResults() {
       { value: 'Eating', label: 'Eating' },
     ],
   };
+
+  const sortOptions = [
+    { value: '+lastName', label: 'Last name A-Z' },
+    { value: '-lastName', label: 'Last name Z-A' },
+    { value: '+status', label: 'Status A-Z' },
+    { value: '-status', label: 'Status Z-A' },
+  ];
 
   if (loading || !units) {
     return <Spinner />;
@@ -143,30 +101,26 @@ function PatientResults() {
           tableId='patientResultsTable'
           headers={['Room', 'First', 'Last', 'Diet', 'Status', '']}
           heading='Patients'
-          refresh={handleRefresh}
+          refresh
+          refreshDispatch={getPatients}
           createPath='create'
           filterHeading='Patients'
           filterOptions={filterOptions}
           filterValues={[unit, status]}
           filterOnChange={handleChange}
-          filterSubmit={handleRefresh}
           filterReset={handleReset}
+          filterString={handleFilterString}
           limit
           limitValue={limit}
-          limitOnChange={handleLimitChange}
+          limitSetLimit={setLimit}
           paginate
           paginateCurPage={curPage}
-          paginateNext={handlePaginateOnChange}
-          paginatePrevious={handlePaginateOnChange}
+          paginateSetPage={setCurPage}
           sort
-          sortOnChange={handleSortChange}
+          sortInitialVal='+lastName'
           sortValue={sort}
-          sortOptions={[
-            { value: '+lastName', label: 'Last name A-Z' },
-            { value: '-lastName', label: 'Last name Z-A' },
-            { value: '+status', label: 'Status A-Z' },
-            { value: '-status', label: 'Status Z-A' },
-          ]}
+          sortSetSort={setSort}
+          sortOptions={sortOptions}
         >
           {patients.map((patient) => (
             <TableDataItem

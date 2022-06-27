@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -10,6 +10,7 @@ import ButtonMain from '../layout/Button/ButtonMain/ButtonMain';
 import Error from '../Error/Error';
 
 import classes from './RoomResults.module.css';
+import { getUnits } from '../../features/unit/unitSlice';
 
 const RoomResults = (props) => {
   const dispatch = useDispatch();
@@ -17,17 +18,37 @@ const RoomResults = (props) => {
   const { rooms, loading, isError, message } = useSelector(
     (state) => state.room
   );
+  const { units } = useSelector((state) => state.unit);
+
+  const [curPage, setCurPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [formData, setFormData] = useState({
+    unit: '',
+  });
+  const [unitValuesLabels, setUnitValuesLabels] = useState([]);
+
+  const { unit } = formData;
 
   useEffect(() => {
-    dispatch(getRooms());
+    dispatch(getUnits());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getRooms(`limit=${limit}`));
     if (isError) {
       toast.error(message);
     }
-  }, [dispatch, isError, message]);
+  }, [dispatch, isError, limit, message]);
 
-  const handleRefresh = () => {
-    dispatch(getRooms());
-  };
+  useEffect(() => {
+    if (units) {
+      const data = units.map((unit) => {
+        return { value: unit.unitName, label: unit.unitName };
+      });
+      data.unshift({ value: '', label: 'All' });
+      setUnitValuesLabels(data);
+    }
+  }, [units]);
 
   if (loading) {
     return <Spinner />;
@@ -41,8 +62,15 @@ const RoomResults = (props) => {
         <Table
           headers={['Room Number', 'Unit', '']}
           heading='Rooms'
-          refresh={handleRefresh}
+          refresh
+          refreshDispatch={getRooms}
           createPath='create'
+          limit
+          limitValue={limit}
+          limitSetLimit={setLimit}
+          paginate
+          paginateCurPage={curPage}
+          paginateSetPage={setCurPage}
         >
           {rooms.map((room, index) => (
             <React.Fragment key={room._id}>
