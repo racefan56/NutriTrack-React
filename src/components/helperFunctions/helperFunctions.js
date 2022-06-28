@@ -61,7 +61,9 @@ export const formatDate = (date, dateOnly, expandedDateForm) => {
       const formatedDateExpanded = `${months[month]} ${days[day]}, ${year}`;
       return formatedDateExpanded;
     }
-    const formatedDateOnly = `${month}/${day}/${year}`;
+    const formatedDateOnly = `${month < 10 ? `0` + month : month}/${
+      day < 10 ? `0` + day : day
+    }/${year}`;
     return formatedDateOnly;
   }
 
@@ -72,7 +74,7 @@ export const formatDate = (date, dateOnly, expandedDateForm) => {
   return formatedDateTime;
 };
 
-export const getToday = () => {
+export const getToday = (mmddyyyy) => {
   let today = new Date();
   let dd = today.getDate();
   let mm = today.getMonth() + 1; //January is 0!
@@ -86,9 +88,14 @@ export const getToday = () => {
     mm = '0' + mm;
   }
 
-  today = yyyy + '-' + mm + '-' + dd;
-
-  return today;
+  if (mmddyyyy) {
+    // return mm/dd/yyyy format
+    today = `${mm}/${dd}/${yyyy}`;
+    return today;
+  } else {
+    today = yyyy + '-' + mm + '-' + dd;
+    return today;
+  }
 };
 
 export const getDayOfWeek = (date) => {

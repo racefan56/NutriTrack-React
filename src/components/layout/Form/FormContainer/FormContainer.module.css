@@ -60,6 +60,16 @@
   padding-right: 1rem;
 }
 
+.subTitle {
+  display: flex;
+  color: #e7f5ff;
+  font-size: 18px;
+  padding-left: 1rem;
+}
+
+.test {
+  font-size: 12px;
+}
 .statusTag {
   position: absolute;
   z-index: 1;

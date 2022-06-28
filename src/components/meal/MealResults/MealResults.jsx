@@ -19,6 +19,9 @@ import classes from './MealResults.module.css';
 const MealResults = ({ meals, patientId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const today = getToday({ mmddyyyy: true });
+
   if (!meals) {
     return;
   }
@@ -83,37 +86,7 @@ const MealResults = ({ meals, patientId }) => {
     );
   };
 
-  const showHide = (day) => {
-    const days = document.getElementsByClassName('allDays');
-
-    for (let i = 0; i < days.length; i++) {
-      if (days[i].id === day) {
-        document.getElementById(day).toggleAttribute('hidden');
-      } else {
-        days[i].setAttribute('hidden', true);
-      }
-    }
-  };
-
-  const mealsFilteredByDay = mealDaySet.map((day) => {
-    return meals
-      .filter((meal) => day === formatDate(meal.mealDate, { dateOnly: true }))
-      .sort(
-        (meal1, meal2) =>
-          Date.parse(meal1.mealDate) - Date.parse(meal2.mealDate)
-      )
-      .map((meal) => {
-        return (
-          <React.Fragment key={uuidv4()}>
-            <Meal key={uuidv4()} meal={meal}></Meal>
-          </React.Fragment>
-        );
-      });
-  });
-
   if (meals.length === 0) {
-    const today = getToday();
-    console.log(today);
     return (
       <div className={classes.dayContainer} key={uuidv4()}>
         <div className={classes.dayHeading} key={uuidv4()}>
@@ -144,25 +117,61 @@ const MealResults = ({ meals, patientId }) => {
   }
 
   return mealDaySet.map((day, index) => {
-    return (
-      <div className={classes.dayContainer} key={uuidv4()}>
-        <div
-          onClick={() => showHide(day)}
-          className={classes.dayHeading}
-          key={uuidv4()}
-        >
-          <div className={classes.orderDate}>{day}</div>
-          <div className={classes.orderTakenContainer}>
-            {isOrderTaken(day, 'Breakfast')}
-            {isOrderTaken(day, 'Lunch')}
-            {isOrderTaken(day, 'Dinner')}
+    //If no orders have been taken for the current day, add a section for the current day.
+    if (!mealDaySet.includes(today) && index === 0) {
+      return (
+        <>
+          <div className={classes.dayContainer} key={uuidv4()}>
+            <div className={classes.dayHeading} key={uuidv4()}>
+              <div className={classes.orderDate}>{today}</div>
+              <div className={classes.orderTakenContainer}>
+                <span
+                  onClick={() => handleOrderClick([today, 'Breakfast'])}
+                  className={classes.mealXSpan}
+                >
+                  B: <BiXCircle className={classes.iconX}></BiXCircle>
+                </span>
+                <span
+                  onClick={() => handleOrderClick([today, 'Lunch'])}
+                  className={classes.mealXSpan}
+                >
+                  L: <BiXCircle className={classes.iconX}></BiXCircle>
+                </span>
+                <span
+                  onClick={() => handleOrderClick([today, 'Dinner'])}
+                  className={classes.mealXSpan}
+                >
+                  D: <BiXCircle className={classes.iconX}></BiXCircle>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className={classes.dayContainer} key={uuidv4()}>
+            <div className={classes.dayHeading} key={uuidv4()}>
+              <div className={classes.orderDate}>{day}</div>
+              <div className={classes.orderTakenContainer}>
+                {isOrderTaken(day, 'Breakfast')}
+                {isOrderTaken(day, 'Lunch')}
+                {isOrderTaken(day, 'Dinner')}
+              </div>
+            </div>
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <div className={classes.dayContainer} key={uuidv4()}>
+          <div className={classes.dayHeading} key={uuidv4()}>
+            <div className={classes.orderDate}>{day}</div>
+            <div className={classes.orderTakenContainer}>
+              {isOrderTaken(day, 'Breakfast')}
+              {isOrderTaken(day, 'Lunch')}
+              {isOrderTaken(day, 'Dinner')}
+            </div>
           </div>
         </div>
-        <div hidden id={day} className='allDays'>
-          <div className='row'>{mealsFilteredByDay[index]}</div>
-        </div>
-      </div>
-    );
+      );
+    }
   });
 };
 

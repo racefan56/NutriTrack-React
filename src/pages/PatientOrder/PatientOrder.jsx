@@ -3,13 +3,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { getMenu, deleteMenu, updateMenu } from '../../features/menu/menuSlice';
-import { getPatient } from '../../features/patient/patientSlice';
-import { getDiets } from '../../features/diet/dietSlice';
+import {
+  getPatientOrder,
+  getPatient,
+  updatePatientOrder,
+  deletePatientOrder,
+  reset,
+} from '../../features/patient/patientSlice';
 import { getMenuItems } from '../../features/menuItem/menuItemSlice';
 
 import {
   formEditMode,
+  getToday,
+  formatDate,
   invalidInput,
 } from '../../components/helperFunctions/helperFunctions';
 
@@ -24,6 +30,8 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
+import classes from './PatientOrder.module.css';
+
 const PatientOrder = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,11 +43,10 @@ const PatientOrder = (props) => {
 
   const [editMode, setEditMode] = useState(false);
   const [firstRender, setfirstRender] = useState(true);
-  const [curOrder, setCurOrder] = useState(null);
   const [formData, setFormData] = useState({
-    day: 'Sunday',
-    mealPeriod: 'Breakfast',
-    option: 'Hot',
+    day: '',
+    mealPeriod: '',
+    option: '',
     entree: {},
     dietAvailability: [],
     sides: [],
@@ -47,7 +54,7 @@ const PatientOrder = (props) => {
     drinks: [],
     condiments: [],
   });
-  const [filteredMenuItems, setFilteredMenuItems] = useState(null);
+  const today = getToday({ mmddyyyy: true });
 
   const {
     day,
@@ -61,86 +68,57 @@ const PatientOrder = (props) => {
   } = formData;
 
   useEffect(() => {
-    if (patient) {
-      const order = patient.mealOrders.find((el) => {
-        return el._id === orderId;
-      });
-
-      if (order) {
-        setCurOrder(order);
-        setFormData({ ...order });
-      }
-    }
-  }, [orderId, patient]);
-
-  useEffect(() => {
     formEditMode(editMode);
   }, [editMode]);
 
   useEffect(() => {
     dispatch(getPatient(patientId));
+    dispatch(getPatientOrder([patientId, orderId]));
 
     setfirstRender(false);
-  }, [dispatch, patientId]);
+  }, [dispatch, orderId, patientId]);
 
   useEffect(() => {
     if (patient) {
       dispatch(getMenuItems(`dietAvailability=${patient.currentDiet._id}`));
-
-      // if (menuItems) {
-      //   const selectedDietId = patient.currentDiet._id;
-
-      //   setFilteredMenuItems(
-      //     menuItems.filter((menuItem) => {
-      //       const menuItemDiets = menuItem.dietAvailability.map(
-      //         (diet) => diet._id
-      //       );
-
-      //       const menuItemAvailableOnSelectedDiets = selectedDietId.every(
-      //         (diet) => {
-      //           return menuItemDiets.includes(diet);
-      //         }
-      //       );
-
-      //       if (menuItemAvailableOnSelectedDiets) {
-      //         return menuItem;
-      //       } else {
-      //         return false;
-      //       }
-      //     })
-      //   );
-      // }
     }
   }, [dispatch, patient]);
 
   useEffect(() => {
-    // if (isSuccess && patientOrder) {
-    //   toast.success('Patient order successfully updated!');
-    //   navigate(`/control-panel/patients/${patientId}`);
-    // }
+    if (patientOrder) {
+      setFormData({ ...patientOrder });
+    }
+  }, [patientOrder]);
 
-    // if (isSuccess && !patientOrder) {
-    //   toast.success('Patient order successfully deleted!');
-    //   navigate(`/control-panel/patients/${patientId}`);
-    // }
+  useEffect(() => {
+    if (isSuccess && patientOrder) {
+      dispatch(reset());
+      toast.success('Patient order successfully updated!');
+    }
+
+    if (isSuccess && !patientOrder) {
+      dispatch(reset());
+      toast.success('Patient order successfully deleted!');
+      navigate(`/patients/${patientId}`);
+    }
 
     if (isError) {
       setEditMode(true);
-      // if (message && message.keyValue?.mealPeriod) {
-      //   toast.error(
-      //     'A menu already exists for that day, meal period, option, &/or diets'
-      //   );
-      //   invalidInput('mealPeriod');
-      //   invalidInput('day');
-      // }
-      // if (message && message.message) {
-      //   toast.error(message.message);
-      // } else {
-      //   toast.error('Something went wrong. Please try again later.');
-      // }
-      toast.error('Something went wrong. Please try again later.');
+      if (message && message.message) {
+        toast.error(message.message);
+      } else {
+        toast.error('Something went wrong. Please try again later.');
+      }
     }
-  }, [isError]);
+  }, [
+    dispatch,
+    isError,
+    isSuccess,
+    message,
+    navigate,
+    patientId,
+    patientOrder,
+  ]);
 
   const handleChange = (e) => {
     const key = e.target.id;
@@ -175,30 +153,30 @@ const PatientOrder = (props) => {
       invalidInput('entree');
       toast.error('An entree is required.');
     } else {
-      // dispatch(updateMenu([menuId, formData]));
+      dispatch(updatePatientOrder([patientId, orderId, formData]));
     }
   };
 
-  // const handleDelete = (menuId) => {
-  //   dispatch(deleteMenu(menuId));
-  //   //After a menu is deleted, return to menus page
-  //   if (isSuccess) {
-  //     navigate('/control-panel/menus');
-  //     toast.success('Menu successfully deleted!');
-  //   }
-  // };
+  const handleDelete = () => {
+    dispatch(deletePatientOrder([patientId, orderId]));
+    //After a order is deleted, return to patient page
+    if (isSuccess) {
+      navigate(`/patients/${patientId}`);
+      toast.success('Order successfully deleted!');
+    }
+  };
 
   const handleCancel = () => {
     setEditMode(false);
     //Reset patient order fields back to their original values
-    setFormData({ ...curOrder });
+    setFormData({ ...patientOrder });
   };
 
   const noOptionsTemplate = (item) => {
     return `There are currently no ${item} available for the patients current diet.`;
   };
 
-  if (loading || !patient || !menuItems || !curOrder || firstRender) {
+  if (loading || !patient || !menuItems || !patientOrder || firstRender) {
     return <Spinner />;
   } else {
     return (
@@ -207,53 +185,33 @@ const PatientOrder = (props) => {
         <ContainerSideNav>
           <FormContainer
             category='Menu'
-            title={`${day} ${mealPeriod} : ${option} option`}
+            title={`${day} ${mealPeriod}`}
+            subTitle={`${patient.firstName} ${patient.lastName}: ${patient.currentDiet.name}`}
             onSubmit={handleSubmit}
           >
             <FormGroup
               id='day'
-              inputType='select'
-              selectOptions={[
-                { value: 'Sunday', label: 'Sunday' },
-                { value: 'Monday', label: 'Monday' },
-                { value: 'Tuesday', label: 'Tuesday' },
-                { value: 'Wednesday', label: 'Wednesday' },
-                { value: 'Thursday', label: 'Thursday' },
-                { value: 'Friday', label: 'Friday' },
-                { value: 'Saturday', label: 'Saturday' },
-              ]}
+              inputType='text'
               className='col-12 col-md-6 col-lg-4'
               label='Day'
-              value={day}
-              onChange={handleChange}
-              editable
+              defaultValue={day}
+              readonly
             />
             <FormGroup
               id='mealPeriod'
-              inputType='select'
-              selectOptions={[
-                { value: 'Breakfast', label: 'Breakfast' },
-                { value: 'Lunch', label: 'Lunch' },
-                { value: 'Dinner', label: 'Dinner' },
-              ]}
+              inputType='text'
               className='col-12 col-md-6 col-lg-4'
               label='Meal Period'
-              value={mealPeriod}
-              onChange={handleChange}
-              editable
+              defaultValue={mealPeriod}
+              readonly
             />
             <FormGroup
               id='option'
-              inputType='select'
-              selectOptions={[
-                { value: 'Hot', label: 'Hot' },
-                { value: 'Cold', label: 'Cold' },
-              ]}
+              inputType='text'
               className='col-12 col-md-6 col-lg-4'
               label='Option'
-              value={option}
-              onChange={handleChange}
-              editable
+              defaultValue={option ? option : 'Custom'}
+              readonly
             />
             <FormGroup
               id='entree'
@@ -338,34 +296,40 @@ const PatientOrder = (props) => {
               onChange={handleChange}
               editable
             />
-
-            {editMode ? (
-              <FormActionBtnContainer>
-                <ButtonMain
-                  className='mx-3'
-                  text='Submit'
-                  type='Submit'
-                  onClick={handleSubmit}
-                />
-                <ButtonSecondary
-                  className='m-3'
-                  text='Cancel'
-                  type='Button'
-                  onClick={handleCancel}
-                />
-              </FormActionBtnContainer>
+            {/* If the meal date is NOT today, don't allow editing of the meal */}
+            {formatDate(patientOrder.mealDate, { dateOnly: true }) === today ? (
+              editMode ? (
+                <FormActionBtnContainer>
+                  <ButtonMain
+                    className='mx-3'
+                    text='Submit'
+                    type='Submit'
+                    onClick={handleSubmit}
+                  />
+                  <ButtonSecondary
+                    className='m-3'
+                    text='Cancel'
+                    type='Button'
+                    onClick={handleCancel}
+                  />
+                </FormActionBtnContainer>
+              ) : (
+                <FormActionBtnContainer>
+                  <ButtonEdit onClick={handleEdit} />
+                  <Modal
+                    id={patientOrder._id}
+                    itemName={`this order`}
+                    onDelete={() => {
+                      handleDelete();
+                    }}
+                    btnDelete
+                  />
+                </FormActionBtnContainer>
+              )
             ) : (
-              <FormActionBtnContainer>
-                <ButtonEdit onClick={handleEdit} />
-                <Modal
-                  id={curOrder._id}
-                  itemName={`${patient.firstName}`}
-                  onDelete={() => {
-                    // handleDelete(menuId);
-                  }}
-                  btnDelete
-                />
-              </FormActionBtnContainer>
+              <div className={classes.mealDatePassed}>
+                This meals date has passed. It is no longer editable.
+              </div>
             )}
           </FormContainer>
         </ContainerSideNav>

@@ -34,6 +34,30 @@ export const createPatient = createAsyncThunk(
   }
 );
 
+//Create patient order
+export const createPatientOrder = createAsyncThunk(
+  'patient/createPatientOrder',
+  async ([patientId, formData], thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await patientService.createPatientOrder(
+        patientId,
+        formData,
+        token
+      );
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 //Get all patient orders
 export const getPatientOrders = createAsyncThunk(
   'patient/getPatientOrders',
@@ -57,7 +81,7 @@ export const getPatientOrders = createAsyncThunk(
 //Get one patient order
 export const getPatientOrder = createAsyncThunk(
   'patient/getPatientOrder',
-  async (orderId, patientId, thunkAPI) => {
+  async ([patientId, orderId], thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
       return await patientService.getPatientOrder(orderId, patientId, token);
@@ -99,7 +123,6 @@ export const getPatient = createAsyncThunk(
   'patient/getPatient',
   async (patientId, thunkAPI) => {
     try {
-      console.log(thunkAPI.getState());
       const token = thunkAPI.getState().auth.token;
       return await patientService.getPatient(patientId, token);
     } catch (error) {
@@ -136,6 +159,31 @@ export const updatePatient = createAsyncThunk(
   }
 );
 
+//Update one patient order
+export const updatePatientOrder = createAsyncThunk(
+  'patient/updatePatientOrder',
+  async ([patientId, orderId, formData], thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await patientService.updatePatientOrder(
+        patientId,
+        orderId,
+        formData,
+        token
+      );
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 //Delete one patient
 export const deletePatient = createAsyncThunk(
   'patient/deletePatient',
@@ -156,10 +204,30 @@ export const deletePatient = createAsyncThunk(
   }
 );
 
+//Delete one patient order
+export const deletePatientOrder = createAsyncThunk(
+  'patient/deletePatientOrder',
+  async ([patientId, orderId], thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await patientService.deletePatientOrder(patientId, orderId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 //Get patient census report
 export const getCensus = createAsyncThunk(
   'patient/getCensus',
-  async (patientId, thunkAPI) => {
+  async (thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
       return await patientService.getCensus(token);
@@ -182,6 +250,7 @@ export const patientSlice = createSlice({
   reducers: {
     reset: (state) => {
       state.loading = false;
+      state.isSuccess = false;
     },
   },
   extraReducers: (builder) => {
@@ -197,6 +266,21 @@ export const patientSlice = createSlice({
         state.loading = false;
       })
       .addCase(createPatient.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
+      })
+      .addCase(createPatientOrder.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(createPatientOrder.fulfilled, (state, action) => {
+        state.patientOrder = action.payload.data.data;
+        state.isSuccess = true;
+        state.loading = false;
+      })
+      .addCase(createPatientOrder.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
@@ -276,6 +360,21 @@ export const patientSlice = createSlice({
         state.message = action.payload;
         state.loading = false;
       })
+      .addCase(updatePatientOrder.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(updatePatientOrder.fulfilled, (state, action) => {
+        state.patientOrder = action.payload.data.data;
+        state.isSuccess = true;
+        state.loading = false;
+      })
+      .addCase(updatePatientOrder.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
+      })
       .addCase(deletePatient.pending, (state) => {
         state.isSuccess = false;
         state.isError = false;
@@ -287,6 +386,21 @@ export const patientSlice = createSlice({
         state.isSuccess = true;
       })
       .addCase(deletePatient.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
+      })
+      .addCase(deletePatientOrder.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(deletePatientOrder.fulfilled, (state) => {
+        state.patientOrder = null;
+        state.loading = false;
+        state.isSuccess = true;
+      })
+      .addCase(deletePatientOrder.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;

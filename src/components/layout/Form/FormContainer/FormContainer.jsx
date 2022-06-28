@@ -6,6 +6,7 @@ const FormContainer = ({
   status,
   category,
   title,
+  subTitle,
   altHeading,
   onSubmit,
 }) => {
@@ -36,9 +37,17 @@ const FormContainer = ({
           )}
           <span className={classes.titleSpan}>{title}</span>
         </div>
+        {subTitle ? (
+          <div className={classes.subTitle}> {subTitle} </div>
+        ) : (
+          <></>
+        )}
       </div>
 
-      <form onSubmit={onSubmit} className='row m-0'>
+      <form
+        onSubmit={onSubmit}
+        className={`row m-0 ${subTitle ? 'pt-4' : 'pt-3'}`}
+      >
         {children}
       </form>
     </div>

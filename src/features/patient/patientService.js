@@ -17,6 +17,34 @@ const createPatient = async (formData, token) => {
   return patient;
 };
 
+//Create patient order
+const createPatientOrder = async (patientId, formData, token) => {
+  console.log(patientId, formData);
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  if (formData.option !== 'Custom') {
+    const response = await axios.post(
+      `${SERVER}/patients/${patientId}/menu/order?day=${formData.day}&mealPeriod=${formData.mealPeriod}`,
+      config
+    );
+    const order = await response.data;
+    return order;
+  } else {
+    const response = await axios.post(
+      `${SERVER}/patients/${patientId}/menu/order
+      }`,
+      formData,
+      config
+    );
+    const order = await response.data;
+    return order;
+  }
+};
+
 //get patients
 const getPatients = async (queryString, token) => {
   const config = {
@@ -105,6 +133,24 @@ const updatePatient = async (patientId, formData, token) => {
   return patient;
 };
 
+//Update patient order
+const updatePatientOrder = async (patientId, orderId, formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.patch(
+    `${SERVER}/patients/${patientId}/menu/order/${orderId}`,
+    formData,
+    config
+  );
+
+  const patient = await response.data;
+  return patient;
+};
+
 //Delete patient
 const deletePatient = async (patientId, token) => {
   const config = {
@@ -120,6 +166,23 @@ const deletePatient = async (patientId, token) => {
 
   const patient = await response.data;
   return patient;
+};
+
+//Delete patient order
+const deletePatientOrder = async (patientId, orderId, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.delete(
+    `${SERVER}/patients/${patientId}/menu/order/${orderId}`,
+    config
+  );
+
+  const patientOrder = await response.data;
+  return patientOrder;
 };
 
 //get patient census report
@@ -143,8 +206,11 @@ const patientService = {
   getPatientOrders,
   getPatientOrder,
   updatePatient,
+  updatePatientOrder,
   deletePatient,
+  deletePatientOrder,
   createPatient,
+  createPatientOrder,
   getCensus,
 };
 

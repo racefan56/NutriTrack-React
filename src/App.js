@@ -232,7 +232,7 @@ function App() {
           {/* View all patient orders */}
           <Route
             path='/patients/patient-orders'
-            element={<PrivateRoute validRoles={['admin']} />}
+            element={<PrivateRoute validRoles={['admin', 'nca']} />}
           >
             <Route
               path='/patients/patient-orders'
@@ -243,7 +243,7 @@ function App() {
           {/* View a single patient order */}
           <Route
             path='/patients/:patientId/orders/:orderId'
-            element={<PrivateRoute validRoles={['admin']} />}
+            element={<PrivateRoute validRoles={['admin', 'nca']} />}
           >
             <Route
               path='/patients/:patientId/orders/:orderId'
