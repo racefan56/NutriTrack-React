@@ -19,7 +19,7 @@ const createPatient = async (formData, token) => {
 
 //Create patient order
 const createPatientOrder = async (patientId, formData, token) => {
-  console.log(patientId, formData);
+  console.log(formData);
   const config = {
     headers: {
       Authorization: `${token}`,
@@ -27,17 +27,19 @@ const createPatientOrder = async (patientId, formData, token) => {
   };
 
   if (formData.option !== 'Custom') {
+    const emptyBody = [];
     const response = await axios.post(
       `${SERVER}/patients/${patientId}/menu/order?day=${formData.day}&mealPeriod=${formData.mealPeriod}`,
+      emptyBody,
       config
     );
     const order = await response.data;
+
     return order;
   } else {
     const response = await axios.post(
-      `${SERVER}/patients/${patientId}/menu/order
-      }`,
-      formData,
+      `${SERVER}/patients/${patientId}/menu/order?day=${formData.day}&mealPeriod=${formData.mealPeriod}`,
+      [formData],
       config
     );
     const order = await response.data;
@@ -52,7 +54,6 @@ const getPatients = async (queryString, token) => {
       Authorization: `${token}`,
     },
   };
-  console.log(queryString);
 
   const response = await axios.get(
     `${SERVER}/patients?${queryString ? queryString : ''}`,

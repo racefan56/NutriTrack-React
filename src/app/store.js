@@ -9,6 +9,7 @@ import unitReducer from '../features/unit/unitSlice';
 import roomReducer from '../features/room/roomSlice';
 import menuReducer from '../features/menu/menuSlice';
 import userReducer from '../features/user/userSlice';
+import prepListReducer from '../features/prepList/prepListSlice';
 
 export const store = configureStore({
   reducer: {
@@ -22,5 +23,6 @@ export const store = configureStore({
     room: roomReducer,
     menu: menuReducer,
     user: userReducer,
+    prepList: prepListReducer,
   },
 });

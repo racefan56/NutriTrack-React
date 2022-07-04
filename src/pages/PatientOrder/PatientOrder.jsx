@@ -297,7 +297,7 @@ const PatientOrder = (props) => {
               editable
             />
             {/* If the meal date is NOT today, don't allow editing of the meal */}
-            {formatDate(patientOrder.mealDate, { dateOnly: true }) === today ? (
+            {formatDate(patientOrder.mealDate, { dateOnly: true }) >= today ? (
               editMode ? (
                 <FormActionBtnContainer>
                   <ButtonMain

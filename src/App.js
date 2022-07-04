@@ -31,6 +31,8 @@ import ProductionAreas from './pages/ProductionAreas/ProductionAreas';
 import ProductionArea from './pages/ProductionArea/ProductionArea';
 import CreateProductionArea from './pages/CreateProductionArea/CreateProductionArea';
 
+import PrepList from './pages/PrepList/PrepList';
+
 import Units from './pages/Units/Units';
 import Unit from './pages/Unit/Unit';
 import CreateUnit from './pages/CreateUnit/CreateUnit';
@@ -114,6 +116,14 @@ function App() {
               path='/control-panel/production-areas'
               element={<ProductionAreas />}
             />
+          </Route>
+
+          {/* PREP LIST ROUTE */}
+          <Route
+            path='/control-panel/prepList'
+            element={<PrivateRoute validRoles={['admin']} />}
+          >
+            <Route path='/control-panel/prepList' element={<PrepList />} />
           </Route>
 
           {/* UNIT ROUTES */}
