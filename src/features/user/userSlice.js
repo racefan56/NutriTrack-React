@@ -141,7 +141,7 @@ export const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(getUsers.fulfilled, (state, action) => {
-        state.users = action.payload.data.users;
+        state.users = action.payload.data.data;
         state.loading = false;
       })
       .addCase(getUsers.rejected, (state, action) => {

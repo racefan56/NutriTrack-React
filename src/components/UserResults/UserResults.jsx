@@ -104,7 +104,7 @@ const UserResults = (props) => {
           sortSetSort={setSort}
           sortOptions={sortOptions}
         >
-          {users.map((user, index) => (
+          {users?.map((user, index) => (
             <React.Fragment key={user._id}>
               <TableDataItem
                 navigatePath={`/control-panel/users/${user._id}`}
