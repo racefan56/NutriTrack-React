@@ -69,7 +69,7 @@ const CreatePatient = (props) => {
 
   useEffect(() => {
     dispatch(getDiets());
-    dispatch(getRooms());
+    dispatch(getRooms('isOutOfService=false'));
     dispatch(getMenuItems('category=supplement'));
   }, [dispatch]);
 
@@ -166,7 +166,7 @@ const CreatePatient = (props) => {
     navigate('/patients');
   };
 
-  if (loading || !diets || !rooms || !menuItems || !availableRooms) {
+  if (loading || !diets || !menuItems || !rooms || !availableRooms) {
     return <Spinner />;
   } else if (availableRooms[1].length > 0) {
     return (

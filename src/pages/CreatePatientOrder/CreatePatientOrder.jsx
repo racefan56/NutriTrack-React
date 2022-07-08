@@ -70,7 +70,7 @@ const CreatePatientOrder = (props) => {
 
   useEffect(() => {
     if (patient) {
-      dispatch(getMenuItems(`dietAvailability=${patient.currentDiet._id}`));
+      dispatch(getMenuItems(`dietAvailability=${patient.currentDiet._id}&isOutOfStock=false`));
     }
   }, [dispatch, patient]);
 
@@ -78,7 +78,6 @@ const CreatePatientOrder = (props) => {
     if (pathname) {
       // Isolate the search params from the path.
       const searchParams = pathname.split('?', 2)[1].split('&');
-      console.log(searchParams);
       searchParams.map((param) => {
         if (param.startsWith('day=')) {
           return setFormData((prevState) => ({
@@ -100,12 +99,7 @@ const CreatePatientOrder = (props) => {
   useEffect(() => {
     if (isSuccess && patientOrder) {
       dispatch(reset());
-      toast.success('Patient order successfully updated!');
-    }
-
-    if (isSuccess && !patientOrder) {
-      dispatch(reset());
-      toast.success('Patient order successfully deleted!');
+      toast.success('Patient order successfully created!');
       navigate(`/patients/${patientId}`);
     }
 

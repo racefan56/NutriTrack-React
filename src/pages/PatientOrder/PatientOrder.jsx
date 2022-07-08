@@ -80,7 +80,11 @@ const PatientOrder = (props) => {
 
   useEffect(() => {
     if (patient) {
-      dispatch(getMenuItems(`dietAvailability=${patient.currentDiet._id}`));
+      dispatch(
+        getMenuItems(
+          `dietAvailability=${patient.currentDiet._id}&isOutOfStock=false`
+        )
+      );
     }
   }, [dispatch, patient]);
 

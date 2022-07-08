@@ -22,6 +22,7 @@ const createMenuItem = async (formData, token) => {
 
 //get all menuItems
 const getMenuItems = async (queryString, token) => {
+  console.log(queryString);
   const config = {
     headers: {
       Authorization: `${token}`,

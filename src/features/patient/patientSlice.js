@@ -38,7 +38,6 @@ export const createPatient = createAsyncThunk(
 export const createPatientOrder = createAsyncThunk(
   'patient/createPatientOrder',
   async ([patientId, formData], thunkAPI) => {
-    console.log(formData);
     try {
       const token = thunkAPI.getState().auth.token;
       return await patientService.createPatientOrder(

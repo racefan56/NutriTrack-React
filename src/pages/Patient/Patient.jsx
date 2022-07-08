@@ -82,7 +82,7 @@ const Patient = (props) => {
   useEffect(() => {
     dispatch(getPatient(patientId));
     dispatch(getDiets());
-    dispatch(getRooms());
+    dispatch(getRooms('isOutOfService=false'));
     dispatch(getMenuItems('category=supplement'));
   }, [dispatch, patientId]);
 
