@@ -40,9 +40,10 @@ const Room = (props) => {
   const [formData, setFormData] = useState({
     roomNumber: 0,
     unit: {},
+    isOutOfService: false,
   });
 
-  const { roomNumber, unit } = formData;
+  const { roomNumber, unit, isOutOfService } = formData;
 
   useEffect(() => {
     dispatch(getRoom(roomId));
@@ -153,6 +154,19 @@ const Room = (props) => {
               className='col-12 col-lg-6'
               label='Room Number'
               value={roomNumber}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='isOutOfService'
+              inputType='select'
+              selectOptions={[
+                { value: true, label: 'True' },
+                { value: false, label: 'False' },
+              ]}
+              className='col-12 col-md-6 col-lg-4'
+              label='Out of Service?'
+              value={isOutOfService}
               onChange={handleChange}
               editable
             />

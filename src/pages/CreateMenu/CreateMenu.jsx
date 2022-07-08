@@ -20,6 +20,7 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import Modal from '../../components/layout/Modal/Modal';
 
 import classes from './CreateMenu.module.css';
+import { findAllByDisplayValue } from '@testing-library/react';
 
 const CreateMenu = (props) => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const CreateMenu = (props) => {
     dessert: [],
     drinks: [],
     condiments: [],
+    isOutOfService: false,
     createdOn: null,
   });
 
@@ -55,6 +57,7 @@ const CreateMenu = (props) => {
     dessert,
     drinks,
     condiments,
+    isOutOfService,
   } = formData;
 
   useEffect(() => {
@@ -193,6 +196,19 @@ const CreateMenu = (props) => {
               className='col-12 col-md-6 col-lg-4'
               label='Option'
               value={option}
+              onChange={handleChange}
+              alwaysEditable
+            />
+            <FormGroup
+              id='isOutOfService'
+              inputType='select'
+              selectOptions={[
+                { value: true, label: 'True' },
+                { value: false, label: 'False' },
+              ]}
+              className='col-12 col-md-6 col-lg-4'
+              label='Out of Service?'
+              value={isOutOfService}
               onChange={handleChange}
               alwaysEditable
             />

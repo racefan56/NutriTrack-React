@@ -53,6 +53,7 @@ const Menu = (props) => {
     dessert: [],
     drinks: [],
     condiments: [],
+    isOutOfService: false,
   });
   const [filteredMenuItems, setFilteredMenuItems] = useState(null);
 
@@ -66,6 +67,7 @@ const Menu = (props) => {
     dessert,
     drinks,
     condiments,
+    isOutOfService,
   } = formData;
   useEffect(() => {
     if (menu) {
@@ -276,6 +278,19 @@ const Menu = (props) => {
               className='col-12 col-md-6 col-lg-4'
               label='Option'
               value={option}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='isOutOfService'
+              inputType='select'
+              selectOptions={[
+                { value: true, label: 'True' },
+                { value: false, label: 'False' },
+              ]}
+              className='col-12 col-md-6 col-lg-4'
+              label='Out of Service?'
+              value={isOutOfService}
               onChange={handleChange}
               editable
             />

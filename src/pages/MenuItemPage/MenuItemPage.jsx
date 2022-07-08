@@ -57,6 +57,7 @@ const MenuItemPage = () => {
     carbsInGrams: 0,
     sodiumInMG: 0,
     description: '',
+    isOutOfStock: false,
   });
 
   const {
@@ -71,6 +72,7 @@ const MenuItemPage = () => {
     carbsInGrams,
     sodiumInMG,
     description,
+    isOutOfStock,
   } = formData;
 
   useEffect(() => {
@@ -138,7 +140,7 @@ const MenuItemPage = () => {
     }
   };
 
-  if (loading || firstRender || !menuItem || !productionAreas) {
+  if (loading || firstRender || !menuItem || !productionAreas || !diets) {
     return <Spinner />;
   } else {
     return (
@@ -185,6 +187,19 @@ const MenuItemPage = () => {
               label='Production Area'
               className='col-12 col-md-6 col-lg-3'
               value={productionArea ? productionArea._id : ''}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='isOutOfStock'
+              inputType='select'
+              selectOptions={[
+                { value: true, label: 'True' },
+                { value: false, label: 'False' },
+              ]}
+              className='col-12 col-md-6 col-lg-4'
+              label='Out of Stock?'
+              value={isOutOfStock}
               onChange={handleChange}
               editable
             />

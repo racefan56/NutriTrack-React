@@ -115,7 +115,7 @@ function ChangePassword() {
           >
             <FormGroup
               id='passwordCurrent'
-              inputType='text'
+              inputType='password'
               className='col-12 col-lg-6'
               label='Current Password'
               value={passwordCurrent}
@@ -126,7 +126,7 @@ function ChangePassword() {
             />
             <FormGroup
               id='updatedPassword'
-              inputType='text'
+              inputType='password'
               className='col-12 col-lg-6'
               label='New Password'
               value={updatedPassword}
@@ -137,7 +137,7 @@ function ChangePassword() {
             />
             <FormGroup
               id='updatedPasswordConfirm'
-              inputType='text'
+              inputType='password'
               className='col-12 col-lg-6'
               label='Confirm New Password'
               value={updatedPasswordConfirm}

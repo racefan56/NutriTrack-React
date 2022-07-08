@@ -29,7 +29,7 @@ const createPatientOrder = async (patientId, formData, token) => {
   if (formData.option !== 'Custom') {
     const emptyBody = [];
     const response = await axios.post(
-      `${SERVER}/patients/${patientId}/menu/order?day=${formData.day}&mealPeriod=${formData.mealPeriod}`,
+      `${SERVER}/patients/${patientId}/menu/order?day=${formData.day}&mealPeriod=${formData.mealPeriod}&option=${formData.option}`,
       emptyBody,
       config
     );

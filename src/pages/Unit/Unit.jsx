@@ -37,9 +37,10 @@ const Unit = (props) => {
   const [formData, setFormData] = useState({
     unitName: '',
     description: '',
+    isOutOfService: false,
   });
 
-  const { unitName, description } = formData;
+  const { unitName, description, isOutOfService } = formData;
 
   useEffect(() => {
     dispatch(getUnit(unitId));
@@ -144,6 +145,19 @@ const Unit = (props) => {
               className='col-12 col-lg-6'
               label='Description'
               value={description}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='isOutOfService'
+              inputType='select'
+              selectOptions={[
+                { value: true, label: 'True' },
+                { value: false, label: 'False' },
+              ]}
+              className='col-12 col-md-6 col-lg-4'
+              label='Out of Service?'
+              value={isOutOfService}
               onChange={handleChange}
               editable
             />

@@ -45,6 +45,7 @@ const CreateMenuItem = () => {
     carbsInGrams: 0,
     sodiumInMG: 0,
     description: '',
+    isOutOfStock: false,
   };
 
   const [firstRender, setfirstRender] = useState(true);
@@ -62,6 +63,7 @@ const CreateMenuItem = () => {
     carbsInGrams,
     sodiumInMG,
     description,
+    isOutOfStock,
   } = formData;
 
   useEffect(() => {
@@ -215,6 +217,19 @@ const CreateMenuItem = () => {
               label='Production Area'
               className='col-12 col-md-6 col-lg-3'
               value={productionArea}
+              onChange={handleChange}
+              alwaysEditable
+            />
+            <FormGroup
+              id='isOutOfStock'
+              inputType='select'
+              selectOptions={[
+                { value: true, label: 'True' },
+                { value: false, label: 'False' },
+              ]}
+              className='col-12 col-md-6 col-lg-4'
+              label='Out of Stock?'
+              value={isOutOfStock}
               onChange={handleChange}
               alwaysEditable
             />

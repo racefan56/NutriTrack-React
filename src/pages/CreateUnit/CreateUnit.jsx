@@ -29,9 +29,10 @@ const CreateUnit = (props) => {
   const [formData, setFormData] = useState({
     unitName: '',
     description: '',
+    isOutOfService: false,
   });
 
-  const { unitName, description } = formData;
+  const { unitName, description, isOutOfService } = formData;
 
   useEffect(() => {
     if (isSuccess) {
@@ -124,7 +125,19 @@ const CreateUnit = (props) => {
               onChange={handleChange}
               alwaysEditable
             />
-
+            <FormGroup
+              id='isOutOfService'
+              inputType='select'
+              selectOptions={[
+                { value: true, label: 'True' },
+                { value: false, label: 'False' },
+              ]}
+              className='col-12 col-md-6 col-lg-4'
+              label='Out of Service?'
+              value={isOutOfService}
+              onChange={handleChange}
+              alwaysEditable
+            />
             <FormActionBtnContainer>
               <ButtonMain
                 className='mx-3'
