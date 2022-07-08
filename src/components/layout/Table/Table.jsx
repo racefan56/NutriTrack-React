@@ -36,8 +36,10 @@ const Table = ({
   sortSetSort,
   sortOptions,
   createPath,
+  noResultsMsg,
 }) => {
   const dispatch = useDispatch();
+  console.log(children);
 
   const handleRefreshAndQueryChange = ({
     limitChange,
@@ -71,8 +73,6 @@ const Table = ({
         string = `${string + `&sort=${sortValue}`}`;
       }
     }
-
-    console.log(string);
 
     return dispatch(refreshDispatch(string));
   };
@@ -182,10 +182,12 @@ const Table = ({
             </tr>
           </thead>
           <tbody>
-            {children.length === 0 ? (
-              <td className={classes.noResults} colSpan='100%'>
-                No results were found
-              </td>
+            {children.length === 0 || !children.length ? (
+              <tr>
+                <td className={classes.noResults} colSpan='100%'>
+                  {noResultsMsg ? noResultsMsg : `No results were found`}
+                </td>
+              </tr>
             ) : (
               children
             )}

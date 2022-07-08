@@ -23,9 +23,9 @@ const PrepListResults = (props) => {
   const [curPage, setCurPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [formData, setFormData] = useState({
-    mealPeriod: '',
-    productionArea: '',
-    day: '',
+    mealPeriod: 'Breakfast',
+    productionArea: productionAreas ? productionAreas[0].areaName : '',
+    day: 'Sunday',
   });
 
   const { mealPeriod, productionArea, day } = formData;
@@ -42,14 +42,12 @@ const PrepListResults = (props) => {
   }, [dispatch]);
 
   const handleReset = () => {
-    if (mealPeriod !== '' || productionArea !== '' || day !== '') {
-      setFormData({
-        mealPeriod: '',
-        productionArea: '',
-        day: '',
-      });
-      dispatch(getPrepList(`limit=${limit}`));
-    }
+    setFormData({
+      mealPeriod: 'Breakfast',
+      productionArea: productionAreas ? productionAreas[0].areaName : '',
+      day: 'Sunday',
+    });
+    dispatch(getPrepList(`limit=${limit}`));
   };
 
   const handleFilterString = () => {
@@ -75,16 +73,14 @@ const PrepListResults = (props) => {
 
   const filterOptions = {
     mealPeriod: [
-      { value: '', label: 'All' },
       { value: 'Breakfast', label: 'Breakfast' },
       { value: 'Lunch', label: 'Lunch' },
       { value: 'Dinner', label: 'Dinner' },
     ],
     productionArea: productionAreas?.map((productionArea) => {
-      return { value: productionArea.name, label: productionArea.name };
+      return { value: productionArea.areaName, label: productionArea.areaName };
     }),
     day: [
-      { value: '', label: 'All' },
       { value: 'Sunday', label: 'Sunday' },
       { value: 'Monday', label: 'Monday' },
       { value: 'Tuesday', label: 'Tuesday' },
@@ -95,7 +91,7 @@ const PrepListResults = (props) => {
     ],
   };
 
-  if (loading || !prepList) {
+  if (loading || !prepList || !productionAreas) {
     return <Spinner />;
   }
 
@@ -105,7 +101,7 @@ const PrepListResults = (props) => {
     return (
       <>
         <Table
-          headers={['Item', 'Quantity']}
+          headers={['Item', 'Portion Size', 'Portion Unit', 'Quantity']}
           heading='Prep List Report'
           refresh
           refreshDispatch={getPrepList}
@@ -122,13 +118,22 @@ const PrepListResults = (props) => {
           paginateCurPage={curPage}
           paginateSetPage={setCurPage}
         >
-          {prepList.map((menuItem, index) => (
-            <React.Fragment>
-              <TableDataItem
-                dataPoints={[titleCase(menuItem.name), menuItem.category]}
-              ></TableDataItem>
-            </React.Fragment>
-          ))}
+          {prepList.length > 0 ? (
+            prepList.map((menuItem, index) => (
+              <React.Fragment>
+                <TableDataItem
+                  dataPoints={[
+                    titleCase(menuItem.name),
+                    menuItem.portionSize,
+                    menuItem.portionUnit,
+                    menuItem.count,
+                  ]}
+                ></TableDataItem>
+              </React.Fragment>
+            ))
+          ) : (
+            <></>
+          )}
         </Table>
       </>
     );

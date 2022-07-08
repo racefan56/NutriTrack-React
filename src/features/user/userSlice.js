@@ -171,7 +171,7 @@ export const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        state.user = action.payload.data.data;
+        state.user = action.payload.data.user;
         state.isSuccess = true;
         state.loading = false;
       })

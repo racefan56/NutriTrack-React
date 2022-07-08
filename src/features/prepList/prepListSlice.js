@@ -12,10 +12,10 @@ const initialState = {
 //Get one prepList
 export const getPrepList = createAsyncThunk(
   'prepList/getPrepList',
-  async (formData, thunkAPI) => {
+  async (queryString, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
-      return await prepListService.getPrepList(formData, token);
+      return await prepListService.getPrepList(queryString, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -45,7 +45,7 @@ export const prepListSlice = createSlice({
         state.loading = true;
       })
       .addCase(getPrepList.fulfilled, (state, action) => {
-        state.prepList = action.payload.data;
+        state.prepList = action.payload.data.prepList;
         state.loading = false;
       })
       .addCase(getPrepList.rejected, (state, action) => {

@@ -3,7 +3,7 @@ import axios from 'axios';
 const SERVER = process.env.REACT_APP_SERVER;
 
 //get prepList
-const getPrepList = async (formData, token) => {
+const getPrepList = async (queryString, token) => {
   const config = {
     headers: {
       Authorization: `${token}`,
@@ -11,7 +11,7 @@ const getPrepList = async (formData, token) => {
   };
 
   const response = await axios.get(
-    `${SERVER}/patients/generatePrepLists?/${formData.mealPeriod}&day=${formData.day}&productionArea=${formData.productionArea}`,
+    `${SERVER}/patients/generatePrepLists?${queryString}`,
     config
   );
 
