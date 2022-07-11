@@ -70,6 +70,8 @@ const Unit = (props) => {
 
       if (message.message) {
         toast.error(message.message);
+      } else {
+        toast.error(message);
       }
     }
   }, [isError, isSuccess, message, navigate, unit]);

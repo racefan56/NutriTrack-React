@@ -35,7 +35,7 @@ const MenuItemPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { menuItem, loading, isSuccess } = useSelector(
+  const { menuItem, loading, isSuccess, message, isError } = useSelector(
     (state) => state.menuItem
   );
   const { productionAreas } = useSelector((state) => state.productionArea);
@@ -94,6 +94,26 @@ const MenuItemPage = () => {
     formEditMode(editMode);
   }, [editMode]);
 
+  useEffect(() => {
+    if (isSuccess && menuItem) {
+      toast.success('Room successfully updated!');
+      navigate('/control-panel/rooms');
+    }
+
+    if (isSuccess && !menuItem) {
+      toast.success('Room successfully deleted!');
+      navigate('/control-panel/rooms');
+    }
+
+    if (isError) {
+      if (message?.message) {
+        toast.error(message.message);
+      } else {
+        toast.error(message);
+      }
+    }
+  }, [isError, isSuccess, message, navigate, menuItem]);
+
   const handleChange = (e) => {
     const key = e.target.id;
     if (e.target.type === 'checkbox') {
@@ -132,12 +152,6 @@ const MenuItemPage = () => {
 
   const handleDelete = (menuItemId) => {
     dispatch(deleteMenuItem(menuItemId));
-
-    //After a menu item is deleted, return to menuItems page
-    navigate('/control-panel/menu-items');
-    if (isSuccess) {
-      toast.success('Menu item successfully deleted!');
-    }
   };
 
   if (loading || firstRender || !menuItem || !productionAreas || !diets) {

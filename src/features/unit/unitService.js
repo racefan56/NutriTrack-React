@@ -80,8 +80,8 @@ const deleteUnit = async (unitId, token) => {
     `${SERVER}/units/${unitId ? unitId : ''}`,
     config
   );
-
   const unit = await response.data;
+
   return unit;
 };
 

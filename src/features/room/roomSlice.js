@@ -193,7 +193,7 @@ export const roomSlice = createSlice({
       .addCase(deleteRoom.rejected, (state, action) => {
         console.log(action);
         state.isError = true;
-        state.message = action.payload.data;
+        state.message = action.payload;
         state.loading = false;
       });
   },

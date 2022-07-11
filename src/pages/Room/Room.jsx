@@ -75,6 +75,8 @@ const Room = (props) => {
 
       if (message?.message) {
         toast.error(message.message);
+      } else {
+        toast.error(message);
       }
     }
   }, [isError, isSuccess, message, navigate, room]);
