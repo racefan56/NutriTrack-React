@@ -70,13 +70,33 @@ export const getUser = createAsyncThunk(
   }
 );
 
-//Update one user
+//Update current user
 export const updateUser = createAsyncThunk(
   'user/updateUser',
   async ([userId, formData], thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
       return await userService.updateUser(userId, formData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+//Update other user
+export const updateOtherUser = createAsyncThunk(
+  'user/updateOtherUser',
+  async ([userId, formData], thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await userService.updateOtherUser(userId, formData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -176,6 +196,21 @@ export const userSlice = createSlice({
         state.loading = false;
       })
       .addCase(updateUser.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
+      })
+      .addCase(updateOtherUser.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(updateOtherUser.fulfilled, (state, action) => {
+        state.user = action.payload.data.user;
+        state.isSuccess = true;
+        state.loading = false;
+      })
+      .addCase(updateOtherUser.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;

@@ -47,6 +47,8 @@ const CreateMenu = (props) => {
     createdOn: null,
   });
 
+  const [filteredMenuItems, setFilteredMenuItems] = useState(null);
+
   const {
     day,
     mealPeriod,
@@ -85,6 +87,38 @@ const CreateMenu = (props) => {
       }
     }
   }, [isError, isSuccess, message, navigate]);
+
+  useEffect(() => {
+    if (dietAvailability.length > 0 && menuItems) {
+      const selectedDietIds = dietAvailability.map((diet) => {
+        if (typeof diet === 'object') {
+          return diet._id;
+        } else {
+          return diet;
+        }
+      });
+
+      setFilteredMenuItems(
+        menuItems.filter((menuItem) => {
+          const menuItemDiets = menuItem.dietAvailability.map(
+            (diet) => diet._id
+          );
+
+          const menuItemAvailableOnSelectedDiets = selectedDietIds.every(
+            (diet) => {
+              return menuItemDiets.includes(diet);
+            }
+          );
+
+          if (menuItemAvailableOnSelectedDiets) {
+            return menuItem;
+          } else {
+            return false;
+          }
+        })
+      );
+    }
+  }, [dietAvailability, menuItems]);
 
   const handleChange = (e) => {
     const key = e.target.id;
@@ -140,6 +174,10 @@ const CreateMenu = (props) => {
 
   const handleConfirm = () => {
     navigate('/control-panel/menus');
+  };
+
+  const noOptionsTemplate = (item) => {
+    return `There are currently no ${item} available for the Diet Availability combination you have selected.`;
   };
 
   if (loading || !diets || !menuItems || firstRender) {
@@ -226,76 +264,87 @@ const CreateMenu = (props) => {
               onChange={handleChange}
               alwaysEditable
             />
-            <FormGroup
-              id='entree'
-              inputType='select'
-              selectOptions={menuItems.flatMap((menuItem) => {
-                return menuItem.category === 'entree'
-                  ? { value: menuItem._id, label: menuItem.name }
-                  : [];
-              })}
-              label='Entree'
-              className='col-12 col-lg-6'
-              value={entree}
-              onChange={handleChange}
-              alwaysEditable
-            />
-            <FormGroup
-              id='sides'
-              inputType='checkbox'
-              checkboxOptions={menuItems.flatMap((menuItem) => {
-                return menuItem.category === 'side'
-                  ? { value: menuItem._id, label: menuItem.name }
-                  : [];
-              })}
-              label='Sides'
-              className='col-12 col-lg-6'
-              value={sides}
-              onChange={handleChange}
-              alwaysEditable
-            />
-            <FormGroup
-              id='dessert'
-              inputType='checkbox'
-              checkboxOptions={menuItems.flatMap((menuItem) => {
-                return menuItem.category === 'dessert'
-                  ? { value: menuItem._id, label: menuItem.name }
-                  : [];
-              })}
-              label='Dessert'
-              className='col-12 col-lg-6'
-              value={dessert}
-              onChange={handleChange}
-              alwaysEditable
-            />
-            <FormGroup
-              id='drinks'
-              inputType='checkbox'
-              checkboxOptions={menuItems.flatMap((menuItem) => {
-                return menuItem.category === 'drink'
-                  ? { value: menuItem._id, label: menuItem.name }
-                  : [];
-              })}
-              label='Drinks'
-              className='col-12 col-lg-6'
-              value={drinks}
-              onChange={handleChange}
-              alwaysEditable
-            />
-            <FormGroup
-              id='condiments'
-              inputType='checkbox'
-              checkboxOptions={menuItems.flatMap((menuItem) => {
-                return menuItem.category === 'condiment'
-                  ? { value: menuItem._id, label: menuItem.name }
-                  : [];
-              })}
-              label='Condiments'
-              className='col-12 col-lg-6'
-              value={condiments}
-              onChange={handleChange}
-              alwaysEditable
-            />
+            {dietAvailability.length > 0 && filteredMenuItems ? (
+              <>
+                <FormGroup
+                  id='entree'
+                  inputType='select'
+                  selectOptions={filteredMenuItems.flatMap((menuItem) => {
+                    return menuItem.category === 'entree'
+                      ? { value: menuItem._id, label: menuItem.name }
+                      : [];
+                  })}
+                  label='Entree'
+                  noOptionsMessage='-- No options available --'
+                  value={entree}
+                  onChange={handleChange}
+                  alwaysEditable
+                />
+                <FormGroup
+                  id='sides'
+                  inputType='checkbox'
+                  checkboxOptions={filteredMenuItems.flatMap((menuItem) => {
+                    return menuItem.category === 'side'
+                      ? { value: menuItem._id, label: menuItem.name }
+                      : [];
+                  })}
+                  label='Sides'
+                  className='col-12 col-lg-6'
+                  noOptionsMessage={noOptionsTemplate('sides')}
+                  value={sides}
+                  onChange={handleChange}
+                  alwaysEditable
+                />
+                <FormGroup
+                  id='dessert'
+                  inputType='checkbox'
+                  checkboxOptions={filteredMenuItems.flatMap((menuItem) => {
+                    return menuItem.category === 'dessert'
+                      ? { value: menuItem._id, label: menuItem.name }
+                      : [];
+                  })}
+                  label='Dessert'
+                  className='col-12 col-lg-6'
+                  value={dessert}
+                  noOptionsMessage={noOptionsTemplate('desserts')}
+                  onChange={handleChange}
+                  alwaysEditable
+                />
+                <FormGroup
+                  id='drinks'
+                  inputType='checkbox'
+                  checkboxOptions={filteredMenuItems.flatMap((menuItem) => {
+                    return menuItem.category === 'drink'
+                      ? { value: menuItem._id, label: menuItem.name }
+                      : [];
+                  })}
+                  label='Drinks'
+                  className='col-12 col-lg-6'
+                  value={drinks}
+                  noOptionsMessage={noOptionsTemplate('drinks')}
+                  onChange={handleChange}
+                  alwaysEditable
+                />
+                <FormGroup
+                  id='condiments'
+                  inputType='checkbox'
+                  checkboxOptions={filteredMenuItems.flatMap((menuItem) => {
+                    return menuItem.category === 'condiment'
+                      ? { value: menuItem._id, label: menuItem.name }
+                      : [];
+                  })}
+                  label='Condiments'
+                  className='col-12 col-lg-6'
+                  value={condiments}
+                  noOptionsMessage={noOptionsTemplate('condiments')}
+                  onChange={handleChange}
+                  alwaysEditable
+                />
+              </>
+            ) : (
+              <></>
+            )}
+
             <FormActionBtnContainer>
               <ButtonMain
                 className='mx-3'

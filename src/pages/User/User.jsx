@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { getUser, updateUser, deleteUser } from '../../features/user/userSlice';
+import {
+  getUser,
+  updateOtherUser,
+  deleteUser,
+} from '../../features/user/userSlice';
 
 import {
   formatDate,
@@ -98,7 +102,7 @@ const User = (props) => {
         toast.error('A role is required.');
       }
     } else {
-      dispatch(updateUser([userId, formData]));
+      dispatch(updateOtherUser([userId, formData]));
     }
   };
 

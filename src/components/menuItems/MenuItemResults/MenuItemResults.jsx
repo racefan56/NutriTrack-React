@@ -26,7 +26,7 @@ const MenuItemResults = (props) => {
 
   const [curPage, setCurPage] = useState(1);
   const [limit, setLimit] = useState(5);
-  const [sort, setSort] = useState('+day');
+  const [sort, setSort] = useState('+name');
   const [formData, setFormData] = useState({
     category: '',
     productionArea: '',
@@ -81,12 +81,12 @@ const MenuItemResults = (props) => {
   };
 
   const sortOptions = [
+    { value: '+name', label: 'Name A-Z' },
+    { value: '-name', label: 'Name Z-A' },
     { value: '+category', label: 'Category A-Z' },
     { value: '-category', label: 'Category Z-A' },
     { value: '+productionArea', label: 'Production Area A-Z' },
     { value: '-productionArea', label: 'Production Area Z-A' },
-    { value: '+diet', label: 'Diet A-Z' },
-    { value: '-diet', label: 'Diet Z-A' },
   ];
 
   if (loading) {

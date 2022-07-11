@@ -32,42 +32,20 @@ function MyAccount() {
 
   const { user, isSuccess } = useSelector((state) => state.auth);
 
-  const [editMode, setEditMode] = useState();
   const [formData, setFormData] = useState({
     id: '',
+    userName: '',
     email: '',
     role: '',
   });
 
-  const { role, email } = formData;
+  const { role, email, userName } = formData;
 
   useEffect(() => {
     if (user) {
       setFormData({ ...user });
     }
   }, [user]);
-
-  const handleChange = (e) => {
-    const key = e.target.id;
-
-    //remove inline style added to invalid inputs on submit attempts when edited
-    if (e.target.style) {
-      e.target.removeAttribute('style');
-    }
-
-    if (e.target.type === 'checkbox') {
-      const checked = Array.from(
-        document.querySelectorAll(`input[type=checkbox][name=${key}]:checked`),
-        (e) => e.value
-      );
-      return setFormData((prevState) => ({
-        ...prevState,
-        [key]: [...checked],
-      }));
-    }
-
-    setFormData((prevState) => ({ ...prevState, [key]: e.target.value }));
-  };
 
   if (!user) {
     return <Spinner />;
@@ -76,18 +54,23 @@ function MyAccount() {
       <>
         <SideNav />
         <ContainerSideNav>
-          <FormContainer
-            category='My Account'
-            title={email}
-          >
+          <FormContainer category='My Account' title={email}>
+            <FormGroup
+              id='userName'
+              inputType='text'
+              className='col-12 col-lg-6'
+              label='Username'
+              defaultValue={userName}
+              readonly
+              minLength='7'
+            />
             <FormGroup
               id='email'
               inputType='text'
               className='col-12 col-lg-6'
               label='Email'
-              value={email}
-              onChange={handleChange}
-              required
+              defaultValue={email}
+              readonly
               minLength='7'
             />
             <FormGroup
@@ -95,9 +78,8 @@ function MyAccount() {
               inputType='text'
               className='col-12 col-lg-6'
               label='Role'
-              value={role}
-              onChange={handleChange}
-              required
+              defaultValue={role}
+              readonly
               minLength='3'
             />
           </FormContainer>

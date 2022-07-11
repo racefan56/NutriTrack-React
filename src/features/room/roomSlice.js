@@ -191,8 +191,9 @@ export const roomSlice = createSlice({
         state.isSuccess = true;
       })
       .addCase(deleteRoom.rejected, (state, action) => {
+        console.log(action);
         state.isError = true;
-        state.message = action.payload;
+        state.message = action.payload.data;
         state.loading = false;
       });
   },

@@ -55,7 +55,7 @@ const getUser = async (userId, token) => {
   return user;
 };
 
-//Update user
+//Update current user
 const updateUser = async (userId, formData, token) => {
   const config = {
     headers: {
@@ -66,6 +66,24 @@ const updateUser = async (userId, formData, token) => {
   const response = await axios.patch(
     //  `${SERVER}/users/updateUser/${userId}`,
     `${SERVER}/users/updateUser`,
+    formData,
+    config
+  );
+
+  const user = await response.data;
+  return user;
+};
+
+//Update other user
+const updateOtherUser = async (userId, formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.patch(
+    `${SERVER}/users/updateUser/${userId}`,
     formData,
     config
   );
@@ -93,6 +111,7 @@ const userService = {
   getUsers,
   getUser,
   updateUser,
+  updateOtherUser,
   deleteUser,
 };
 

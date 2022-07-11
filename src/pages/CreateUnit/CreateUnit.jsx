@@ -111,7 +111,7 @@ const CreateUnit = (props) => {
               id='unitName'
               inputType='text'
               className='col-12 col-lg-6'
-              label='Area Name'
+              label='Unit Name'
               value={unitName}
               onChange={handleChange}
               alwaysEditable

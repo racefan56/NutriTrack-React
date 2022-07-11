@@ -68,12 +68,12 @@ const Room = (props) => {
     }
 
     if (isError) {
-      if (message.keyValue?.roomNumber) {
+      if (message?.keyValue?.roomNumber) {
         toast.error('That room number is already taken for that unit.');
         invalidInput('roomNumber');
       }
 
-      if (message.message) {
+      if (message?.message) {
         toast.error(message.message);
       }
     }
