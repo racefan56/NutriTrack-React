@@ -5,9 +5,7 @@ import { toast } from 'react-toastify';
 
 import { createUser, resetIsSuccess } from '../../features/auth/authSlice';
 
-import {
-  invalidInput,
-} from '../../components/helperFunctions/helperFunctions';
+import { invalidInput } from '../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
@@ -31,13 +29,12 @@ const CreateUser = (props) => {
   const [formData, setFormData] = useState({
     userName: '',
     email: '',
-    role: '',
+    role: 'nca',
     password: '',
     passwordConfirm: '',
   });
 
   const { userName, email, role, password, passwordConfirm } = formData;
-
 
   useEffect(() => {
     if (isSuccess) {

@@ -227,11 +227,12 @@ export const deletePatientOrder = createAsyncThunk(
 //Get patient census report
 export const getCensus = createAsyncThunk(
   'patient/getCensus',
-  async (thunkAPI) => {
+  async (throwAwayVar, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
       return await patientService.getCensus(token);
     } catch (error) {
+      console.log(error);
       const message =
         (error.response &&
           error.response.data &&

@@ -19,27 +19,24 @@ const MenuResults = (props) => {
   );
   const [curPage, setCurPage] = useState(1);
   const [limit, setLimit] = useState(5);
-  const [sort, setSort] = useState('+day');
+  const [sort, setSort] = useState('+mealPeriod');
   const [formData, setFormData] = useState({
     day: '',
-    mealPeriod: '',
     option: '',
   });
 
-  const { day, mealPeriod, option } = formData;
+  const { day, option } = formData;
 
   useEffect(() => {
     dispatch(getMenus(`limit=${limit}&sort=${sort}`));
-    if (isError) {
-      toast.error(message);
-    }
-  }, [dispatch, isError, limit, message, sort]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleReset = () => {
-    if (day !== '' || mealPeriod !== '' || option !== '') {
+    if (day !== '' || option !== '') {
       setFormData({
         day: '',
-        mealPeriod: '',
         option: '',
       });
       dispatch(getMenus(`limit=${limit}&sort=${sort}`));
@@ -51,9 +48,6 @@ const MenuResults = (props) => {
 
     if (day !== '') {
       string = `${string + `&day=${day}`}`;
-    }
-    if (mealPeriod !== '') {
-      string = `${string + `&mealPeriod=${mealPeriod}`}`;
     }
     if (option !== '') {
       string = `${string + `&option=${option}`}`;
@@ -70,19 +64,13 @@ const MenuResults = (props) => {
   const filterOptions = {
     day: [
       { value: '', label: 'All' },
-      { value: 'sunday', label: 'Sunday' },
-      { value: 'monday', label: 'Monday' },
-      { value: 'tuesday', label: 'Tuesday' },
-      { value: 'wednesday', label: 'Wednesday' },
-      { value: 'thursday', label: 'Thursday' },
-      { value: 'friday', label: 'Friday' },
-      { value: 'saturday', label: 'Saturday' },
-    ],
-    mealPeriod: [
-      { value: '', label: 'All' },
-      { value: 'Breakfast', label: 'Breakfast' },
-      { value: 'Lunch', label: 'Lunch' },
-      { value: 'Dinner', label: 'Dinner' },
+      { value: 'Sunday', label: 'Sunday' },
+      { value: 'Monday', label: 'Monday' },
+      { value: 'Tuesday', label: 'Tuesday' },
+      { value: 'Wednesday', label: 'Wednesday' },
+      { value: 'Thursday', label: 'Thursday' },
+      { value: 'Friday', label: 'Friday' },
+      { value: 'Saturday', label: 'Saturday' },
     ],
     option: [
       { value: '', label: 'All' },
@@ -92,8 +80,6 @@ const MenuResults = (props) => {
   };
 
   const sortOptions = [
-    { value: '+day', label: 'Day A-Z' },
-    { value: '-day', label: 'Day Z-A' },
     { value: '+mealPeriod', label: 'Meal Period A-Z' },
     { value: '-mealPeriod', label: 'Meal Period Z-A' },
   ];
@@ -113,9 +99,10 @@ const MenuResults = (props) => {
           refresh
           refreshDispatch={getMenus}
           createPath='create'
+          createAllowedRoles={['admin', 'dietitian']}
           filterHeading='Menus'
           filterOptions={filterOptions}
-          filterValues={[day, mealPeriod, option]}
+          filterValues={[day, option]}
           filterOnChange={handleChange}
           filterReset={handleReset}
           filterString={handleFilterString}

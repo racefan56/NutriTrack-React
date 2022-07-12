@@ -45,6 +45,7 @@ const Patient = (props) => {
   const { diets } = useSelector((state) => state.diet);
   const { rooms } = useSelector((state) => state.room);
   const { menuItems } = useSelector((state) => state.menuItem);
+  const { userRole } = useSelector((state) => state.auth);
 
   const [editMode, setEditMode] = useState();
   const [formData, setFormData] = useState({
@@ -348,33 +349,37 @@ const Patient = (props) => {
               defaultValue={formatDate(updatedAt)}
               readonly
             />
-            {editMode ? (
-              <FormActionBtnContainer>
-                <ButtonMain
-                  className='mx-3'
-                  text='Submit'
-                  type='Submit'
-                  onClick={handleSubmit}
-                />
-                <ButtonSecondary
-                  className='m-3'
-                  text='Cancel'
-                  type='Button'
-                  onClick={handleCancel}
-                />
-              </FormActionBtnContainer>
+            {userRole === 'admin' || userRole === 'nurse' ? (
+              editMode ? (
+                <FormActionBtnContainer>
+                  <ButtonMain
+                    className='mx-3'
+                    text='Submit'
+                    type='Submit'
+                    onClick={handleSubmit}
+                  />
+                  <ButtonSecondary
+                    className='m-3'
+                    text='Cancel'
+                    type='Button'
+                    onClick={handleCancel}
+                  />
+                </FormActionBtnContainer>
+              ) : (
+                <FormActionBtnContainer>
+                  <ButtonEdit onClick={handleEdit} />
+                  <Modal
+                    id={patientId}
+                    itemName={patient.firstName + ' ' + patient.lastName}
+                    onDelete={() => {
+                      handleDelete(patientId);
+                    }}
+                    btnDelete
+                  />
+                </FormActionBtnContainer>
+              )
             ) : (
-              <FormActionBtnContainer>
-                <ButtonEdit onClick={handleEdit} />
-                <Modal
-                  id={patientId}
-                  itemName={patient.firstName + ' ' + patient.lastName}
-                  onDelete={() => {
-                    handleDelete(patientId);
-                  }}
-                  btnDelete
-                />
-              </FormActionBtnContainer>
+              <></>
             )}
           </FormContainer>
 

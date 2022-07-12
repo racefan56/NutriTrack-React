@@ -43,6 +43,7 @@ const DietResults = (props) => {
           refresh
           refreshDispatch={getDiets}
           createPath='create'
+          createAllowedRoles={['admin']}
           limit
           limitValue={limit}
           limitSetLimit={setLimit}

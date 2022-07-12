@@ -19,11 +19,16 @@ const ButtonFilter = ({
 }) => {
   const [isVisibile, setIsVisibile] = useState(false);
 
+  const [initialFilterValues, setInitialFilterValues] = useState();
+
   return (
     <>
       <span
         title='Filter'
-        onClick={() => setIsVisibile(true)}
+        onClick={() => {
+          setIsVisibile(true);
+          setInitialFilterValues(filterValues);
+        }}
         className={classes.filterBtnContainer}
       >
         <BiFilter
@@ -57,7 +62,7 @@ const ButtonFilter = ({
               <ButtonMain onClick={filterSubmit} text='Filter Results' />
               <ButtonSecondary
                 className={'my-3'}
-                text='Reset'
+                text='Cancel / Reset'
                 onClick={(e) => {
                   setIsVisibile(false);
                   filterReset.call(this, e);

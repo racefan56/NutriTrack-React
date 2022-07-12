@@ -22,14 +22,14 @@ const PatientOrderResults = (props) => {
   const [limit, setLimit] = useState(5);
   const [formData, setFormData] = useState({
     day: getDayOfWeek(),
-    meal: '',
+    meal: 'Breakfast',
     option: '',
   });
 
   const { day, meal, option } = formData;
 
   useEffect(() => {
-    dispatch(getPatientOrders(`limit=${limit}&day=${day}`));
+    dispatch(getPatientOrders(`limit=${limit}&day=${day}&mealPeriod=${meal}`));
     if (isError) {
       toast.error(message);
     }
@@ -37,13 +37,15 @@ const PatientOrderResults = (props) => {
   }, []);
 
   const handleReset = () => {
-    if (day !== '' || meal !== '' || option !== '') {
+    if (day !== getDayOfWeek() || meal !== 'Breakfast' || option !== '') {
       setFormData({
-        day: '',
-        meal: '',
+        day: getDayOfWeek(),
+        meal: 'Breakfast',
         option: '',
       });
-      dispatch(getPatientOrders(`limit=${limit}&day=${day}`));
+      dispatch(
+        getPatientOrders(`limit=${limit}&day=${day}&mealPeriod=${meal}`)
+      );
     }
   };
 
@@ -79,7 +81,6 @@ const PatientOrderResults = (props) => {
       { value: 'Saturday', label: 'Saturday' },
     ],
     meal: [
-      { value: '', label: 'All' },
       { value: 'Breakfast', label: 'Breakfast' },
       { value: 'Lunch', label: 'Lunch' },
       { value: 'Dinner', label: 'Dinner' },
@@ -88,6 +89,7 @@ const PatientOrderResults = (props) => {
       { value: '', label: 'All' },
       { value: 'hot', label: 'Hot' },
       { value: 'cold', label: 'Cold' },
+      { value: 'Custom', label: 'Custom' },
     ],
   };
 
@@ -103,11 +105,10 @@ const PatientOrderResults = (props) => {
     return (
       <>
         <Table
-          headers={['Day', 'Meal', 'Unit', 'Room', 'Status', '']}
+          headers={['Unit', 'Room', 'First', 'Last', 'Status', '']}
           heading='Patient Orders'
           refresh
           refreshDispatch={getPatientOrders}
-          createPath='create'
           filterHeading='Patient Orders'
           filterOptions={filterOptions}
           filterValues={[day, meal, option]}
@@ -124,12 +125,12 @@ const PatientOrderResults = (props) => {
           {patientOrders.map((order, index) => (
             <React.Fragment key={order._id}>
               <TableDataItem
-                navigatePath={`/control-panel/patient-orders/${order._id}`}
+                navigatePath={`/patients/${order.patientID._id}/orders/${order._id}`}
                 dataPoints={[
-                  order.day,
-                  order.mealPeriod,
                   order.patientID.roomNumber.unit.unitName,
                   order.patientID.roomNumber.roomNumber,
+                  order.patientID.firstName,
+                  order.patientID.lastName,
                   order.patientID.status,
                 ]}
               >

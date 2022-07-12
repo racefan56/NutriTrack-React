@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import {
   getUser,
   updateOtherUser,
-  deleteUser,
+  deleteOtherUser,
 } from '../../features/user/userSlice';
 
 import {
@@ -119,7 +119,7 @@ const User = (props) => {
   };
 
   const handleDelete = (userId) => {
-    dispatch(deleteUser(userId));
+    dispatch(deleteOtherUser(userId));
     if (isSuccess) {
       toast.success('User successfully deleted!');
       //After user is deleted, return to users page
@@ -152,6 +152,7 @@ const User = (props) => {
                 { value: 'nurse', label: 'Nurse' },
                 { value: 'dietitian', label: 'Dietitian' },
                 { value: 'nca', label: 'NCA' },
+                { value: 'lead-nca', label: 'Lead-NCA' },
               ]}
               label='Role'
               className='col-12 col-lg-6 col-xl-4'

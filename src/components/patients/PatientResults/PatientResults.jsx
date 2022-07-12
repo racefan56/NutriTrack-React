@@ -104,6 +104,7 @@ function PatientResults() {
           refresh
           refreshDispatch={getPatients}
           createPath='create'
+          createAllowedRoles={['admin', 'nurse']}
           filterHeading='Patients'
           filterOptions={filterOptions}
           filterValues={[unit, status]}

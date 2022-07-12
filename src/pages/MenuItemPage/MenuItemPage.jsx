@@ -40,6 +40,7 @@ const MenuItemPage = () => {
   );
   const { productionAreas } = useSelector((state) => state.productionArea);
   const { diets } = useSelector((state) => state.diet);
+  const { userRole } = useSelector((state) => state.auth);
 
   const { menuItemId } = useParams();
 
@@ -325,34 +326,38 @@ const MenuItemPage = () => {
               readonly
             />
 
-            {editMode ? (
-              <FormActionBtnContainer>
-                <ButtonMain
-                  className='mx-3'
-                  text='Submit'
-                  type='Submit'
-                  onClick={handleSubmit}
-                />
-                <ButtonSecondary
-                  className='m-3'
-                  text='Cancel'
-                  type='Button'
-                  onClick={handleCancel}
-                />
-              </FormActionBtnContainer>
+            {userRole === 'admin' || userRole === 'dietitian' ? (
+              editMode ? (
+                <FormActionBtnContainer>
+                  <ButtonMain
+                    className='mx-3'
+                    text='Submit'
+                    type='Submit'
+                    onClick={handleSubmit}
+                  />
+                  <ButtonSecondary
+                    className='m-3'
+                    text='Cancel'
+                    type='Button'
+                    onClick={handleCancel}
+                  />
+                </FormActionBtnContainer>
+              ) : (
+                <FormActionBtnContainer>
+                  <ButtonEdit onClick={handleEdit} />
+                  <Modal
+                    id={menuItemId}
+                    itemId={menuItemId}
+                    itemName={menuItem.name}
+                    onDelete={() => {
+                      handleDelete(menuItemId, menuItem.name);
+                    }}
+                    btnDelete
+                  />
+                </FormActionBtnContainer>
+              )
             ) : (
-              <FormActionBtnContainer>
-                <ButtonEdit onClick={handleEdit} />
-                <Modal
-                  id={menuItemId}
-                  itemId={menuItemId}
-                  itemName={menuItem.name}
-                  onDelete={() => {
-                    handleDelete(menuItemId, menuItem.name);
-                  }}
-                  btnDelete
-                />
-              </FormActionBtnContainer>
+              <></>
             )}
           </FormContainer>
         </ContainerSideNav>

@@ -10,29 +10,53 @@ import LinkSubSection from '../LinkSection/LinkSubSection/LinkSubSection';
 const SideNav = () => {
   const path = window.location.pathname;
 
+  const { userRole } = useSelector((state) => state.auth);
+
   if (path.startsWith('/control-panel')) {
     return (
       <div className={classes['cp-side-nav-container']}>
-        <LinkSubSection title={'User Accounts'}>
-          <MenuLink to='/control-panel/users' text='View Users' />
-          <MenuLink to='/control-panel/users/create' text='Create New User' />
-        </LinkSubSection>
+        {userRole === 'admin' ? (
+          <LinkSubSection title={'User Accounts'}>
+            <MenuLink to='/control-panel/users' text='View Users' />
+            <MenuLink to='/control-panel/users/create' text='Create New User' />
+          </LinkSubSection>
+        ) : (
+          <></>
+        )}
 
         <LinkSubSection title={'Dietary'}>
           <MenuLink to='/control-panel/menus' text='Menus' />
           <MenuLink to='/control-panel/menu-items' text='Menu Items' />
-          <MenuLink to='/control-panel/prepList' text='Prep Lists' />
-          <MenuLink to='/control-panel/diets' text='Diets' />
-          <MenuLink
-            to='/control-panel/production-areas'
-            text='Production Areas'
-          />
+
+          {userRole === 'admin' || userRole === 'lead-nca' ? (
+            <MenuLink to='/control-panel/prepList' text='Prep Lists' />
+          ) : (
+            <></>
+          )}
+
+          {userRole === 'admin' || userRole === 'dietitian' ? (
+            <MenuLink to='/control-panel/diets' text='Diets' />
+          ) : (
+            <></>
+          )}
+          {userRole === 'admin' ? (
+            <MenuLink
+              to='/control-panel/production-areas'
+              text='Production Areas'
+            />
+          ) : (
+            <></>
+          )}
         </LinkSubSection>
 
-        <LinkSubSection title={'Facility'}>
-          <MenuLink to='/control-panel/units' text='Units' />
-          <MenuLink to='/control-panel/rooms' text='Rooms' />
-        </LinkSubSection>
+        {userRole === 'admin' ? (
+          <LinkSubSection title={'Facility'}>
+            <MenuLink to='/control-panel/units' text='Units' />
+            <MenuLink to='/control-panel/rooms' text='Rooms' />
+          </LinkSubSection>
+        ) : (
+          <></>
+        )}
       </div>
     );
   }

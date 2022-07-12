@@ -92,7 +92,7 @@ const updateOtherUser = async (userId, formData, token) => {
   return user;
 };
 
-//Delete user
+//Delete current user (really just deactivates them)
 const deleteUser = async (userId, token) => {
   const config = {
     headers: {
@@ -100,7 +100,25 @@ const deleteUser = async (userId, token) => {
     },
   };
 
-  const response = await axios.delete(`${SERVER}/users/deleteUser`, config);
+  const response = await axios.patch(`${SERVER}/users/deleteUser`, config);
+
+  const user = await response.data;
+  return user;
+};
+
+//Delete other user (really just deactivates them)
+const deleteOtherUser = async (userId, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+
+  const response = await axios.patch(
+    `${SERVER}/users/deleteUser/${userId}`,
+    [],
+    config
+  );
 
   const user = await response.data;
   return user;
@@ -113,6 +131,7 @@ const userService = {
   updateUser,
   updateOtherUser,
   deleteUser,
+  deleteOtherUser,
 };
 
 export default userService;

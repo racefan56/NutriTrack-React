@@ -10,7 +10,7 @@ import Spinner from '../Spinner/Spinner';
 
 import Error from '../Error/Error';
 
-import { titleCase } from '../helperFunctions/helperFunctions';
+import { titleCase, getDayOfWeek } from '../helperFunctions/helperFunctions';
 
 const PrepListResults = (props) => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const PrepListResults = (props) => {
   const [formData, setFormData] = useState({
     mealPeriod: 'Breakfast',
     productionArea: productionAreas ? productionAreas[0].areaName : '',
-    day: 'Sunday',
+    day: getDayOfWeek(),
   });
 
   const { mealPeriod, productionArea, day } = formData;

@@ -22,23 +22,20 @@ function Navbar({ title }) {
         <nav className={`d-flex ${classes['nav-container']}`}>
           <Brand className={classes['nav-brand']} />
           <div className='d-flex container justify-content-between'>
-            {userRole === 'admin' || userRole === 'dietitian' ? (
-              <Link
-                onClick={() => {
-                  return dispatch(setPathname('/control-panel'));
-                }}
-                className={
-                  pathname.startsWith('/control-panel')
-                    ? classes.navbarLinkActive
-                    : classes.navbarLink
-                }
-                to='/control-panel'
-              >
-                Control Panel
-              </Link>
-            ) : (
-              <></>
-            )}
+            <Link
+              onClick={() => {
+                return dispatch(setPathname('/control-panel/menu-items'));
+              }}
+              className={
+                pathname.startsWith('/control-panel')
+                  ? classes.navbarLinkActive
+                  : classes.navbarLink
+              }
+              to='/control-panel/menu-items'
+            >
+              Control Panel
+            </Link>
+            
             <Link
               onClick={() => {
                 return dispatch(setPathname('/patients'));

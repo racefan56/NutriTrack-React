@@ -19,35 +19,28 @@ import classes from './MenuItemResults.module.css';
 const MenuItemResults = (props) => {
   const dispatch = useDispatch();
 
-  const { menuItems, loading, isError, message } = useSelector(
+  const { menuItems, loading, isError } = useSelector(
     (state) => state.menuItem
   );
-  const { productionAreas } = useSelector((state) => state.productionArea);
 
   const [curPage, setCurPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [sort, setSort] = useState('+name');
   const [formData, setFormData] = useState({
     category: '',
-    productionArea: '',
-    diet: '',
   });
 
-  const { category, productionArea, diet } = formData;
+  const { category } = formData;
 
   useEffect(() => {
     dispatch(getMenuItems(`limit=${limit}&sort=${sort}`));
-    if (isError) {
-      toast.error(message);
-    }
-  }, [dispatch, isError, limit, message, sort]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleReset = () => {
-    if (category !== '' || productionArea !== '' || diet !== '') {
+    if (category !== '') {
       setFormData({
         category: '',
-        productionArea: '',
-        diet: '',
       });
       dispatch(getMenuItems(`limit=${limit}&sort=${sort}`));
     }
@@ -55,7 +48,6 @@ const MenuItemResults = (props) => {
 
   const handleFilterString = () => {
     let string = '';
-
     if (category !== '') {
       string = `${string + `&category=${category}`}`;
     }
@@ -83,8 +75,6 @@ const MenuItemResults = (props) => {
   const sortOptions = [
     { value: '+name', label: 'Name A-Z' },
     { value: '-name', label: 'Name Z-A' },
-    { value: '+category', label: 'Category A-Z' },
-    { value: '-category', label: 'Category Z-A' },
     { value: '+productionArea', label: 'Production Area A-Z' },
     { value: '-productionArea', label: 'Production Area Z-A' },
   ];
@@ -110,9 +100,10 @@ const MenuItemResults = (props) => {
           refresh
           refreshDispatch={getMenuItems}
           createPath='create'
+          createAllowedRoles={['admin']}
           filterHeading='Menu Items'
           filterOptions={filterOptions}
-          filterValues={[category, productionArea, diet]}
+          filterValues={[category]}
           filterOnChange={handleChange}
           filterReset={handleReset}
           filterString={handleFilterString}

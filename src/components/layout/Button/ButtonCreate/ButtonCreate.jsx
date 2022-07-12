@@ -7,9 +7,11 @@ import classes from './ButtonCreate.module.css';
 
 const ButtonCreate = ({ path }) => {
   return (
-    <Link title='Create' to={path}>
-      <BiPlus className={classes.btnCreate} />
-    </Link>
+    <div className={classes.btnCreateContainer}>
+      <Link title='Create' to={path}>
+        <BiPlus className={classes.btnCreate} />
+      </Link>
+    </div>
   );
 };
 

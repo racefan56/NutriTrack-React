@@ -42,6 +42,7 @@ const UnitResults = (props) => {
           refresh
           refreshDispatch={getUnits}
           createPath='create'
+          createAllowedRoles={['admin']}
           limit
           limitValue={limit}
           limitSetLimit={setLimit}

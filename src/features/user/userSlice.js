@@ -35,6 +35,7 @@ export const getUsers = createAsyncThunk(
   'user/getUsers',
   async (queryString, thunkAPI) => {
     try {
+      console.log(queryString);
       const token = thunkAPI.getState().auth.token;
       return await userService.getUsers(queryString, token);
     } catch (error) {
@@ -110,13 +111,33 @@ export const updateOtherUser = createAsyncThunk(
   }
 );
 
-//Delete one user
+//Delete current user (deactivate)
 export const deleteUser = createAsyncThunk(
   'user/deleteUser',
   async (userId, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.token;
       return await userService.deleteUser(userId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+//Delete other user (deactivate)
+export const deleteOtherUser = createAsyncThunk(
+  'user/deleteOtherUser',
+  async (userId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token;
+      return await userService.deleteOtherUser(userId, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -226,6 +247,21 @@ export const userSlice = createSlice({
         state.isSuccess = true;
       })
       .addCase(deleteUser.rejected, (state, action) => {
+        state.isError = true;
+        state.message = action.payload;
+        state.loading = false;
+      })
+      .addCase(deleteOtherUser.pending, (state) => {
+        state.isSuccess = false;
+        state.isError = false;
+        state.loading = true;
+      })
+      .addCase(deleteOtherUser.fulfilled, (state) => {
+        state.user = null;
+        state.loading = false;
+        state.isSuccess = true;
+      })
+      .addCase(deleteOtherUser.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
         state.loading = false;

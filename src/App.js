@@ -6,7 +6,6 @@ import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/layout/Navbar/Navbar';
 
 import Login from './pages/Login/Login';
-import ControlPanel from './pages/ControlPanel/ControlPanel';
 import Census from './pages/Census/Census';
 import Alerts from './pages/Alerts';
 
@@ -76,14 +75,6 @@ function App() {
             />
           </Route>
 
-          {/* CONTROL PANEL */}
-          <Route
-            path='/control-panel'
-            element={<PrivateRoute validRoles={['admin']} />}
-          >
-            <Route path='/control-panel' element={<ControlPanel />} />
-          </Route>
-
           {/* PRODUCTION AREA ROUTES */}
           {/* View/Edit/Delete a production area */}
           <Route
@@ -121,7 +112,7 @@ function App() {
           {/* PREP LIST ROUTE */}
           <Route
             path='/control-panel/prepList'
-            element={<PrivateRoute validRoles={['admin']} />}
+            element={<PrivateRoute validRoles={['admin', 'lead-nca']} />}
           >
             <Route path='/control-panel/prepList' element={<PrepList />} />
           </Route>
@@ -220,7 +211,7 @@ function App() {
           {/* Create patient */}
           <Route
             path='/patients/create'
-            element={<PrivateRoute validRoles={['admin']} />}
+            element={<PrivateRoute validRoles={['admin', 'nurse']} />}
           >
             <Route path='/patients/create' element={<CreatePatient />} />
           </Route>
@@ -231,19 +222,26 @@ function App() {
           </Route>
 
           {/* Patient Alerts/Census */}
-          <Route path='/patients/census' element={<PrivateRoute />}>
+          <Route
+            path='/patients/census'
+            element={
+              <PrivateRoute validRoles={['admin', 'lead-nca', 'nurse']} />
+            }
+          >
             <Route path='/patients/census' element={<Census />} />
           </Route>
-          <Route path='/patients/alerts' element={<PrivateRoute />}>
+          <Route
+            path='/patients/alerts'
+            element={
+              <PrivateRoute validRoles={['admin', 'lead-nca', 'nurse']} />
+            }
+          >
             <Route path='/patients/alerts' element={<Alerts />} />
           </Route>
 
           {/* PATIENT ORDER ROUTES */}
           {/* View all patient orders */}
-          <Route
-            path='/patients/patient-orders'
-            element={<PrivateRoute validRoles={['admin', 'nca']} />}
-          >
+          <Route path='/patients/patient-orders' element={<PrivateRoute />}>
             <Route
               path='/patients/patient-orders'
               element={<PatientOrders />}
@@ -253,7 +251,7 @@ function App() {
           {/* View a single patient order */}
           <Route
             path='/patients/:patientId/orders/:orderId'
-            element={<PrivateRoute validRoles={['admin', 'nca']} />}
+            element={<PrivateRoute />}
           >
             <Route
               path='/patients/:patientId/orders/:orderId'
@@ -264,7 +262,7 @@ function App() {
           {/* Create a patient order */}
           <Route
             path='/patients/:patientId/orders/createOrder'
-            element={<PrivateRoute validRoles={['admin']} />}
+            element={<PrivateRoute />}
           >
             <Route
               path='/patients/:patientId/orders/createOrder'
@@ -274,10 +272,7 @@ function App() {
 
           {/* MENU ITEM ROUTES */}
           {/* View all menu items */}
-          <Route
-            path='/control-panel/menu-items'
-            element={<PrivateRoute validRoles={['admin']} />}
-          >
+          <Route path='/control-panel/menu-items' element={<PrivateRoute />}>
             <Route path='/control-panel/menu-items' element={<MenuItems />} />
           </Route>
 
@@ -295,7 +290,7 @@ function App() {
           {/* View/Edit/Delete menu item */}
           <Route
             path='/control-panel/menu-items/:menuItemId'
-            element={<PrivateRoute validRoles={['admin']} />}
+            element={<PrivateRoute />}
           >
             <Route
               path='/control-panel/menu-items/:menuItemId'
@@ -307,7 +302,9 @@ function App() {
           {/* View all menus */}
           <Route
             path='/control-panel/menus'
-            element={<PrivateRoute validRoles={['admin']} />}
+            element={
+              <PrivateRoute />
+            }
           >
             <Route path='/control-panel/menus' element={<Menus />} />
           </Route>
@@ -315,7 +312,7 @@ function App() {
           {/* Create menu */}
           <Route
             path='/control-panel/menus/create'
-            element={<PrivateRoute validRoles={['admin']} />}
+            element={<PrivateRoute validRoles={['admin', 'dietitian']} />}
           >
             <Route
               path='/control-panel/menus/create'
@@ -324,10 +321,7 @@ function App() {
           </Route>
 
           {/* View/Edit/Delete menu */}
-          <Route
-            path='/control-panel/menus/:menuId'
-            element={<PrivateRoute validRoles={['admin']} />}
-          >
+          <Route path='/control-panel/menus/:menuId' element={<PrivateRoute />}>
             <Route path='/control-panel/menus/:menuId' element={<Menu />} />
           </Route>
 

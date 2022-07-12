@@ -26,23 +26,23 @@ const UserResults = (props) => {
   const { role } = formData;
 
   useEffect(() => {
-    dispatch(getUsers(`limit=${limit}&sort=${sort}`));
+    dispatch(getUsers(`limit=${limit}&sort=${sort}&isActive=true`));
     if (isError) {
       toast.error(message);
     }
   }, [dispatch, isError, limit, message, sort]);
 
   const handleReset = () => {
-    if (formData.role !== '') {
+    if (formData.role !== '' || formData.isActive !== false) {
       setFormData({
         role: '',
       });
-      dispatch(getUsers(`limit=${limit}&sort=${sort}`));
+      dispatch(getUsers(`isActive=true&limit=${limit}&sort=${sort}`));
     }
   };
 
   const handleFilterString = () => {
-    let string = '';
+    let string = `&isActive=true`;
 
     if (role !== '') {
       string = `${string + `&role=${role}`}`;
@@ -86,7 +86,7 @@ const UserResults = (props) => {
           refresh
           refreshDispatch={getUsers}
           createPath='create'
-          filterHeading='Users'
+          createAllowedRoles={['admin']}
           filterOptions={filterOptions}
           filterValues={[role]}
           filterOnChange={handleChange}

@@ -36,10 +36,12 @@ const Table = ({
   sortSetSort,
   sortOptions,
   createPath,
+  createAllowedRoles,
   noResultsMsg,
 }) => {
   const dispatch = useDispatch();
-  console.log(children);
+
+  const { userRole } = useSelector((state) => state.auth);
 
   const handleRefreshAndQueryChange = ({
     limitChange,
@@ -63,7 +65,6 @@ const Table = ({
     if (filterString) {
       string += filterString();
     }
-
     if (sort || sortChange) {
       if (sortChange) {
         if (sortChange !== '') {
@@ -73,7 +74,6 @@ const Table = ({
         string = `${string + `&sort=${sortValue}`}`;
       }
     }
-
     return dispatch(refreshDispatch(string));
   };
 
@@ -108,6 +108,7 @@ const Table = ({
   useEffect(() => {
     table.current = document.getElementById(tableId);
   }, [tableId]);
+
   return (
     <>
       <div className={classes.headingContainer}>
@@ -126,11 +127,19 @@ const Table = ({
                 <></>
               )}
               {refresh ? (
-                <ButtonRefresh refresh={handleRefreshAndQueryChange} />
+                <ButtonRefresh
+                  refresh={
+                    refreshDispatch ? handleRefreshAndQueryChange : refresh
+                  }
+                />
               ) : (
                 <></>
               )}
-              {createPath ? <ButtonCreate path={createPath} /> : <></>}
+              {createPath && createAllowedRoles?.includes(userRole) ? (
+                <ButtonCreate path={createPath} />
+              ) : (
+                <></>
+              )}
               {filterOptions ? (
                 <ButtonFilter
                   filterHeading={filterHeading}
@@ -152,8 +161,10 @@ const Table = ({
       {filterValues?.join('').length > 0 || sort ? (
         <div className={classes.filtersAndSortContainer}>
           {filterValues?.join('').length > 0
-            ? `Filters: ${filterValues.join(' ')}`
-            : 'Filters: No Filters'}
+            ? `Applied Filters: ${filterValues
+                .filter((el) => el !== '')
+                .join(', ')}`
+            : 'Applied Filters: None'}
           {sort ? (
             <ButtonSort
               sortId={tableId + 'sortBtn'}
