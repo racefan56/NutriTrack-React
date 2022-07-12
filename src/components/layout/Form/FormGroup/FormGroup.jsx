@@ -28,6 +28,7 @@ const FormGroup = ({
   groupLabel,
   checkboxOptions,
   noOptionsMessage,
+  noFocus,
   step,
   textarea,
   mealItemArr,
@@ -292,7 +293,10 @@ const FormGroup = ({
               {textarea && (
                 <textarea
                   id={id}
-                  className={`${editable ? 'editable' : ''} ${classes.input}`}
+                  className={`${editable ? 'editable' : ''} ${classes.input} ${
+                    noFocus ? classes.noFocus : ''
+                  }`}
+                  tabIndex={noFocus ? -1 : 0}
                   placeholder={placeholder}
                   disabled={alwaysEditable ? false : editable ? true : false}
                   value={value}
@@ -304,7 +308,10 @@ const FormGroup = ({
                   id={id}
                   type='number'
                   step={step ? step : ''}
-                  className={`${editable ? 'editable' : ''} ${classes.input}`}
+                  className={`${editable ? 'editable' : ''} ${classes.input} ${
+                    noFocus ? classes.noFocus : ''
+                  }`}
+                  tabIndex={noFocus ? -1 : 0}
                   disabled={alwaysEditable ? false : editable ? true : false}
                   value={value}
                   placeholder={placeholder}
@@ -315,7 +322,10 @@ const FormGroup = ({
                 <input
                   id={id}
                   type='text'
-                  className={`${editable ? 'editable' : ''} ${classes.input}`}
+                  className={`${editable ? 'editable' : ''} ${classes.input} ${
+                    noFocus ? classes.noFocus : ''
+                  }`}
+                  tabIndex={noFocus ? -1 : 0}
                   disabled={alwaysEditable ? false : editable ? true : false}
                   placeholder={placeholder}
                   value={value}
@@ -326,7 +336,10 @@ const FormGroup = ({
                 <input
                   id={id}
                   type='date'
-                  className={`${editable ? 'editable' : ''} ${classes.input}`}
+                  className={`${editable ? 'editable' : ''} ${classes.input} ${
+                    noFocus ? classes.noFocus : ''
+                  }`}
+                  tabIndex={noFocus ? -1 : 0}
                   disabled={alwaysEditable ? false : editable ? true : false}
                   placeholder={placeholder}
                   value={value}
@@ -348,7 +361,10 @@ const FormGroup = ({
                 <input
                   id={id}
                   type='email'
-                  className={`${editable ? 'editable' : ''} ${classes.input}`}
+                  className={`${editable ? 'editable' : ''} ${classes.input} ${
+                    noFocus ? classes.noFocus : ''
+                  }`}
+                  tabIndex={noFocus ? -1 : 0}
                   disabled={alwaysEditable ? false : editable ? true : false}
                   placeholder={placeholder}
                   value={value}

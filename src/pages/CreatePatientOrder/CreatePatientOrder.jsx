@@ -70,7 +70,11 @@ const CreatePatientOrder = (props) => {
 
   useEffect(() => {
     if (patient) {
-      dispatch(getMenuItems(`dietAvailability=${patient.currentDiet._id}&isOutOfStock=false`));
+      dispatch(
+        getMenuItems(
+          `dietAvailability=${patient.currentDiet._id}&isOutOfStock=false`
+        )
+      );
     }
   }, [dispatch, patient]);
 
@@ -104,8 +108,11 @@ const CreatePatientOrder = (props) => {
     }
 
     if (isError) {
-      if (message && message.message) {
+      if (message?.message) {
         toast.error(message.message);
+      }
+      if (message) {
+        toast.error(message);
       } else {
         toast.error('Something went wrong. Please try again later.');
       }

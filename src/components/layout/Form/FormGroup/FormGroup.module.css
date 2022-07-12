@@ -57,3 +57,12 @@
 .readonly {
   border: 0;
 }
+
+.noFocus,
+.noFocus:focus {
+  cursor: default;
+  outline-style: none;
+  box-shadow: none;
+  border-color: transparent;
+  color: white;
+}

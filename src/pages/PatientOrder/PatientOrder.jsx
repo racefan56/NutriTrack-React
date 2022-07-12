@@ -72,14 +72,15 @@ const PatientOrder = (props) => {
   }, [editMode]);
 
   useEffect(() => {
-    dispatch(getPatient(patientId));
     dispatch(getPatientOrder([patientId, orderId]));
+    dispatch(getPatient(patientId));
 
     setfirstRender(false);
   }, [dispatch, orderId, patientId]);
 
   useEffect(() => {
     if (patient) {
+      console.log(patient);
       dispatch(
         getMenuItems(
           `dietAvailability=${patient.currentDiet._id}&isOutOfStock=false`
@@ -98,6 +99,7 @@ const PatientOrder = (props) => {
     if (isSuccess && patientOrder) {
       dispatch(reset());
       toast.success('Patient order successfully updated!');
+      navigate(`/patients/${patientId}`);
     }
 
     if (isSuccess && !patientOrder) {
@@ -193,30 +195,6 @@ const PatientOrder = (props) => {
             subTitle={`${patient.firstName} ${patient.lastName}: ${patient.currentDiet.name}`}
             onSubmit={handleSubmit}
           >
-            <FormGroup
-              id='day'
-              inputType='text'
-              className='col-12 col-md-6 col-lg-4'
-              label='Day'
-              defaultValue={day}
-              readonly
-            />
-            <FormGroup
-              id='mealPeriod'
-              inputType='text'
-              className='col-12 col-md-6 col-lg-4'
-              label='Meal Period'
-              defaultValue={mealPeriod}
-              readonly
-            />
-            <FormGroup
-              id='option'
-              inputType='text'
-              className='col-12 col-md-6 col-lg-4'
-              label='Option'
-              defaultValue={option ? option : 'Custom'}
-              readonly
-            />
             <FormGroup
               id='entree'
               inputType='select'

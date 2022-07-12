@@ -39,7 +39,7 @@ const createPatientOrder = async (patientId, formData, token) => {
   } else {
     const response = await axios.post(
       `${SERVER}/patients/${patientId}/menu/order?day=${formData.day}&mealPeriod=${formData.mealPeriod}`,
-      [formData],
+      formData,
       config
     );
     const order = await response.data;
