@@ -120,9 +120,9 @@ const MealResults = ({ meals, patientId }) => {
     //If no orders have been taken for the current day, add a section for the current day.
     if (!mealDaySet.includes(today) && index === 0) {
       return (
-        <>
-          <div className={classes.dayContainer} key={uuidv4()}>
-            <div className={classes.dayHeading} key={uuidv4()}>
+        <React.Fragment key={uuidv4()}>
+          <div className={classes.dayContainer}>
+            <div className={classes.dayHeading}>
               <div className={classes.orderDate}>{today}</div>
               <div className={classes.orderTakenContainer}>
                 <span
@@ -146,8 +146,8 @@ const MealResults = ({ meals, patientId }) => {
               </div>
             </div>
           </div>
-          <div className={classes.dayContainer} key={uuidv4()}>
-            <div className={classes.dayHeading} key={uuidv4()}>
+          <div className={classes.dayContainer}>
+            <div className={classes.dayHeading}>
               <div className={classes.orderDate}>{day}</div>
               <div className={classes.orderTakenContainer}>
                 {isOrderTaken(day, 'Breakfast')}
@@ -156,12 +156,12 @@ const MealResults = ({ meals, patientId }) => {
               </div>
             </div>
           </div>
-        </>
+        </React.Fragment>
       );
     } else {
       return (
         <div className={classes.dayContainer} key={uuidv4()}>
-          <div className={classes.dayHeading} key={uuidv4()}>
+          <div className={classes.dayHeading}>
             <div className={classes.orderDate}>{day}</div>
             <div className={classes.orderTakenContainer}>
               {isOrderTaken(day, 'Breakfast')}

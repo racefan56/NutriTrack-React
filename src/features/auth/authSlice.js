@@ -11,8 +11,8 @@ const initialState = {
   isSuccess: true,
   userRole: null,
   loggedIn: false,
-  countDownAutoLogoutWarning: 30000,
-  countDownToWarningPopUp: 60000,
+  timeTilAutoLogout: 30000,
+  timeTilAutoLogoutPopUp: 60000,
 };
 
 // Create user

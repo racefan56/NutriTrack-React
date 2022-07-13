@@ -5,88 +5,108 @@ import Modal from '../layout/Modal/Modal';
 
 const AutoLogout = (props) => {
   const dispatch = useDispatch();
-  const { loggedIn, countDownAutoLogoutWarning, countDownToWarningPopUp } =
-    useSelector((state) => state.auth);
+  const { loggedIn, timeTilAutoLogout, timeTilAutoLogoutPopUp } = useSelector(
+    (state) => state.auth
+  );
 
   const [autoLogoutModal, setAutoLogoutModal] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(countDownAutoLogoutWarning);
+  const [timeLeftTilAutoLogout, setTimeLeftTilAutoLogout] =
+    useState(timeTilAutoLogout);
 
-  let startWarningPopupTimer = useRef(null);
+  const [timeLeftTilAutoLogoutPopup, setTimeLeftTilAutoLogoutPopup] = useState(
+    timeTilAutoLogoutPopUp
+  );
+  const [logOut, setLogOut] = useState(false);
+
+  let handleClick = useRef(() => {
+    return setTimeLeftTilAutoLogoutPopup(timeTilAutoLogoutPopUp);
+  });
   let startTimer = useRef(null);
-  let warningPopup;
+  let countDownTimer = useRef(null);
 
-  //START TIMER
-  const timeTracker = useCallback(() => {
-    startTimer.current = setTimeout(() => {
-      warningPopup();
-    }, countDownToWarningPopUp);
-  }, [countDownToWarningPopUp, warningPopup]);
+  const handleLogout = useCallback(() => {
+    // Hide logout modal
+    setAutoLogoutModal(false);
 
-  //RESET TIMER
-  const resetTimer = useCallback(() => {
-    console.log('CLICKs');
-    clearTimeout(startTimer.current);
+    // Clear both intrtval timers
+    clearInterval(startTimer.current);
+    clearInterval(countDownTimer.current);
 
-    if (loggedIn) {
-      setAutoLogoutModal(false);
-      setTimeLeft(countDownAutoLogoutWarning);
-      clearInterval(startWarningPopupTimer.current);
-      timeTracker();
-    } else {
-      setTimeLeft(countDownAutoLogoutWarning);
-      clearInterval(startWarningPopupTimer.current);
-    }
-  }, [countDownAutoLogoutWarning, loggedIn, timeTracker]);
+    // Remove event listener listening for any clicks to reset start timer
+    document.body.removeEventListener('click', handleClick.current);
 
-  warningPopup = useCallback(() => {
-    clearTimeout(startTimer.current);
-    setAutoLogoutModal(true);
+    // Reset state back to initial values
+    setTimeLeftTilAutoLogout(timeTilAutoLogout);
+    setTimeLeftTilAutoLogoutPopup(timeTilAutoLogoutPopUp);
 
-    startWarningPopupTimer.current = setInterval(() => {
-      setTimeLeft((prevState) => {
-        if (prevState === 0) {
-          clearInterval(startWarningPopupTimer.current);
-          document.body.removeEventListener('click', resetTimer);
-          return;
-        } else {
-          return prevState - 1000;
-        }
-      });
-    }, 1000);
-  }, [resetTimer]);
+    setLogOut(true);
+  }, [timeTilAutoLogout, timeTilAutoLogoutPopUp]);
 
+  // When handleLogout is run, it will set the state logOut to true, which will trigger the dispatch to logout
   useEffect(() => {
-    if (!loggedIn) {
-      document.body.removeEventListener('click', resetTimer);
-      clearTimeout(startTimer.current);
-      clearInterval(startWarningPopupTimer.current);
-      return;
-    } else {
-      setAutoLogoutModal(false);
-      document.body.addEventListener('click', resetTimer);
-      timeTracker();
-    }
-  }, [loggedIn, resetTimer, timeTracker]);
-
-  useEffect(() => {
-    if (timeLeft === 0) {
-      setTimeLeft(countDownAutoLogoutWarning);
+    if (logOut) {
+      setLogOut(false);
       dispatch(logout());
     }
-  }, [countDownAutoLogoutWarning, dispatch, timeLeft]);
+  }, [dispatch, logOut]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      startTimer.current = setInterval(() => {
+        setTimeLeftTilAutoLogoutPopup((prevState) => {
+          return prevState - 1000;
+        });
+      }, 1000);
+
+      document.body.addEventListener('click', handleClick.current);
+    }
+  }, [loggedIn, timeTilAutoLogoutPopUp]);
+
+  useEffect(() => {
+    if (timeLeftTilAutoLogoutPopup <= 0) {
+      setAutoLogoutModal(true);
+    }
+  }, [timeLeftTilAutoLogoutPopup]);
+
+  useEffect(() => {
+    if (autoLogoutModal) {
+      countDownTimer.current = setInterval(() => {
+        setTimeLeftTilAutoLogout((prevState) => {
+          if (prevState === 0) {
+            return handleLogout();
+          } else {
+            return prevState - 1000;
+          }
+        });
+      }, 1000);
+    } else {
+      if (countDownTimer.current && loggedIn) {
+        setTimeLeftTilAutoLogout(timeTilAutoLogout);
+        setTimeLeftTilAutoLogoutPopup(timeTilAutoLogoutPopUp);
+        clearInterval(countDownTimer.current);
+      }
+    }
+  }, [
+    autoLogoutModal,
+    dispatch,
+    handleLogout,
+    loggedIn,
+    timeTilAutoLogout,
+    timeTilAutoLogoutPopUp,
+  ]);
 
   return (
     <>
       {autoLogoutModal && loggedIn ? (
         <Modal
           popUp
-          handleConfirm={() => dispatch(logout())}
+          handleConfirm={() => handleLogout()}
           confirmTxt='Logout'
-          handleCancel={() => resetTimer()}
+          handleCancel={() => setAutoLogoutModal(false)}
           id='autoLogout'
           heading='Are you still there?'
           message={`Due to inactivity, you will be automatically logged out in ${
-            timeLeft / 1000
+            timeLeftTilAutoLogout / 1000
           } seconds`}
         />
       ) : (
