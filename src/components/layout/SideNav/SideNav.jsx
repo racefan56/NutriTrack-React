@@ -71,7 +71,13 @@ const SideNav = () => {
         <LinkSubSection title={'Patient Data'}>
           <MenuLink to='/patients' text='Patients' />
           <MenuLink to='/patients/patient-orders' text='Orders' />
-          <MenuLink to='/patients/census' text='Census' />
+          {userRole === 'admin' ||
+          userRole === 'lead-nca' ||
+          userRole === 'nurse' ? (
+            <MenuLink to='/patients/census' text='Census' />
+          ) : (
+            <></>
+          )}
         </LinkSubSection>
       </div>
     );

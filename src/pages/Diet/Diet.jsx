@@ -32,6 +32,7 @@ const Diet = (props) => {
   const { loading, diet, isSuccess, isError, message } = useSelector(
     (state) => state.diet
   );
+  const { userRole } = useSelector((state) => state.auth);
 
   const [editMode, setEditMode] = useState();
   const [formData, setFormData] = useState({
@@ -164,33 +165,37 @@ const Diet = (props) => {
               onChange={handleChange}
               editable
             />
-            {editMode ? (
-              <FormActionBtnContainer>
-                <ButtonMain
-                  className='mx-3'
-                  text='Submit'
-                  type='Submit'
-                  onClick={handleSubmit}
-                />
-                <ButtonSecondary
-                  className='m-3'
-                  text='Cancel'
-                  type='Button'
-                  onClick={handleCancel}
-                />
-              </FormActionBtnContainer>
+            {userRole === 'admin' ? (
+              editMode ? (
+                <FormActionBtnContainer>
+                  <ButtonMain
+                    className='mx-3'
+                    text='Submit'
+                    type='Submit'
+                    onClick={handleSubmit}
+                  />
+                  <ButtonSecondary
+                    className='m-3'
+                    text='Cancel'
+                    type='Button'
+                    onClick={handleCancel}
+                  />
+                </FormActionBtnContainer>
+              ) : (
+                <FormActionBtnContainer>
+                  <ButtonEdit onClick={handleEdit} />
+                  <Modal
+                    id={dietId}
+                    itemName={diet.name}
+                    onDelete={() => {
+                      handleDelete(dietId);
+                    }}
+                    btnDelete
+                  />
+                </FormActionBtnContainer>
+              )
             ) : (
-              <FormActionBtnContainer>
-                <ButtonEdit onClick={handleEdit} />
-                <Modal
-                  id={dietId}
-                  itemName={diet.name}
-                  onDelete={() => {
-                    handleDelete(dietId);
-                  }}
-                  btnDelete
-                />
-              </FormActionBtnContainer>
+              <></>
             )}
           </FormContainer>
         </ContainerSideNav>

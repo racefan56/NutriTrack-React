@@ -177,7 +177,7 @@ function App() {
           {/* View/Edit/Delete a diet */}
           <Route
             path='/control-panel/diets/:dietId'
-            element={<PrivateRoute validRoles={['admin']} />}
+            element={<PrivateRoute validRoles={['admin', 'dietitian']} />}
           >
             <Route path='/control-panel/diets/:dietId' element={<Diet />} />
           </Route>
@@ -196,7 +196,7 @@ function App() {
           {/* Get all diets */}
           <Route
             path='/control-panel/diets'
-            element={<PrivateRoute validRoles={['admin']} />}
+            element={<PrivateRoute validRoles={['admin', 'dietitian']} />}
           >
             <Route path='/control-panel/diets' element={<Diets />} />
           </Route>
@@ -300,12 +300,7 @@ function App() {
 
           {/* MENU ROUTES */}
           {/* View all menus */}
-          <Route
-            path='/control-panel/menus'
-            element={
-              <PrivateRoute />
-            }
-          >
+          <Route path='/control-panel/menus' element={<PrivateRoute />}>
             <Route path='/control-panel/menus' element={<Menus />} />
           </Route>
 

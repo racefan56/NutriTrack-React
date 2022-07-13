@@ -97,7 +97,7 @@ const PatientOrderResults = (props) => {
     return <Spinner />;
   }
 
-  if (isError) {
+  if (!loading && isError) {
     return <Error></Error>;
   }
 

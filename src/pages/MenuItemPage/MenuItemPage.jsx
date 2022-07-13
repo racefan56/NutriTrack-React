@@ -318,11 +318,11 @@ const MenuItemPage = () => {
             />
 
             <FormGroup
-              id='createdOn'
+              id='createdAt'
               inputType='text'
               className='col-12 col-xl-6'
               label='Created'
-              defaultValue={formatDate(menuItem ? menuItem.createdOn : '')}
+              defaultValue={formatDate(menuItem ? menuItem.createdAt : '')}
               readonly
             />
 

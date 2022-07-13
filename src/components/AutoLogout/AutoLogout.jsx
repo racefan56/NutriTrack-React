@@ -28,7 +28,7 @@ const AutoLogout = (props) => {
     // Hide logout modal
     setAutoLogoutModal(false);
 
-    // Clear both intrtval timers
+    // Clear both intertval timers
     clearInterval(startTimer.current);
     clearInterval(countDownTimer.current);
 
@@ -59,6 +59,12 @@ const AutoLogout = (props) => {
       }, 1000);
 
       document.body.addEventListener('click', handleClick.current);
+    }
+
+    if (!loggedIn) {
+      clearInterval(startTimer.current);
+      clearInterval(countDownTimer.current);
+      document.body.removeEventListener('click', handleClick.current);
     }
   }, [loggedIn, timeTilAutoLogoutPopUp]);
 
