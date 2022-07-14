@@ -35,7 +35,7 @@ import MealResults from '../../components/meal/MealResults/MealResults';
 
 import { getMenuItems } from '../../features/menuItem/menuItemSlice';
 
-const Patient = (props) => {
+const Patient = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { patientId } = useParams();
@@ -78,7 +78,6 @@ const Patient = (props) => {
     createdAt,
     updatedAt,
   } = formData;
-  console.log(mealOrders);
 
   useEffect(() => {
     dispatch(getPatient(patientId));

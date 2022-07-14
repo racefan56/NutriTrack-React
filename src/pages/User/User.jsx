@@ -10,7 +10,6 @@ import {
 } from '../../features/user/userSlice';
 
 import {
-  formatDate,
   formEditMode,
   invalidInput,
 } from '../../components/helperFunctions/helperFunctions';
@@ -26,9 +25,7 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './User.module.css';
-
-const User = (props) => {
+const User = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userId } = useParams();

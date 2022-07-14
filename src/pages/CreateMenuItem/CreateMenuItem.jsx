@@ -20,8 +20,6 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import Modal from '../../components/layout/Modal/Modal';
 import Error from '../../components/Error/Error';
 
-import classes from './CreateMenuItem.module.css';
-
 const CreateMenuItem = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -76,6 +74,7 @@ const CreateMenuItem = () => {
     if (productionAreas && productionAreas.length > 0) {
       setFormData({ ...formData, productionArea: productionAreas[0]._id });
     }
+    // Disabled because if formData was added to the dependencies array, it would trigger unnecessary updates since production area is part of formData
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productionAreas]);
 

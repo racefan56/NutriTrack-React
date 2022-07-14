@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './FormContainer.module.css';
 
+// Used for forms that generally use the same display structure with a preceeding heading with a title and other possible info
 const FormContainer = ({
   children,
   status,

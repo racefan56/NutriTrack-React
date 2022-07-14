@@ -1,18 +1,17 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import classes from './SideNav.module.css';
-
-import Card from '../Card/Card';
+import { useSelector } from 'react-redux';
 
 import MenuLink from '../LinkSection/MenuLink/MenuLink';
 import LinkSubSection from '../LinkSection/LinkSubSection/LinkSubSection';
 
+import classes from './SideNav.module.css';
+
 const SideNav = () => {
-  const path = window.location.pathname;
 
   const { userRole } = useSelector((state) => state.auth);
+  const { pathname } = useSelector((state) => state.navigation);
 
-  if (path.startsWith('/control-panel')) {
+  if (pathname.startsWith('/control-panel')) {
     return (
       <div className={classes['cp-side-nav-container']}>
         {userRole === 'admin' ? (
@@ -61,7 +60,7 @@ const SideNav = () => {
     );
   }
 
-  if (path.startsWith('/patients')) {
+  if (pathname.startsWith('/patients')) {
     return (
       <div className={classes['cp-side-nav-container']}>
         {/* Future version feature */}
@@ -83,7 +82,7 @@ const SideNav = () => {
     );
   }
 
-  if (path.startsWith('/my-account')) {
+  if (pathname.startsWith('/my-account')) {
     return (
       <div className={classes['cp-side-nav-container']}>
         <LinkSubSection title={'My Account'}>

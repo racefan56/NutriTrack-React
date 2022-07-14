@@ -1,18 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setPathname } from '../../../features/navigation/navigationSlice';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { useDispatch } from 'react-redux';
 import { BiCheckCircle, BiXCircle } from 'react-icons/bi';
 
 import { v4 as uuidv4 } from 'uuid';
 
+import { setPathname } from '../../../features/navigation/navigationSlice';
 import {
   formatDate,
   getDayOfWeek,
   getToday,
 } from '../../helperFunctions/helperFunctions';
-import Meal from '../Meal/Meal';
 
 import classes from './MealResults.module.css';
 
@@ -45,6 +43,7 @@ const MealResults = ({ meals, patientId }) => {
     }
   };
 
+  // Takes each meal, and organizes the meal data into an array of [meal date, mealPeriod, meal ID, patient ID] which is then used by the mealDaySet function below
   const mealDaysPeriodsIds = meals.map((meal) => {
     return [
       formatDate(meal.mealDate, { dateOnly: true }),
@@ -54,6 +53,7 @@ const MealResults = ({ meals, patientId }) => {
     ];
   });
 
+  // Returns a unique set of the days that there are meal orders
   const mealDaySet = [
     ...new Set(
       mealDaysPeriodsIds.map((item) => {
@@ -62,6 +62,7 @@ const MealResults = ({ meals, patientId }) => {
     ),
   ];
 
+  // Determines if the specified day and meal for that day has an order taken for it
   const isOrderTaken = (day, meal) => {
     const findOrder = () => {
       return mealDaysPeriodsIds.find((el) => el[0] === day && el[1] === meal);
@@ -69,6 +70,7 @@ const MealResults = ({ meals, patientId }) => {
 
     const order = findOrder();
 
+    // If there is an order display a green check box, and link to the order details page on click. If there is NOT an order, display a red X box and link to a create order page on click
     return order ? (
       <span
         onClick={() => handleOrderClick([order[2]])}
@@ -86,6 +88,7 @@ const MealResults = ({ meals, patientId }) => {
     );
   };
 
+  // If there are no meals, output a section for the current day so meals can be order for the current day
   if (meals.length === 0) {
     return (
       <div className={classes.dayContainer} key={uuidv4()}>
@@ -159,6 +162,7 @@ const MealResults = ({ meals, patientId }) => {
         </React.Fragment>
       );
     } else {
+      // Check if each meal is taken or not for the supplied day
       return (
         <div className={classes.dayContainer} key={uuidv4()}>
           <div className={classes.dayHeading}>

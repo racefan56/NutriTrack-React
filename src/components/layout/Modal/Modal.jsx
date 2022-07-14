@@ -5,6 +5,7 @@ import ButtonSecondary from '../Button/ButtonSecondary/ButtonSecondary';
 import ButtonMain from '../Button/ButtonMain/ButtonMain';
 import ButtonDelete from '../Button/ButtonDelete/ButtonDelete';
 
+// Used for popups such as autologout and confirm cancel or delete of a doc
 const Modal = ({
   children,
   id,

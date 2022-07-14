@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { createDiet } from '../../features/diet/dietSlice';
@@ -17,9 +17,7 @@ import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './CreateDiet.module.css';
-
-const CreateDiet = (props) => {
+const CreateDiet = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

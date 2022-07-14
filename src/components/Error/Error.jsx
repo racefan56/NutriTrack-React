@@ -1,7 +1,7 @@
 import React from 'react';
-import classes from './Error.module.css';
 
-const Error = (props) => {
+// Displays on some pages if the request was rejected by the server, usually due to exceeding the rate limit per hour
+const Error = () => {
   return (
     <>
       <h1>Something Went Wrong</h1>

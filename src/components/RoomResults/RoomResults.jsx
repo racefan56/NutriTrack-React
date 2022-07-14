@@ -3,31 +3,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { getRooms } from '../../features/room/roomSlice';
+import { getUnits } from '../../features/unit/unitSlice';
 import Table from '../layout/Table/Table';
 import TableDataItem from '../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../Spinner/Spinner';
 import ButtonMain from '../layout/Button/ButtonMain/ButtonMain';
 import Error from '../Error/Error';
 
-import classes from './RoomResults.module.css';
-import { getUnits } from '../../features/unit/unitSlice';
-
-const RoomResults = (props) => {
+const RoomResults = () => {
   const dispatch = useDispatch();
 
   const { rooms, loading, isError, message } = useSelector(
     (state) => state.room
   );
-  const { units } = useSelector((state) => state.unit);
 
   const [curPage, setCurPage] = useState(1);
   const [limit, setLimit] = useState(5);
-  const [formData, setFormData] = useState({
-    unit: '',
-  });
-  const [unitValuesLabels, setUnitValuesLabels] = useState([]);
-
-  const { unit } = formData;
 
   useEffect(() => {
     dispatch(getUnits());
@@ -39,16 +30,6 @@ const RoomResults = (props) => {
       toast.error(message);
     }
   }, [dispatch, isError, limit, message]);
-
-  useEffect(() => {
-    if (units) {
-      const data = units.map((unit) => {
-        return { value: unit.unitName, label: unit.unitName };
-      });
-      data.unshift({ value: '', label: 'All' });
-      setUnitValuesLabels(data);
-    }
-  }, [units]);
 
   if (loading) {
     return <Spinner />;

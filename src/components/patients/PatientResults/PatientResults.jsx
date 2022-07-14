@@ -6,10 +6,7 @@ import Table from '../../layout/Table/Table';
 import TableDataItem from '../../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../../Spinner/Spinner';
 import ButtonMain from '../../layout/Button/ButtonMain/ButtonMain';
-import NoResults from '../../NoResults/NoResults';
 import Error from '../../Error/Error';
-
-import classes from './PatientResults.module.css';
 
 function PatientResults() {
   const dispatch = useDispatch();
@@ -29,12 +26,14 @@ function PatientResults() {
 
   const { unit, status } = formData;
 
+  // Run only once
   useEffect(() => {
     dispatch(getUnits());
     dispatch(getPatients(`limit=${limit}&sort=${sort}`));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Gather unit filter options based on the units retrieved from the DB
   useEffect(() => {
     if (units) {
       const data = units.map((unit) => {
@@ -45,6 +44,7 @@ function PatientResults() {
     }
   }, [units]);
 
+  // Reset filter options to defaults, resend dispatch
   const handleReset = () => {
     if (formData.unit !== '' || formData.status !== '') {
       setFormData({
@@ -55,6 +55,7 @@ function PatientResults() {
     }
   };
 
+  // Build filter string
   const handleFilterString = () => {
     let string = '';
 

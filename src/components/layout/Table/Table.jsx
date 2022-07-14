@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import classes from './Table.module.css';
@@ -9,7 +9,6 @@ import ButtonCreate from '../Button/ButtonCreate/ButtonCreate';
 import ButtonFilter from '../Button/ButtonFilter/ButtonFilter';
 import ButtonLimit from '../Button/ButtonLimit/ButtonLimit';
 import ButtonSort from '../Button/ButtonSort/ButtonSort';
-import { compose } from '@reduxjs/toolkit';
 
 const Table = ({
   children,
@@ -43,6 +42,7 @@ const Table = ({
 
   const { userRole } = useSelector((state) => state.auth);
 
+  // When the table is refreshed or the search params change, this function builds the querystring based on the supplied limit, page, & sort and dispatches the request
   const handleRefreshAndQueryChange = ({
     limitChange,
     pageChange,
@@ -98,7 +98,6 @@ const Table = ({
     }
 
     if (action === 'Next') {
-      console.log(action);
       paginateSetPage((prevState) => prevState + 1);
       handleRefreshAndQueryChange({ pageChange: paginateCurPage + 1 });
     }

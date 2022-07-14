@@ -98,6 +98,7 @@ export const getToday = (mmddyyyy) => {
   }
 };
 
+// Gets the current day of the week
 export const getDayOfWeek = (date) => {
   const days = [
     'Sunday',
@@ -119,11 +120,13 @@ export const getDayOfWeek = (date) => {
   }
 };
 
+// gets ISO date without the time section
 export const ISOdateOnly = (date) => {
   const dateOnly = date.split('T')[0];
   return dateOnly;
 };
 
+// Used to enable/disable for inputs
 export const formEditMode = (editMode) => {
   if (editMode) {
     const elements = [...document.getElementsByClassName('editable')];
@@ -139,6 +142,7 @@ export const formEditMode = (editMode) => {
   }
 };
 
+// highlights form inputs that caused the form to be rejected
 export const invalidInput = (elId) => {
   if (Array.isArray(elId)) {
     elId.map((el) => {

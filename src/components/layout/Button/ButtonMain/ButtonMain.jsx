@@ -1,8 +1,8 @@
 import React from 'react';
-import classes from './ButtonMain.module.css';
-
 import { Link } from 'react-router-dom';
 import { BiArrowFromRight, BiArrowFromLeft } from 'react-icons/bi';
+
+import classes from './ButtonMain.module.css';
 
 const ButtonMain = ({
   type,
@@ -34,12 +34,8 @@ const ButtonMain = ({
       className={`btn ${classes.btnMain} ${className ? className : ''}`}
       value={value}
     >
-      {previous ? (
-        <BiArrowFromRight className={classes.arrowRight} />
-      ) : (
-        <></>
-      )}
-     {text}
+      {previous ? <BiArrowFromRight className={classes.arrowRight} /> : <></>}
+      {text}
       {next ? <BiArrowFromLeft className={classes.arrowLeft} /> : <></>}
     </button>
   );

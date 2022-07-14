@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 
 import { getMenuItems } from '../../../features/menuItem/menuItemSlice';
-import { getProductionAreas } from '../../../features/productionArea/productionAreaSlice';
 import Table from '../../layout/Table/Table';
 import TableDataItem from '../../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../../Spinner/Spinner';
-import ButtonSecondary from '../../layout/Button/ButtonSecondary/ButtonSecondary';
 import ButtonMain from '../../layout/Button/ButtonMain/ButtonMain';
-import NoResults from '../../NoResults/NoResults';
 import Error from '../../Error/Error';
 
 import { titleCase } from '../../helperFunctions/helperFunctions';
 
-import classes from './MenuItemResults.module.css';
-
-const MenuItemResults = (props) => {
+const MenuItemResults = () => {
   const dispatch = useDispatch();
 
   const { menuItems, loading, isError } = useSelector(
@@ -32,11 +26,13 @@ const MenuItemResults = (props) => {
 
   const { category } = formData;
 
+  // Only run on inital page load
   useEffect(() => {
     dispatch(getMenuItems(`limit=${limit}&sort=${sort}`));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Reset filter options back to default values, and resend dispatch
   const handleReset = () => {
     if (category !== '') {
       setFormData({
@@ -46,6 +42,7 @@ const MenuItemResults = (props) => {
     }
   };
 
+  // Create filter string
   const handleFilterString = () => {
     let string = '';
     if (category !== '') {

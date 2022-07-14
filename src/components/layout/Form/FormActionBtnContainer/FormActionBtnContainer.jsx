@@ -1,8 +1,9 @@
 import React from 'react';
-import classes from './FormActionBtnContainer.module.css';
 
+// Houses form action buttons (edit, delete, submit, cancel, etc.)
 const FormActionBtnContainer = ({ children }) => {
   return (
+    // Outputs a seprate div for each child supplied
     <div className={`row`}>
       {children.map((child, index) => {
         return (

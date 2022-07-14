@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './SubForm.module.css';
 
-const FormHeading = ({ children, title, className }) => {
+const SubForm = ({ children, title, className }) => {
   return (
     <form className={className ? className : ''}>
       <h3 className={classes.title}>{title}</h3>
@@ -10,4 +10,4 @@ const FormHeading = ({ children, title, className }) => {
   );
 };
 
-export default FormHeading;
+export default SubForm;

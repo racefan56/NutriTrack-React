@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 import { getDiet, updateDiet, deleteDiet } from '../../features/diet/dietSlice';
 
 import {
-  formatDate,
   formEditMode,
   invalidInput,
 } from '../../components/helperFunctions/helperFunctions';
@@ -22,9 +21,8 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './Diet.module.css';
 
-const Diet = (props) => {
+const Diet = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { dietId } = useParams();

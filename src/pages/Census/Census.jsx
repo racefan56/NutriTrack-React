@@ -1,19 +1,10 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 import { getCensus } from './../../features/patient/patientSlice';
 import { getUnits } from './../../features/unit/unitSlice';
 
-import {
-  formatDate,
-  ISOdateOnly,
-  formEditMode,
-  invalidInput,
-  getToday,
-  roomsAvailableByUnit,
-} from '../../components/helperFunctions/helperFunctions';
+import { getToday } from '../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
@@ -21,9 +12,9 @@ import SideNav from '../../components/layout/SideNav/SideNav';
 import Table from '../../components/layout/Table/Table';
 import TableDataItem from '../../components/layout/Table/TableDataItem/TableDataItem';
 
-const Census = (props) => {
+// Counts how many pateints are currently in each unit. Totals for the amount that have a status of eating or npo are included, and added together to make the total count for the unit. Total counts for the units are added to get the overall total
+const Census = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const { loading: loadingCensus, census } = useSelector(
     (state) => state.patient
@@ -39,7 +30,6 @@ const Census = (props) => {
   const npoTotal = useRef(0);
   const eatingTotalsArr = [];
   const eatingTotal = useRef(0);
-  const overallTotal = 0;
 
   const censusCount = (type, unit, totalsArr) => {
     const count = Number(

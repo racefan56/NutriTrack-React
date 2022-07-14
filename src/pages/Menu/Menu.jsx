@@ -1,14 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import {
-  getMenu,
-  createMenu,
-  deleteMenu,
-  updateMenu,
-} from '../../features/menu/menuSlice';
+import { getMenu, deleteMenu, updateMenu } from '../../features/menu/menuSlice';
 import { getDiets } from '../../features/diet/dietSlice';
 import { getMenuItems } from '../../features/menuItem/menuItemSlice';
 
@@ -28,9 +23,7 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './Menu.module.css';
-
-const Menu = (props) => {
+const Menu = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { menuId } = useParams();

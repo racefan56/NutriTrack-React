@@ -29,8 +29,6 @@ import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 
-import classes from './MenuItemPage.module.css';
-
 const MenuItemPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

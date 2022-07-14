@@ -73,7 +73,7 @@ export const updateUserPassword = createAsyncThunk(
   }
 );
 
-// Reset isSuccess
+// Reset isSuccess. Resets the isSuccess state to false after a successful action. Some pages check for isSuccess as true to trigger a toast success message and then redirect the user.
 export const resetIsSuccess = createAsyncThunk(
   'auth/resetIsSuccess',
   async () => {
@@ -119,7 +119,7 @@ export const authSlice = createSlice({
         state.loading = true;
         state.isSuccess = false;
       })
-      .addCase(createUser.fulfilled, (state, action) => {
+      .addCase(createUser.fulfilled, (state) => {
         state.loading = false;
         state.isSuccess = true;
         state.message = 'create user successful';

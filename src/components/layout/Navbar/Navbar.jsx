@@ -1,21 +1,22 @@
 import React from 'react';
-import { toast } from 'react-toastify';
-import { logout } from '../../../features/auth/authSlice';
-import { setPathname } from '../../../features/navigation/navigationSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
+import { toast } from 'react-toastify';
+
+import { logout } from '../../../features/auth/authSlice';
+import { setPathname } from '../../../features/navigation/navigationSlice';
 import Brand from '../Brand/Brand';
 
 import classes from './Navbar.module.css';
 
-function Navbar({ title }) {
+function Navbar() {
   const dispatch = useDispatch();
-  const { loggedIn, userRole } = useSelector((state) => state.auth);
+  const { loggedIn } = useSelector((state) => state.auth);
   const { pathname } = useSelector((state) => state.navigation);
 
   //Only display navbar if user is logged in
-  //Display links based on user role
   if (loggedIn) {
     return (
       <>
@@ -26,6 +27,7 @@ function Navbar({ title }) {
               onClick={() => {
                 return dispatch(setPathname('/control-panel/menu-items'));
               }}
+              // Sets the active navbar tab based on the pathname
               className={
                 pathname.startsWith('/control-panel')
                   ? classes.navbarLinkActive
@@ -35,11 +37,12 @@ function Navbar({ title }) {
             >
               Control Panel
             </Link>
-            
+
             <Link
               onClick={() => {
                 return dispatch(setPathname('/patients'));
               }}
+              // Sets the active navbar tab based on the pathname
               className={
                 pathname.startsWith('/patients')
                   ? classes.navbarLinkActive
@@ -53,6 +56,7 @@ function Navbar({ title }) {
               onClick={() => {
                 return dispatch(setPathname('/my-account'));
               }}
+              // Sets the active navbar tab based on the pathname
               className={
                 pathname.startsWith('/my-account')
                   ? classes.navbarLinkActive

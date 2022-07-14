@@ -4,9 +4,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import UnitResults from '../../components/UnitResults/UnitResults';
 
-import classes from './Units.module.css';
-
-const Units = (props) => {
+const Units = () => {
   return (
     <>
       <SideNav />

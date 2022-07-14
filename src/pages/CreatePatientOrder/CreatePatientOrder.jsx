@@ -10,12 +10,7 @@ import {
 } from '../../features/patient/patientSlice';
 import { getMenuItems } from '../../features/menuItem/menuItemSlice';
 
-import {
-  formEditMode,
-  getToday,
-  formatDate,
-  invalidInput,
-} from '../../components/helperFunctions/helperFunctions';
+import { invalidInput } from '../../components/helperFunctions/helperFunctions';
 
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
@@ -49,7 +44,6 @@ const CreatePatientOrder = (props) => {
     drinks: [],
     condiments: [],
   });
-  const today = getToday({ mmddyyyy: true });
 
   const {
     day,

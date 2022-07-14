@@ -3,7 +3,7 @@ import SideNav from '../../components/layout/SideNav/SideNav';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
 import PatientOrderResults from '../../components/PatientOrderResults/PatientOrderResults';
 
-const PatientOrders = (props) => {
+const PatientOrders = () => {
   return (
     <>
       <SideNav />

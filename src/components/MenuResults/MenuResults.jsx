@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 
 import { getMenus } from '../../features/menu/menuSlice';
 import Table from '../layout/Table/Table';
@@ -9,14 +8,10 @@ import Spinner from '../Spinner/Spinner';
 import ButtonMain from '../layout/Button/ButtonMain/ButtonMain';
 import Error from '../Error/Error';
 
-import classes from './MenuResults.module.css';
-
-const MenuResults = (props) => {
+const MenuResults = () => {
   const dispatch = useDispatch();
 
-  const { menus, loading, isError, message } = useSelector(
-    (state) => state.menu
-  );
+  const { menus, loading, isError } = useSelector((state) => state.menu);
   const [curPage, setCurPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [sort, setSort] = useState('+mealPeriod');
@@ -27,12 +22,14 @@ const MenuResults = (props) => {
 
   const { day, option } = formData;
 
+  // Only run on initial page load
   useEffect(() => {
     dispatch(getMenus(`limit=${limit}&sort=${sort}`));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Reset filter options back to defaults. Resend dispatch
   const handleReset = () => {
     if (day !== '' || option !== '') {
       setFormData({
@@ -43,6 +40,7 @@ const MenuResults = (props) => {
     }
   };
 
+  // Create filter string
   const handleFilterString = () => {
     let string = '';
 
@@ -118,7 +116,7 @@ const MenuResults = (props) => {
           sortSetSort={setSort}
           sortOptions={sortOptions}
         >
-          {menus.map((menu, index) => (
+          {menus.map((menu) => (
             <React.Fragment key={menu._id}>
               <TableDataItem
                 navigatePath={`/control-panel/menus/${menu._id}`}

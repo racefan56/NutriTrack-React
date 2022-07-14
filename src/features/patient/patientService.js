@@ -4,7 +4,6 @@ const SERVER = process.env.REACT_APP_SERVER;
 
 //Create patient
 const createPatient = async (formData, token) => {
-  console.log(formData);
   const config = {
     headers: {
       Authorization: `${token}`,
@@ -19,7 +18,6 @@ const createPatient = async (formData, token) => {
 
 //Create patient order
 const createPatientOrder = async (patientId, formData, token) => {
-  console.log(formData);
   const config = {
     headers: {
       Authorization: `${token}`,
@@ -27,6 +25,7 @@ const createPatientOrder = async (patientId, formData, token) => {
   };
 
   if (formData.option !== 'Custom') {
+    // If the order option is not custom, meaning it is either Hot or Cold, the backend expects an empty body
     const emptyBody = [];
     const response = await axios.post(
       `${SERVER}/patients/${patientId}/menu/order?day=${formData.day}&mealPeriod=${formData.mealPeriod}&option=${formData.option}`,
@@ -76,7 +75,6 @@ const getPatient = async (patientId, token) => {
     `${SERVER}/patients/${patientId ? patientId : ''}`,
     config
   );
-  console.log('GET REQUEST');
 
   const patient = await response.data;
   return patient;
@@ -188,7 +186,6 @@ const deletePatientOrder = async (patientId, orderId, token) => {
 
 //get patient census report
 const getCensus = async (token) => {
-  console.log('HERE');
   const config = {
     headers: {
       Authorization: `${token}`,

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { toast } from 'react-toastify';
 
 import { getDiets } from '../../features/diet/dietSlice';
@@ -9,16 +10,16 @@ import Spinner from '../Spinner/Spinner';
 import ButtonMain from '../layout/Button/ButtonMain/ButtonMain';
 import Error from '../Error/Error';
 
-import classes from './DietResults.module.css';
-
-const DietResults = (props) => {
+const DietResults = () => {
   const dispatch = useDispatch();
 
   const { diets, loading, isError, message } = useSelector(
     (state) => state.diet
   );
 
+  // set inital page
   const [curPage, setCurPage] = useState(1);
+  // set default results per page limit
   const [limit, setLimit] = useState(5);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ const DietResults = (props) => {
           paginateCurPage={curPage}
           paginateSetPage={setCurPage}
         >
-          {diets.map((diet, index) => (
+          {diets.map((diet) => (
             <React.Fragment key={diet._id}>
               <TableDataItem
                 navigatePath={`/control-panel/diets/${diet._id}`}

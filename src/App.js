@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/layout/Navbar/Navbar';
+import Footer from './components/Footer/Footer';
 
 import Login from './pages/Login/Login';
 import Census from './pages/Census/Census';
@@ -351,6 +352,7 @@ function App() {
           {/* PAGE NOT FOUND ROUTE */}
           <Route path='/*' element={<Notfound />} />
         </Routes>
+        <Footer />
       </Router>
     </>
   );

@@ -4,9 +4,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import ProductionAreaResults from '../../components/ProductionAreaResults/ProductionAreaResults';
 
-import classes from './ProductionAreas.module.css';
-
-const ProductionAreas = (props) => {
+const ProductionAreas = () => {
   return (
     <>
       <SideNav />

@@ -1,14 +1,17 @@
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { toast } from 'react-toastify';
+
 import { login } from '../../features/auth/authSlice';
 import { setPathname } from '../../features/navigation/navigationSlice';
-import React, { useState, useEffect } from 'react';
 import Card from '../../components/layout/Card/Card';
 import Brand from '../../components/layout/Brand/Brand';
-import { useNavigate } from 'react-router-dom';
-import ButtomMain from '../../components/layout/Button/ButtonMain/ButtonMain';
+import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
+import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';
 
 import classes from './Login.module.css';
-import { toast } from 'react-toastify';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -64,30 +67,23 @@ function Login() {
           <Brand w100 className={classes['brand-login']} />
         </div>
         <form onSubmit={handleSubmit}>
-          <div className='form-group'>
-            <label htmlFor='email'>Email</label>
-            <input
-              type='email'
-              className='form-control mb-3'
-              id='email'
-              aria-describedby='emailHelp'
-              placeholder='Enter email'
-              value={email}
-              onChange={handleChangeEmail}
-            />
-          </div>
-          <div className='form-group'>
-            <label htmlFor='password'>Password</label>
-            <input
-              type='password'
-              className='form-control'
-              id='password'
-              placeholder='Enter password'
-              value={password}
-              onChange={handleChangePassword}
-            />
-          </div>
-          <ButtomMain type='submit' text='Login' />
+          <FormGroup
+            id='email'
+            label='Email'
+            inputType='email'
+            value={email}
+            onChange={handleChangeEmail}
+            placeholder='Enter email'
+          />
+          <FormGroup
+            id='password'
+            label='Password'
+            inputType='password'
+            value={password}
+            onChange={handleChangePassword}
+            placeholder='Enter password'
+          />
+          <ButtonMain type='submit' text='Login' />
         </form>
       </Card>
     </div>

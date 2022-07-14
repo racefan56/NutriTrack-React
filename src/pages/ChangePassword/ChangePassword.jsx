@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { logout, updateUserPassword } from '../../features/auth/authSlice';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
 import { invalidInput } from '../../components/helperFunctions/helperFunctions';
 import Spinner from '../../components/Spinner/Spinner';
-import { Link } from 'react-router-dom';
 import SideNav from '../../components/layout/SideNav/SideNav';
 import FormContainer from '../../components/layout/Form/FormContainer/FormContainer';
 import FormGroup from '../../components/layout/Form/FormGroup/FormGroup';

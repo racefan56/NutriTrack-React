@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { createProductionArea } from '../../features/productionArea/productionAreaSlice';
@@ -19,9 +19,7 @@ import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './CreateProductionArea.module.css';
-
-const CreateProductionArea = (props) => {
+const CreateProductionArea = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

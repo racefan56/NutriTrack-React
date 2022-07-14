@@ -34,7 +34,6 @@ const getUsers = async (queryString, token) => {
   );
 
   const users = await response.data;
-  console.log(users);
   return users;
 };
 
@@ -56,7 +55,7 @@ const getUser = async (userId, token) => {
 };
 
 //Update current user
-const updateUser = async (userId, formData, token) => {
+const updateUser = async (formData, token) => {
   const config = {
     headers: {
       Authorization: `${token}`,
@@ -64,7 +63,6 @@ const updateUser = async (userId, formData, token) => {
   };
 
   const response = await axios.patch(
-    //  `${SERVER}/users/updateUser/${userId}`,
     `${SERVER}/users/updateUser`,
     formData,
     config
@@ -93,7 +91,7 @@ const updateOtherUser = async (userId, formData, token) => {
 };
 
 //Delete current user (really just deactivates them)
-const deleteUser = async (userId, token) => {
+const deleteUser = async (token) => {
   const config = {
     headers: {
       Authorization: `${token}`,

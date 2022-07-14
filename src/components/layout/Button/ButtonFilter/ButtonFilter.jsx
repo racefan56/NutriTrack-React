@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BiFilter } from 'react-icons/bi';
 
 import { capitalizeWord } from '../../../helperFunctions/helperFunctions';
@@ -19,15 +19,12 @@ const ButtonFilter = ({
 }) => {
   const [isVisibile, setIsVisibile] = useState(false);
 
-  const [initialFilterValues, setInitialFilterValues] = useState();
-
   return (
     <>
       <span
         title='Filter'
         onClick={() => {
           setIsVisibile(true);
-          setInitialFilterValues(filterValues);
         }}
         className={classes.filterBtnContainer}
       >
@@ -38,7 +35,9 @@ const ButtonFilter = ({
       {isVisibile && (
         <div className={classes.filterContainer}>
           <form className={classes.filterForm}>
+            {/* Title for filter form */}
             <div className={classes.heading}>Filter {filterHeading} </div>
+            {/* Takes the supplied filteroptions object and outputs a formgroup (label & input) for each one using the supplied filterValues with the same index value of the current option*/}
             {filterOptions ? (
               Object.entries(filterOptions).map((option, index) => {
                 return (
@@ -65,6 +64,7 @@ const ButtonFilter = ({
                 text='Cancel / Reset'
                 onClick={(e) => {
                   setIsVisibile(false);
+                  // Calls the supplied filterReset function (usually called handleReset) from the Page/component that used this ButtonFilter component
                   filterReset.call(this, e);
                 }}
               />

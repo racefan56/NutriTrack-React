@@ -4,9 +4,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import DietResults from '../../components/DietResults/DietResults';
 
-import classes from './Diets.module.css';
-
-const Diets = (props) => {
+const Diets = () => {
   return (
     <>
       <SideNav />

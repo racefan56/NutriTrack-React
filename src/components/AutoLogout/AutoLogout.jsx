@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { logout } from '../../features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
+
+import { logout } from '../../features/auth/authSlice';
 import Modal from '../layout/Modal/Modal';
 
-const AutoLogout = (props) => {
+const AutoLogout = () => {
   const dispatch = useDispatch();
   const { loggedIn, timeTilAutoLogout, timeTilAutoLogoutPopUp } = useSelector(
     (state) => state.auth
@@ -12,7 +13,6 @@ const AutoLogout = (props) => {
   const [autoLogoutModal, setAutoLogoutModal] = useState(false);
   const [timeLeftTilAutoLogout, setTimeLeftTilAutoLogout] =
     useState(timeTilAutoLogout);
-
   const [timeLeftTilAutoLogoutPopup, setTimeLeftTilAutoLogoutPopup] = useState(
     timeTilAutoLogoutPopUp
   );
@@ -21,7 +21,9 @@ const AutoLogout = (props) => {
   let handleClick = useRef(() => {
     return setTimeLeftTilAutoLogoutPopup(timeTilAutoLogoutPopUp);
   });
+  // Timer for auto logout popup to become visible
   let startTimer = useRef(null);
+  // Timer ON auto logout popup, once it reaches 0, the user will be auto logged out
   let countDownTimer = useRef(null);
 
   const handleLogout = useCallback(() => {
@@ -39,6 +41,7 @@ const AutoLogout = (props) => {
     setTimeLeftTilAutoLogout(timeTilAutoLogout);
     setTimeLeftTilAutoLogoutPopup(timeTilAutoLogoutPopUp);
 
+    // Triggers useEffect below to logout user
     setLogOut(true);
   }, [timeTilAutoLogout, timeTilAutoLogoutPopUp]);
 
@@ -51,6 +54,7 @@ const AutoLogout = (props) => {
   }, [dispatch, logOut]);
 
   useEffect(() => {
+    // If logged in, start timer for auto logout popup to become visible
     if (loggedIn) {
       startTimer.current = setInterval(() => {
         setTimeLeftTilAutoLogoutPopup((prevState) => {
@@ -61,6 +65,7 @@ const AutoLogout = (props) => {
       document.body.addEventListener('click', handleClick.current);
     }
 
+    // If not logged in, clear both timers and remove the click event listener
     if (!loggedIn) {
       clearInterval(startTimer.current);
       clearInterval(countDownTimer.current);
@@ -68,12 +73,14 @@ const AutoLogout = (props) => {
     }
   }, [loggedIn, timeTilAutoLogoutPopUp]);
 
+  // Shows autologout popup when the timer reaches 0, or less
   useEffect(() => {
     if (timeLeftTilAutoLogoutPopup <= 0) {
       setAutoLogoutModal(true);
     }
   }, [timeLeftTilAutoLogoutPopup]);
 
+  // If autologout popup is visible, start the countdown timer to autologout the user
   useEffect(() => {
     if (autoLogoutModal) {
       countDownTimer.current = setInterval(() => {
@@ -86,6 +93,7 @@ const AutoLogout = (props) => {
         });
       }, 1000);
     } else {
+      // If user clicks cancel/outside the popup, reset the timers and clear the countdown interval timer
       if (countDownTimer.current && loggedIn) {
         setTimeLeftTilAutoLogout(timeTilAutoLogout);
         setTimeLeftTilAutoLogoutPopup(timeTilAutoLogoutPopUp);
@@ -94,13 +102,13 @@ const AutoLogout = (props) => {
     }
   }, [
     autoLogoutModal,
-    dispatch,
     handleLogout,
     loggedIn,
     timeTilAutoLogout,
     timeTilAutoLogoutPopUp,
   ]);
 
+  // Shows autologout popup if logged in & autoLogoutModal is true
   return (
     <>
       {autoLogoutModal && loggedIn ? (

@@ -4,9 +4,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import UserResults from '../../components/UserResults/UserResults';
 
-import classes from './Users.module.css';
-
-const Users = (props) => {
+const Users = () => {
   return (
     <>
       <SideNav />

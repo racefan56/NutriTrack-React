@@ -18,9 +18,7 @@ import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './CreateRoom.module.css';
-
-const CreateRoom = (props) => {
+const CreateRoom = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

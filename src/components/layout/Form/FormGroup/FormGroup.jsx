@@ -1,18 +1,14 @@
 import React from 'react';
 
-import {
-  capitalizeWord,
-  getToday,
-} from '../../../helperFunctions/helperFunctions';
+import { v4 as uuidv4 } from 'uuid';
+
+import { capitalizeWord } from '../../../helperFunctions/helperFunctions';
 
 import classes from './FormGroup.module.css';
-
-import { v4 as uuidv4 } from 'uuid';
 
 const FormGroup = ({
   id,
   label,
-  internalLabel,
   sideLabel,
   value,
   placeholder,
@@ -35,6 +31,7 @@ const FormGroup = ({
   mealItemObj,
   className,
 }) => {
+  // Used only for the MealItem page array data.
   if (mealItemArr) {
     return mealItemArr.map((item, index) => {
       return (
@@ -47,9 +44,7 @@ const FormGroup = ({
           {index === 0 ? (
             <label
               htmlFor={label.replace(/\s+/g, '')}
-              className={
-                internalLabel ? classes.internalLabel : classes.groupLabel
-              }
+              className={classes.groupLabel}
             >
               {label}:{' '}
             </label>
@@ -67,6 +62,7 @@ const FormGroup = ({
     });
   }
 
+  // Used only for the MealItem page object data.
   if (mealItemObj) {
     return (
       <fieldset
@@ -76,7 +72,7 @@ const FormGroup = ({
       >
         <label
           htmlFor={label.replace(/\s+/g, '')}
-          className={internalLabel ? classes.internalLabel : classes.groupLabel}
+          className={classes.groupLabel}
         >
           {label}:{' '}
         </label>
@@ -98,12 +94,7 @@ const FormGroup = ({
             sideLabel ? classes.groupContainerSideLabel : classes.groupContainer
           }
         >
-          <label
-            htmlFor={id}
-            className={
-              internalLabel ? classes.internalLabel : classes.groupLabel
-            }
-          >
+          <label htmlFor={id} className={classes.groupLabel}>
             {label}
           </label>
           <select
@@ -186,12 +177,7 @@ const FormGroup = ({
     return (
       <div className={className ? className : ''}>
         <fieldset className={`row ${classes.groupContainer}`}>
-          <label
-            htmlFor={id}
-            className={
-              internalLabel ? classes.internalLabel : classes.groupLabel
-            }
-          >
+          <label htmlFor={id} className={classes.groupLabel}>
             {label}
           </label>
           {checkboxOptions.length === 0 ? (
@@ -258,12 +244,7 @@ const FormGroup = ({
         }
       >
         {label ? (
-          <label
-            htmlFor={id}
-            className={
-              internalLabel ? classes.internalLabel : classes.groupLabel
-            }
-          >
+          <label htmlFor={id} className={classes.groupLabel}>
             {label}
           </label>
         ) : (
@@ -296,6 +277,7 @@ const FormGroup = ({
                   className={`${editable ? 'editable' : ''} ${classes.input} ${
                     noFocus ? classes.noFocus : ''
                   }`}
+                  // noFocus is used to prevent the user from tabing to form input that shouldn't be editable
                   tabIndex={noFocus ? -1 : 0}
                   placeholder={placeholder}
                   disabled={alwaysEditable ? false : editable ? true : false}

@@ -10,7 +10,6 @@ import {
 } from '../../features/productionArea/productionAreaSlice';
 
 import {
-  formatDate,
   formEditMode,
   invalidInput,
 } from '../../components/helperFunctions/helperFunctions';
@@ -26,9 +25,7 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './ProductionArea.module.css';
-
-const ProductionArea = (props) => {
+const ProductionArea = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { productionAreaId } = useParams();
@@ -75,7 +72,7 @@ const ProductionArea = (props) => {
         toast.error(message.message);
       }
     }
-  }, [isError, isSuccess, message, navigate]);
+  }, [isError, isSuccess, message, navigate, productionArea]);
 
   const handleChange = (e) => {
     const key = e.target.id;

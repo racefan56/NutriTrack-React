@@ -32,7 +32,7 @@ import Modal from '../../components/layout/Modal/Modal';
 
 import classes from './PatientOrder.module.css';
 
-const PatientOrder = (props) => {
+const PatientOrder = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { patientId, orderId } = useParams();
@@ -56,16 +56,8 @@ const PatientOrder = (props) => {
   });
   const today = getToday({ mmddyyyy: true });
 
-  const {
-    day,
-    mealPeriod,
-    option,
-    entree,
-    sides,
-    dessert,
-    drinks,
-    condiments,
-  } = formData;
+  const { day, mealPeriod, entree, sides, dessert, drinks, condiments } =
+    formData;
 
   useEffect(() => {
     formEditMode(editMode);
@@ -80,7 +72,6 @@ const PatientOrder = (props) => {
 
   useEffect(() => {
     if (patient) {
-      console.log(patient);
       dispatch(
         getMenuItems(
           `dietAvailability=${patient.currentDiet._id}&isOutOfStock=false`
@@ -310,7 +301,7 @@ const PatientOrder = (props) => {
               )
             ) : (
               <div className={classes.mealDatePassed}>
-                This meals date has passed. It is no longer editable.
+                This date has passed. This meal can no longer be edited.
               </div>
             )}
           </FormContainer>

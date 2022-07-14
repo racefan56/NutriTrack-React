@@ -18,7 +18,6 @@ export const createMenuItem = createAsyncThunk(
       const token = thunkAPI.getState().auth.token;
       return await menuItemService.createMenuItem(formData, token);
     } catch (error) {
-      console.log(error);
       const message =
         (error.response &&
           error.response.data &&

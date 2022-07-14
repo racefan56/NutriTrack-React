@@ -7,12 +7,12 @@ import { getProductionAreas } from '../../features/productionArea/productionArea
 import Table from '../layout/Table/Table';
 import TableDataItem from '../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../Spinner/Spinner';
-
 import Error from '../Error/Error';
 
 import { titleCase, getDayOfWeek } from '../helperFunctions/helperFunctions';
 
-const PrepListResults = (props) => {
+// Generates a food preparation list for the specified day, mealPeriod, & food production area. Gives the menu items along with portion sizes, and quantity ordered
+const PrepListResults = () => {
   const dispatch = useDispatch();
 
   const { prepList, loading, isError, message } = useSelector(
@@ -41,6 +41,7 @@ const PrepListResults = (props) => {
     dispatch(getProductionAreas());
   }, [dispatch]);
 
+  // reset filters and resend dispatch
   const handleReset = () => {
     setFormData({
       mealPeriod: 'Breakfast',
@@ -50,6 +51,7 @@ const PrepListResults = (props) => {
     dispatch(getPrepList(`limit=${limit}`));
   };
 
+  // Create filter string
   const handleFilterString = () => {
     let string = '';
 
@@ -119,7 +121,7 @@ const PrepListResults = (props) => {
           paginateSetPage={setCurPage}
         >
           {prepList.length > 0 ? (
-            prepList.map((menuItem, index) => (
+            prepList.map((menuItem) => (
               <React.Fragment>
                 <TableDataItem
                   dataPoints={[

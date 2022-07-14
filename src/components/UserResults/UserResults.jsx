@@ -9,9 +9,7 @@ import Spinner from '../Spinner/Spinner';
 import ButtonMain from '../layout/Button/ButtonMain/ButtonMain';
 import Error from '../Error/Error';
 
-import classes from './UserResults.module.css';
-
-const UserResults = (props) => {
+const UserResults = () => {
   const dispatch = useDispatch();
 
   const { users, loading, isError, message } = useSelector(
@@ -25,15 +23,18 @@ const UserResults = (props) => {
   });
   const { role } = formData;
 
+  // Run only once
   useEffect(() => {
     dispatch(getUsers(`limit=${limit}&sort=${sort}&isActive=true`));
     if (isError) {
       toast.error(message);
     }
-  }, [dispatch, isError, limit, message, sort]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  // Reset filter options to defaults, and resend disptach
   const handleReset = () => {
-    if (formData.role !== '' || formData.isActive !== false) {
+    if (formData.role !== '') {
       setFormData({
         role: '',
       });
@@ -41,6 +42,7 @@ const UserResults = (props) => {
     }
   };
 
+  // Create filter string
   const handleFilterString = () => {
     let string = `&isActive=true`;
 
@@ -104,7 +106,7 @@ const UserResults = (props) => {
           sortSetSort={setSort}
           sortOptions={sortOptions}
         >
-          {users?.map((user, index) => (
+          {users?.map((user) => (
             <React.Fragment key={user._id}>
               <TableDataItem
                 navigatePath={`/control-panel/users/${user._id}`}

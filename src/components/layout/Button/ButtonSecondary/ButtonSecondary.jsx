@@ -1,7 +1,6 @@
 import React from 'react';
-import classes from './ButtonSecondary.module.css';
-
 import { Link } from 'react-router-dom';
+import classes from './ButtonSecondary.module.css';
 
 const ButtonSecondary = ({ type, text, onClick, path, className }) => {
   if (type === 'Link') {

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import classes from './MenuLink.module.css';
 
+// Used for the sideNavs menu links
 const MenuLink = ({ to, text }) => {
   return (
     <Link

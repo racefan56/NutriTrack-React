@@ -4,9 +4,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import RoomResults from '../../components/RoomResults/RoomResults';
 
-import classes from './Rooms.module.css';
-
-const Rooms = (props) => {
+const Rooms = () => {
   return (
     <>
       <SideNav />

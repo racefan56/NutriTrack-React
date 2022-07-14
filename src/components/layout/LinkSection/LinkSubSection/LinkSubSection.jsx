@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './LinkSubSection.module.css';
 
+// Used in the sideNav to organize the different links into sub groups
 function LinkSubSection({ children, title }) {
   return (
     <>

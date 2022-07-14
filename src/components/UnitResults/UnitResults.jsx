@@ -9,9 +9,7 @@ import Spinner from '../Spinner/Spinner';
 import ButtonMain from '../layout/Button/ButtonMain/ButtonMain';
 import Error from '../Error/Error';
 
-import classes from './UnitResults.module.css';
-
-const UnitResults = (props) => {
+const UnitResults = () => {
   const dispatch = useDispatch();
 
   const { units, loading, isError, message } = useSelector(
@@ -50,7 +48,7 @@ const UnitResults = (props) => {
           paginateCurPage={curPage}
           paginateSetPage={setCurPage}
         >
-          {units.map((unit, index) => (
+          {units.map((unit) => (
             <React.Fragment key={unit._id}>
               <TableDataItem
                 navigatePath={`/control-panel/units/${unit._id}`}

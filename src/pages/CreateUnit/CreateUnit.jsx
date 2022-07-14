@@ -17,9 +17,7 @@ import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './CreateUnit.module.css';
-
-const CreateUnit = (props) => {
+const CreateUnit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

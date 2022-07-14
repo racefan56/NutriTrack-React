@@ -11,7 +11,7 @@ import Spinner from '../Spinner/Spinner';
 import ButtonMain from '../layout/Button/ButtonMain/ButtonMain';
 import Error from '../Error/Error';
 
-const PatientOrderResults = (props) => {
+const PatientOrderResults = () => {
   const dispatch = useDispatch();
 
   const { patientOrders, loading, isError, message } = useSelector(
@@ -28,6 +28,7 @@ const PatientOrderResults = (props) => {
 
   const { day, meal, option } = formData;
 
+  // Run only once
   useEffect(() => {
     dispatch(getPatientOrders(`limit=${limit}&day=${day}&mealPeriod=${meal}`));
     if (isError) {
@@ -36,6 +37,7 @@ const PatientOrderResults = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Reset filter options to defaults. Resend dispatch
   const handleReset = () => {
     if (day !== getDayOfWeek() || meal !== 'Breakfast' || option !== '') {
       setFormData({
@@ -49,6 +51,7 @@ const PatientOrderResults = (props) => {
     }
   };
 
+  // Build filter string
   const handleFilterString = () => {
     let string = '';
 
@@ -122,7 +125,7 @@ const PatientOrderResults = (props) => {
           paginateCurPage={curPage}
           paginateSetPage={setCurPage}
         >
-          {patientOrders.map((order, index) => (
+          {patientOrders.map((order) => (
             <React.Fragment key={order._id}>
               <TableDataItem
                 navigatePath={`/patients/${order.patientID._id}/orders/${order._id}`}

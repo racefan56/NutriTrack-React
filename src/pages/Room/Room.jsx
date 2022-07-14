@@ -8,7 +8,6 @@ import { getRoom, updateRoom, deleteRoom } from '../../features/room/roomSlice';
 import { getUnits } from '../../features/unit/unitSlice';
 
 import {
-  formatDate,
   formEditMode,
   invalidInput,
 } from '../../components/helperFunctions/helperFunctions';
@@ -24,9 +23,7 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './Room.module.css';
-
-const Room = (props) => {
+const Room = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { roomId } = useParams();

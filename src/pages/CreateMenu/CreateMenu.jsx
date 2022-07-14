@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { createMenu } from '../../features/menu/menuSlice';
@@ -19,10 +19,7 @@ import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 import Modal from '../../components/layout/Modal/Modal';
 
-import classes from './CreateMenu.module.css';
-import { findAllByDisplayValue } from '@testing-library/react';
-
-const CreateMenu = (props) => {
+const CreateMenu = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -155,7 +152,6 @@ const CreateMenu = (props) => {
         toast.error('Please select diet availability for this menu');
       }
     } else {
-      console.log(formData);
       dispatch(createMenu(formData));
     }
   };

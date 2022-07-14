@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 import { getUnit, updateUnit, deleteUnit } from '../../features/unit/unitSlice';
 
 import {
-  formatDate,
   formEditMode,
   invalidInput,
 } from '../../components/helperFunctions/helperFunctions';
@@ -21,8 +20,6 @@ import ButtonMain from '../../components/layout/Button/ButtonMain/ButtonMain';
 import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/ButtonSecondary';
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
-
-import classes from './Unit.module.css';
 
 const Unit = (props) => {
   const dispatch = useDispatch();

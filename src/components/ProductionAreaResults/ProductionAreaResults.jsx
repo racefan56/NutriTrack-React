@@ -7,14 +7,11 @@ import Table from '../layout/Table/Table';
 import TableDataItem from '../layout/Table/TableDataItem/TableDataItem';
 import Spinner from '../Spinner/Spinner';
 import ButtonMain from '../layout/Button/ButtonMain/ButtonMain';
-import NoResults from '../NoResults/NoResults';
 import Error from '../Error/Error';
 
 import { titleCase } from '../helperFunctions/helperFunctions';
 
-import classes from './ProductionAreaResults.module.css';
-
-const ProductionAreaResults = (props) => {
+const ProductionAreaResults = () => {
   const dispatch = useDispatch();
 
   const { productionAreas, loading, isError, message } = useSelector(
@@ -53,7 +50,7 @@ const ProductionAreaResults = (props) => {
           paginateCurPage={curPage}
           paginateSetPage={setCurPage}
         >
-          {productionAreas.map((productionArea, index) => (
+          {productionAreas.map((productionArea) => (
             <React.Fragment key={productionArea._id}>
               <TableDataItem
                 navigatePath={`/control-panel/production-areas/${productionArea._id}`}

@@ -4,9 +4,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import MenuResults from '../../components/MenuResults/MenuResults';
 
-import classes from './Menus.module.css';
-
-const Menus = (props) => {
+const Menus = () => {
   return (
     <>
       <SideNav />

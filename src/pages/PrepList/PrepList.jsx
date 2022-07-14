@@ -3,7 +3,7 @@ import ContainerSideNav from '../../components/layout/ContainerSideNav/Container
 import SideNav from '../../components/layout/SideNav/SideNav';
 import PrepListResults from '../../components/PrepListResults/PrepListResults';
 
-const PrepList = (props) => {
+const PrepList = () => {
   return (
     <>
       <SideNav />
