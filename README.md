@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+# What is NutriTrack?
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+NutriTrack is the culmination of everything I’ve learned so far in web development. It makes use of a MongoDB database with the assistance of the Mongoose library. It has a Node js backend using the Express js framework. The front end is built with React js, along with the use of Bootstrap, plain CSS, HTML, & JavaScript (ES6 +).
 
-## Available Scripts
+NutriTrack is a hospital & patient focused, food ordering system. There are collections of patient data, patient diet types, food production areas, & menu items. There are default menu choices for different diet types, days of the week, & meal periods (Breakfast, Lunch, & Dinner). There is also data related to the hospital itself, including units (I.E. the ER or ICU), and the rooms on these units.
 
-In the project directory, you can run:
+There are multiple user account type which all have different levels of access to these different collections of data, they are...
 
-### `npm start`
+NCA (Nutrition Care Assistant): The base user. In general they can CRUD patient orders, and view patients, menus & menu items.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Lead NCA: Can do all of the above, along with generate food prep lists for the different food production areas for each day & meal period. They can also view a summary of the total number of patients currently in the hospital (the Census).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Nurse: Can do all of the above, minus the prep lists. They can also create , edit, and delete patients from the system.
 
-### `npm test`
+Dietitian: Can do everything a standard NCA can do, along with the ability to edit menu items & CRUD default menus.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Admin: Can do everything listed previously. Along with the ability to CRUD user accounts, production areas, units, & rooms.
 
-### `npm run build`
+## Live now on Heroku!
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+https://nutritrack-react-frontend.herokuapp.com/
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Use the credentials below to test out the app, and the different user account types.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+NCA
+Email: nca@test.com
+Pass: testPass
 
-### `npm run eject`
+Lead NCA
+Email: leadnca@test.com
+Pass: testPass
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Nurse
+Email: nurse@test.com
+Pass: testPass
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Dietitian
+Email: dietitian@test.com
+Pass: testPass
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Node js backend repository
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+View the backend repository for NutriTrack here...
+https://github.com/racefan56/NutriTrack
