@@ -6,13 +6,13 @@ import { setPathname } from '../../../features/navigation/navigationSlice';
 import { Link } from 'react-router-dom';
 import classes from './Brand.module.css';
 
-function Brand({ className, w100 }) {
+function Brand({ className, w100, text }) {
   const dispatch = useDispatch();
   const { loggedIn } = useSelector((state) => state.auth);
 
   return (
     // w100 just sets the bootstrap class w-100 on the main div
-    <div className={`d-flex ${w100 ? 'w-100' : ''}`}>
+    <div id='BrandTxt' className={`d-flex ${w100 ? 'w-100' : ''}`}>
       <Link
         className={`${classes.brand} ${className ? className : ''}`}
         to={loggedIn ? '/patients' : '/'}
@@ -22,7 +22,7 @@ function Brand({ className, w100 }) {
           }
         }}
       >
-        NutriTrack
+        {text ? text : 'NutriTrack'}
         <BiFoodMenu />
       </Link>
     </div>

@@ -88,7 +88,13 @@ const FormGroup = ({
 
   if (inputType === 'select') {
     return (
-      <div className={className ? className : ''}>
+      <div
+        className={
+          className
+            ? `${className} ${classes.formGroup}`
+            : `${classes.formGroup}`
+        }
+      >
         <fieldset
           className={
             sideLabel ? classes.groupContainerSideLabel : classes.groupContainer
@@ -175,7 +181,13 @@ const FormGroup = ({
     if (checkboxOptions.length === 0) {
     }
     return (
-      <div className={className ? className : ''}>
+      <div
+        className={
+          className
+            ? `${className} ${classes.formGroup}`
+            : `${classes.formGroup}`
+        }
+      >
         <fieldset className={`row ${classes.groupContainer}`}>
           <label htmlFor={id} className={classes.groupLabel}>
             {label}
@@ -237,7 +249,11 @@ const FormGroup = ({
   }
 
   return (
-    <div className={className ? className : ''}>
+    <div
+      className={
+        className ? `${className} ${classes.formGroup}` : `${classes.formGroup}`
+      }
+    >
       <fieldset
         className={
           sideLabel ? classes.groupContainerSideLabel : classes.groupContainer

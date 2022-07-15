@@ -177,7 +177,7 @@ const CreatePatient = () => {
             <FormGroup
               id='firstName'
               inputType='text'
-              className='col-12 col-lg-4'
+              className='col-12 col-lg-6'
               label='First Name'
               value={firstName}
               onChange={handleChange}
@@ -186,7 +186,7 @@ const CreatePatient = () => {
             <FormGroup
               id='lastName'
               inputType='text'
-              className='col-12 col-lg-4'
+              className='col-12 col-lg-6'
               label='Last Name'
               value={lastName}
               onChange={handleChange}
@@ -195,7 +195,7 @@ const CreatePatient = () => {
             <FormGroup
               id='dob'
               inputType='date'
-              className='col-12 col-md-6 col-lg-4'
+              className='col-12 col-md-6'
               label='DOB'
               value={ISOdateOnly(dob)}
               onChange={handleChange}
@@ -208,7 +208,7 @@ const CreatePatient = () => {
                 { value: 'Eating', label: 'Eating' },
                 { value: 'NPO', label: 'NPO' },
               ]}
-              className='col-12 col-md-6 col-lg-4'
+              className='col-12 col-md-6'
               label='Status'
               value={status}
               onChange={handleChange}
@@ -245,7 +245,7 @@ const CreatePatient = () => {
               selectOptions={diets.map((diet) => {
                 return { value: diet._id, label: diet.name };
               })}
-              className='col-12 col-lg-6'
+              className='col-12 col-md-6 col-lg-4'
               label='Diet'
               value={currentDiet._id}
               onChange={handleChange}
@@ -277,7 +277,7 @@ const CreatePatient = () => {
                 { value: 'wheat', label: 'wheat' },
                 { value: 'soybean', label: 'soybean' },
               ]}
-              className='col-12 col-lg-7'
+              className='col-12 col-lg-6'
               label='Allergies'
               value={knownAllergies}
               onChange={handleChange}

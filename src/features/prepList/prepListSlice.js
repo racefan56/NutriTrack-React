@@ -3,7 +3,7 @@ import prepListService from './prepListService';
 
 const initialState = {
   prepList: null,
-  loading: true,
+  loading: false,
   isError: false,
   message: '',
   isSuccess: false,
@@ -52,7 +52,7 @@ export const prepListSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.loading = false;
-        state.prepList = null;
+        state.prepList = [];
       });
   },
 });

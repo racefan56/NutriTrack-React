@@ -47,7 +47,7 @@ const FormContainer = ({
 
       <form
         onSubmit={onSubmit}
-        className={`row m-0 ${subTitle ? 'pt-4' : 'pt-3'}`}
+        className={`row m-0 ${classes.form}`}
       >
         {children}
       </form>

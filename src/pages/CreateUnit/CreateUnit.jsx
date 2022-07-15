@@ -108,18 +108,9 @@ const CreateUnit = () => {
             <FormGroup
               id='unitName'
               inputType='text'
-              className='col-12 col-lg-6'
+              className='col-12 col-md-6'
               label='Unit Name'
               value={unitName}
-              onChange={handleChange}
-              alwaysEditable
-            />
-            <FormGroup
-              id='description'
-              textarea
-              className='col-12 col-lg-6'
-              label='Description'
-              value={description}
               onChange={handleChange}
               alwaysEditable
             />
@@ -130,9 +121,18 @@ const CreateUnit = () => {
                 { value: true, label: 'True' },
                 { value: false, label: 'False' },
               ]}
-              className='col-12 col-md-6 col-lg-4'
+              className='col-12 col-md-6'
               label='Out of Service?'
               value={isOutOfService}
+              onChange={handleChange}
+              alwaysEditable
+            />
+            <FormGroup
+              id='description'
+              textarea
+              className='col-12'
+              label='Description'
+              value={description}
               onChange={handleChange}
               alwaysEditable
             />

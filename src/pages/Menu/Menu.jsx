@@ -282,23 +282,9 @@ const Menu = () => {
                 { value: true, label: 'True' },
                 { value: false, label: 'False' },
               ]}
-              className='col-12 col-md-6 col-lg-4'
+              className='col-12 col-md-6'
               label='Out of Service?'
               value={isOutOfService}
-              onChange={handleChange}
-              editable
-            />
-            <FormGroup
-              id='dietAvailability'
-              inputType='checkbox'
-              checkboxOptions={diets.map((diet) => {
-                return { value: diet._id, label: diet.name };
-              })}
-              label='Diet Availability'
-              className='col-12 col-lg-6'
-              value={dietAvailability.map((diet) => {
-                return diet._id;
-              })}
               onChange={handleChange}
               editable
             />
@@ -314,6 +300,20 @@ const Menu = () => {
               label='Entree'
               className='col-12 col-lg-6'
               value={entree}
+              onChange={handleChange}
+              editable
+            />
+            <FormGroup
+              id='dietAvailability'
+              inputType='checkbox'
+              checkboxOptions={diets.map((diet) => {
+                return { value: diet._id, label: diet.name };
+              })}
+              label='Diet Availability'
+              className='col-12 col-lg-6'
+              value={dietAvailability.map((diet) => {
+                return diet._id;
+              })}
               onChange={handleChange}
               editable
             />

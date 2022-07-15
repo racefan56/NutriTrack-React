@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 
 import { getPrepList } from '../../features/prepList/prepListSlice';
 import { getProductionAreas } from '../../features/productionArea/productionAreaSlice';
@@ -15,40 +14,45 @@ import { titleCase, getDayOfWeek } from '../helperFunctions/helperFunctions';
 const PrepListResults = () => {
   const dispatch = useDispatch();
 
-  const { prepList, loading, isError, message } = useSelector(
-    (state) => state.prepList
-  );
+  const { prepList, loading, isError } = useSelector((state) => state.prepList);
   const { productionAreas } = useSelector((state) => state.productionArea);
 
   const [curPage, setCurPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [formData, setFormData] = useState({
     mealPeriod: 'Breakfast',
-    productionArea: productionAreas ? productionAreas[0].areaName : '',
+    productionArea: null,
     day: getDayOfWeek(),
   });
 
   const { mealPeriod, productionArea, day } = formData;
 
   useEffect(() => {
-    dispatch(getPrepList(`limit=${limit}`));
-    if (isError) {
-      toast.error(message);
-    }
-  }, [dispatch, isError, limit, message]);
-
-  useEffect(() => {
     dispatch(getProductionAreas());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (productionAreas?.length) {
+      setFormData((prevState) => {
+        return { ...prevState, productionArea: productionAreas[0].areaName };
+      });
+    }
+  }, [productionAreas]);
 
   // reset filters and resend dispatch
   const handleReset = () => {
     setFormData({
       mealPeriod: 'Breakfast',
       productionArea: productionAreas ? productionAreas[0].areaName : '',
-      day: 'Sunday',
+      day: getDayOfWeek(),
     });
-    dispatch(getPrepList(`limit=${limit}`));
+    dispatch(
+      getPrepList(
+        `limit=${limit}&mealPeriod=Breakfast&productionArea=${
+          productionAreas[0].areaName
+        }&day=${getDayOfWeek()}`
+      )
+    );
   };
 
   // Create filter string
@@ -93,7 +97,7 @@ const PrepListResults = () => {
     ],
   };
 
-  if (loading || !prepList || !productionAreas) {
+  if (!productionAreas || loading) {
     return <Spinner />;
   }
 
@@ -113,6 +117,11 @@ const PrepListResults = () => {
           filterOnChange={handleChange}
           filterReset={handleReset}
           filterString={handleFilterString}
+          noResultsMsg={
+            !prepList
+              ? 'Use the filter button to get a report'
+              : 'No prep items were returned'
+          }
           limit
           limitValue={limit}
           limitSetLimit={setLimit}
@@ -120,9 +129,9 @@ const PrepListResults = () => {
           paginateCurPage={curPage}
           paginateSetPage={setCurPage}
         >
-          {prepList.length > 0 ? (
-            prepList.map((menuItem) => (
-              <React.Fragment>
+          {prepList?.length > 0 ? (
+            prepList.map((menuItem, index) => (
+              <React.Fragment key={`${menuItem.name}${index}`}>
                 <TableDataItem
                   dataPoints={[
                     titleCase(menuItem.name),
@@ -134,7 +143,7 @@ const PrepListResults = () => {
               </React.Fragment>
             ))
           ) : (
-            <></>
+            <>frs</>
           )}
         </Table>
       </>

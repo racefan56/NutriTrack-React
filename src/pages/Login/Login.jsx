@@ -61,30 +61,32 @@ function Login() {
   };
 
   return (
-    <div className='container min-vh-100 d-flex align-items-center'>
+    <div className='container d-flex align-items-center'>
       <Card className={classes['card-login']}>
-        <div className='d-flex w-100 mb-3 justify-content-center'>
+        <div className='d-flex w-100 justify-content-center'>
           <Brand w100 className={classes['brand-login']} />
         </div>
-        <form onSubmit={handleSubmit}>
-          <FormGroup
-            id='email'
-            label='Email'
-            inputType='email'
-            value={email}
-            onChange={handleChangeEmail}
-            placeholder='Enter email'
-          />
-          <FormGroup
-            id='password'
-            label='Password'
-            inputType='password'
-            value={password}
-            onChange={handleChangePassword}
-            placeholder='Enter password'
-          />
-          <ButtonMain type='submit' text='Login' />
-        </form>
+        <div className={classes.formContainer}>
+          <form onSubmit={handleSubmit}>
+            <FormGroup
+              id='email'
+              label='Email'
+              inputType='email'
+              value={email}
+              onChange={handleChangeEmail}
+              placeholder='Enter email'
+            />
+            <FormGroup
+              id='password'
+              label='Password'
+              inputType='password'
+              value={password}
+              onChange={handleChangePassword}
+              placeholder='Enter password'
+            />
+            <ButtonMain type='submit' text='Login' />
+          </form>
+        </div>
       </Card>
     </div>
   );

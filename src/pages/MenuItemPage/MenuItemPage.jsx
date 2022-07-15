@@ -168,7 +168,7 @@ const MenuItemPage = () => {
             <FormGroup
               id='name'
               inputType='text'
-              className='col-12 col-lg-6'
+              className='col-12 col-md-6'
               label='Name'
               value={name}
               onChange={handleChange}
@@ -186,7 +186,7 @@ const MenuItemPage = () => {
                 { value: 'supplement', label: 'supplement' },
               ]}
               label='Category'
-              className='col-12 col-md-6 col-lg-3'
+              className='col-12 col-md-6'
               value={category}
               onChange={handleChange}
               editable
@@ -198,7 +198,7 @@ const MenuItemPage = () => {
                 return { value: area._id, label: area.areaName };
               })}
               label='Production Area'
-              className='col-12 col-md-6 col-lg-3'
+              className='col-12 col-md-6'
               value={productionArea ? productionArea._id : ''}
               onChange={handleChange}
               editable
@@ -210,7 +210,7 @@ const MenuItemPage = () => {
                 { value: true, label: 'True' },
                 { value: false, label: 'False' },
               ]}
-              className='col-12 col-md-6 col-lg-4'
+              className='col-12 col-md-6'
               label='Out of Stock?'
               value={isOutOfStock}
               onChange={handleChange}

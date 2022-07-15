@@ -122,7 +122,7 @@ const CreateRoom = () => {
               selectOptions={units.map((unit) => {
                 return { value: unit._id, label: unit.unitName };
               })}
-              className='col-12 col-lg-6'
+              className='col-12 col-md-6 col-lg-4'
               label='Unit'
               value={unit._id}
               onChange={handleChange}
@@ -132,7 +132,7 @@ const CreateRoom = () => {
             <FormGroup
               id='roomNumber'
               inputType='number'
-              className='col-12 col-lg-6'
+              className='col-12 col-md-6 col-lg-4'
               label='Room Number'
               value={roomNumber}
               onChange={handleChange}

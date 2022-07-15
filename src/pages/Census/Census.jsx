@@ -4,8 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getCensus } from './../../features/patient/patientSlice';
 import { getUnits } from './../../features/unit/unitSlice';
 
-import { getToday } from '../../components/helperFunctions/helperFunctions';
-
 import Spinner from './../../components/Spinner/Spinner';
 import ContainerSideNav from '../../components/layout/ContainerSideNav/ContainerSideNav';
 import SideNav from '../../components/layout/SideNav/SideNav';
@@ -63,7 +61,7 @@ const Census = () => {
             refresh={handleRefresh}
             tableId='censusTable'
             headers={['Unit', 'Eating', 'NPO', 'Total']}
-            heading={`Census As Of ${getToday()}`}
+            heading={`Patient Census`}
           >
             {tableData.map((unit) => {
               const eatingCount = censusCount('eating', unit, eatingTotalsArr);

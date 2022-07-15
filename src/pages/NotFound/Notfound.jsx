@@ -7,10 +7,12 @@ import classes from './NotFound.module.css';
 function Notfound() {
   return (
     <Card className={classes['card-main']}>
-      <h1 className='display-1'>Page Not Found</h1>
-      <Link className={`btn ${classes['main-btn']}`} to='/patients'>
-        Back
-      </Link>
+      <h1 className={classes.notFoundTxt}>Page Not Found</h1>
+      <div className={classes.backBtnContainer}>
+        <Link className={`btn ${classes.backBtn}`} to='/patients'>
+          Back
+        </Link>
+      </div>
     </Card>
   );
 }

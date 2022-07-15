@@ -64,9 +64,32 @@
 }
 
 .orderTakenContainer {
-  padding: 5px;
+  padding: 8px;
 }
 
 .orderDate {
-  padding: 5px;
+  padding: 8px;
+}
+
+@media (max-width: 576px) {
+  .dayHeading {
+    display: block;
+  }
+
+  .orderDate {
+    padding: 16px;
+  }
+
+  .mealXSpan,
+  .mealCheckSpan {
+    margin-right: 0.5rem;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .mealCheckSpan:hover,
+  .mealXSpan:hover {
+    border: 2px solid #ffff;
+    padding: 0.5rem 0.25rem;
+    font-size: 16px;
+  }
 }

@@ -1,6 +1,7 @@
 .brand-login,
 .brand-login:hover {
-  margin-bottom: 2rem;
+  font-size: 48px;
+  margin: 32px;
   width: 100%;
 }
 
@@ -11,26 +12,46 @@
 .card-login {
   display: flex;
   align-items: center;
-  width: 70vw;
-  height: 80vh;
-  padding: 32px;
+  width: 50vw;
+  padding: 0px;
   box-shadow: 0 3px 10px rgba(49, 50, 57, 0.2);
+  margin-top: 32px;
 }
 
-@media (min-width: 768px) {
-  .brand-login {
-    font-size: 64px;
+.formContainer {
+  padding: 16px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 992px) {
+  .card-login {
+    width: 60vw;
+  }
+  .brand-login,
+  .brand-login:hover {
+    margin: 16px 16px 32px 16px;
   }
 }
 
 @media (max-width: 768px) {
-  .brand-login {
-    font-size: 48px;
+  .card-login {
+    width: 70vw;
   }
 }
 
 @media (max-width: 576px) {
-  .brand-login {
-    font-size: 32px;
+  .card-login {
+    width: 80vw;
+  }
+  .brand-login,
+  .brand-login:hover {
+    font-size: 40px;
+    margin: 8px 8px 32px 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .card-login {
+    width: 90vw;
   }
 }

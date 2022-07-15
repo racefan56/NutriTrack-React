@@ -164,7 +164,7 @@ const CreateMenuItem = () => {
     navigate('/control-panel/menu-items');
   };
 
-  if (loading || firstRender || !productionAreas) {
+  if (loading || firstRender || !productionAreas || !diets) {
     return <Spinner />;
   }
 
@@ -202,7 +202,7 @@ const CreateMenuItem = () => {
                 { value: 'supplement', label: 'supplement' },
               ]}
               label='Category'
-              className='col-12 col-md-6 col-lg-3'
+              className='col-12 col-lg-6'
               value={category}
               onChange={handleChange}
               alwaysEditable
@@ -214,7 +214,7 @@ const CreateMenuItem = () => {
                 return { value: area._id, label: area.areaName };
               })}
               label='Production Area'
-              className='col-12 col-md-6 col-lg-3'
+              className='col-12 col-lg-6'
               value={productionArea}
               onChange={handleChange}
               alwaysEditable
@@ -226,7 +226,7 @@ const CreateMenuItem = () => {
                 { value: true, label: 'True' },
                 { value: false, label: 'False' },
               ]}
-              className='col-12 col-md-6 col-lg-4'
+              className='col-12 col-lg-6'
               label='Out of Stock?'
               value={isOutOfStock}
               onChange={handleChange}

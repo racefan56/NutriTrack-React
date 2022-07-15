@@ -18,7 +18,7 @@ const ButtonLimit = ({ limitId, limitValue, limitOnChange }) => {
       <FormGroup
         id={limitId}
         sideLabel
-        label={<>Results&nbsp;Per&nbsp;Page</>}
+        label={<>Per&nbsp;Page</>}
         value={limitValue}
         inputType='select'
         selectOptions={limitOptions}

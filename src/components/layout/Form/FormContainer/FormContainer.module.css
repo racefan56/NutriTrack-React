@@ -1,5 +1,9 @@
+.form {
+  padding-top: 1rem;
+}
+
 .formContainer {
-  margin-top: 3rem;
+  margin-top: 3.5rem;
 }
 
 .heading {
@@ -96,4 +100,24 @@
 .npo {
   background-color: #ff6b6b;
   color: #ffff;
+}
+
+@media (max-width: 992px) {
+  .heading {
+    font-size: 24px;
+  }
+
+  .statusTag {
+    top: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .form {
+    padding-top: 2.5rem;
+  }
+
+  .statusTag {
+    display: none;
+  }
 }

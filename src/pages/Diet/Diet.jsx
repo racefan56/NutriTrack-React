@@ -21,7 +21,6 @@ import ButtonSecondary from '../../components/layout/Button/ButtonSecondary/Butt
 import ButtonEdit from '../../components/layout/Button/ButtonEdit/ButtonEdit';
 import Modal from '../../components/layout/Modal/Modal';
 
-
 const Diet = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -130,8 +129,8 @@ const Diet = () => {
             <FormGroup
               id='name'
               inputType='text'
-              className='col-12 col-lg-6'
-              label='Area Name'
+              className='col-12 col-lg-4'
+              label='Diet Name'
               value={name}
               onChange={handleChange}
               editable
@@ -139,8 +138,8 @@ const Diet = () => {
             <FormGroup
               id='sodiumInMG'
               inputType='number'
-              className='col-12 col-lg-6'
-              label='Sodium (miligrams/meal)'
+              className='col-12 col-md-6 col-lg-4'
+              label='Sodium (MG/meal)'
               value={sodiumInMG}
               onChange={handleChange}
               editable
@@ -148,8 +147,8 @@ const Diet = () => {
             <FormGroup
               id='carbsInGrams'
               inputType='number'
-              className='col-12 col-lg-6'
-              label='Carbs (grams/meal)'
+              className='col-12 col-md-6 col-lg-4'
+              label='Carbs (G/meal)'
               value={carbsInGrams}
               onChange={handleChange}
               editable
@@ -157,7 +156,7 @@ const Diet = () => {
             <FormGroup
               id='description'
               textarea
-              className='col-12 col-lg-6'
+              className='col-12'
               label='Description'
               value={description}
               onChange={handleChange}

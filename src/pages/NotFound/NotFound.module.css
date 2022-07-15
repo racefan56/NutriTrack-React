@@ -5,17 +5,31 @@
   box-shadow: 0 3px 10px rgba(49, 50, 57, 0.2);
 }
 
-.main-btn {
+.backBtnContainer {
+  padding: 0px 128px;
+}
+
+.backBtn {
   color: #e7f5ff;
   width: 100%;
   font-weight: 600;
   background-color: #228be6;
   border: 2px solid #228be6;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin: 16px 0px;
 }
 
-.main-btn:hover {
+.backBtn:hover {
   background-color: #ffff;
   color: #228be6;
+}
+
+.notFoundTxt {
+  font-size: 48px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .backBtnContainer {
+    padding: 0px;
+  }
 }

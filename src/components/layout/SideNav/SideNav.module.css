@@ -3,7 +3,7 @@
   width: 160px;
   position: fixed;
   z-index: 1;
-  top: 48px;
+  top: 36px;
   left: 0;
 
   box-shadow: 0 3px 10px rgb(49 50 57 / 20%);
@@ -12,4 +12,53 @@
 
   overflow-x: hidden;
   padding: 40px 8px 40px 8px;
+}
+
+.showHideSideBar {
+  display: none;
+}
+
+.mobileSideNavToggleContainer {
+  display: none;
+  justify-content: center;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.mobileSideNavToggleContainer:hover {
+  cursor: pointer;
+  background-color: #f1f3f5;
+  border-radius: 0.5rem;
+}
+
+.sideNavToggleTxt {
+  padding-left: 8px;
+  margin: 16px 0px;
+}
+
+@media (max-width: 768px) {
+  .cp-side-nav-container {
+    height: auto;
+    padding: 15px 8px 40px 8px;
+  }
+
+  .cp-side-nav-mobile-hidden {
+    height: 75px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .cp-side-nav-mobile-show {
+    width: 100%;
+  }
+
+  .showHideSideBar {
+    display: block;
+    font-size: 24px;
+    margin: 16px 0px;
+  }
+
+  .mobileSideNavToggleContainer {
+    display: flex;
+  }
 }

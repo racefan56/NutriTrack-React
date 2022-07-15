@@ -190,7 +190,7 @@ const CreatePatientOrder = (props) => {
             <FormGroup
               id='day'
               inputType='text'
-              className='col-12 col-md-6 col-lg-4'
+              className='col-12 col-md-6'
               label='Day'
               defaultValue={day}
               readonly
@@ -198,7 +198,7 @@ const CreatePatientOrder = (props) => {
             <FormGroup
               id='mealPeriod'
               inputType='text'
-              className='col-12 col-md-6 col-lg-4'
+              className='col-12 col-md-6'
               label='Meal Period'
               defaultValue={mealPeriod}
               readonly
@@ -211,7 +211,7 @@ const CreatePatientOrder = (props) => {
                 { value: 'Cold', label: 'Cold' },
                 { value: 'Custom', label: 'Custom' },
               ]}
-              className='col-12 col-md-6 col-lg-4'
+              className='col-12 col-md-6'
               label='Option'
               value={option}
               onChange={handleChange}
@@ -233,7 +233,7 @@ const CreatePatientOrder = (props) => {
                   })}
                   noOptionsMessage='-- No options available --'
                   label='Entree'
-                  className='col-12 col-lg-6'
+                  className='col-12 col-md-6'
                   value={entree}
                   onChange={handleChange}
                   alwaysEditable

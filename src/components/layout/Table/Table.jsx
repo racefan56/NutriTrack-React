@@ -112,19 +112,17 @@ const Table = ({
     <>
       <div className={classes.headingContainer}>
         <div className={classes.heading}> {heading}</div>
-        {refresh || createPath || filterOptions || limit ? (
+      </div>
+      <div className={classes.tableButtonsContainer}>
+        {' '}
+        {filterValues?.join('').length > 0
+          ? `Applied Filters: ${filterValues
+              .filter((el) => el !== '')
+              .join(', ')}`
+          : 'Applied Filters: None'}
+        {refresh || createPath || filterOptions ? (
           <>
             <div className={classes.tableButtonsContainer}>
-              {limit ? (
-                <ButtonLimit
-                  limitOnChange={handleLimitChange}
-                  limitValue={limitValue}
-                  limitId={tableId + 'limitBtn'}
-                  limitOptions={limitOptions}
-                />
-              ) : (
-                <></>
-              )}
               {refresh ? (
                 <ButtonRefresh
                   refresh={
@@ -157,13 +155,18 @@ const Table = ({
           <></>
         )}
       </div>
-      {filterValues?.join('').length > 0 || sort ? (
+      {sort || limit ? (
         <div className={classes.filtersAndSortContainer}>
-          {filterValues?.join('').length > 0
-            ? `Applied Filters: ${filterValues
-                .filter((el) => el !== '')
-                .join(', ')}`
-            : 'Applied Filters: None'}
+          {limit ? (
+            <ButtonLimit
+              limitOnChange={handleLimitChange}
+              limitValue={limitValue}
+              limitId={tableId + 'limitBtn'}
+              limitOptions={limitOptions}
+            />
+          ) : (
+            <></>
+          )}
           {sort ? (
             <ButtonSort
               sortId={tableId + 'sortBtn'}

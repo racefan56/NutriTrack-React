@@ -22,6 +22,7 @@ function Navbar() {
       <>
         <nav className={`d-flex ${classes['nav-container']}`}>
           <Brand className={classes['nav-brand']} />
+          <Brand text={'NT'} className={classes['nav-brand-mobile']} />
           <div className='d-flex container justify-content-between'>
             <Link
               onClick={() => {

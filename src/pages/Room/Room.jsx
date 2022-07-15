@@ -140,7 +140,7 @@ const Room = () => {
               selectOptions={units.map((unit) => {
                 return { value: unit._id, label: unit.unitName };
               })}
-              className='col-12 col-lg-6'
+              className='col-12 col-md-4'
               label='Unit'
               value={unit._id}
               onChange={handleChange}
@@ -150,7 +150,7 @@ const Room = () => {
             <FormGroup
               id='roomNumber'
               inputType='number'
-              className='col-12 col-lg-6'
+              className='col-12 col-md-4'
               label='Room Number'
               value={roomNumber}
               onChange={handleChange}
@@ -163,8 +163,8 @@ const Room = () => {
                 { value: true, label: 'True' },
                 { value: false, label: 'False' },
               ]}
-              className='col-12 col-md-6 col-lg-4'
-              label='Out of Service?'
+              className='col-12 col-md-4'
+              label='Out of Service'
               value={isOutOfService}
               onChange={handleChange}
               editable
