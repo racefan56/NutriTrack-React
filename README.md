@@ -22,21 +22,23 @@ https://nutritrack-react-frontend.herokuapp.com/
 
 Use the credentials below to test out the app, and the different user account types.
 
-NCA
+NCA:
 Email: nca@test.com
 Pass: testPass
 
-Lead NCA
+Lead NCA:
 Email: leadnca@test.com
 Pass: testPass
 
-Nurse
+Nurse:
 Email: nurse@test.com
 Pass: testPass
 
-Dietitian
+Dietitian:
 Email: dietitian@test.com
 Pass: testPass
+
+**The ability to change the account passwords is currently available in the app. I decided to leave it available to use, if desired, for testing purposes. I will set them back to testPass if they are changed by someone, and not reset back by them to testPass, as soon as I'm aware. So please be aware if testPass is not working for you when you attempt to access the app, please try a different account type. If having this ability is abused, I will disable it, but hopefully that won't be necessary.** 
 
 ## Node js backend repository
 
