@@ -6,15 +6,15 @@ NutriTrack is a hospital & patient focused, food ordering system. There are coll
 
 There are multiple user account type which all have different levels of access to these different collections of data, they are...
 
-NCA (Nutrition Care Assistant): The base user. In general they can CRUD patient orders, and view patients, menus & menu items.
+**NCA (Nutrition Care Assistant):** The base user. In general they can CRUD patient orders, and view patients, menus & menu items.
 
-Lead NCA: Can do all of the above, along with generate food prep lists for the different food production areas for each day & meal period. They can also view a summary of the total number of patients currently in the hospital (the Census).
+**Lead NCA:** Can do all of the above, along with generate food prep lists for the different food production areas for each day & meal period. They can also view a summary of the total number of patients currently in the hospital (the Census).
 
-Nurse: Can do all of the above, minus the prep lists. They can also create , edit, and delete patients from the system.
+**Nurse:** Can do all of the above, minus the prep lists. They can also create , edit, and delete patients from the system.
 
-Dietitian: Can do everything a standard NCA can do, along with the ability to edit menu items & CRUD default menus.
+**Dietitian:** Can do everything a standard NCA can do, along with the ability to edit menu items & CRUD default menus.**
 
-Admin: Can do everything listed previously. Along with the ability to CRUD user accounts, production areas, units, & rooms.
+**Admin:** Can do everything listed previously. Along with the ability to CRUD user accounts, production areas, units, & rooms.
 
 ## Live now on Heroku!
 
@@ -22,23 +22,24 @@ https://nutritrack-react-frontend.herokuapp.com/
 
 Use the credentials below to test out the app, and the different user account types.
 
-NCA:
+**NCA:**
 Email: nca@test.com
 Pass: testPass
 
-Lead NCA:
+**Lead NCA:**
 Email: leadnca@test.com
 Pass: testPass
 
-Nurse:
+**Nurse:**
 Email: nurse@test.com
 Pass: testPass
 
-Dietitian:
+**Dietitian:**
 Email: dietitian@test.com
 Pass: testPass
 
-**The ability to change the account passwords is currently available in the app. I decided to leave it available to use, if desired, for testing purposes. I will set them back to testPass if they are changed by someone, and not reset back by them to testPass, as soon as I'm aware. So please be aware if testPass is not working for you when you attempt to access the app, please try a different account type. If having this ability is abused, I will disable it, but hopefully that won't be necessary.** 
+**CHANGING PASSWORDS**
+The ability to change the account passwords is currently available in the app. I decided to leave it available to use, if desired, for testing purposes. I will set them back to testPass if they are changed by someone, and not reset back by them to testPass, as soon as I'm aware. So please be aware if testPass is not working for you when you attempt to access the app, please try a different account type. If having this ability is abused, I will disable it, but hopefully that won't be necessary. 
 
 ## Node js backend repository
 
