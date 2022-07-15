@@ -20,20 +20,18 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loggedIn, message } = useSelector((state) => state.auth);
+  const { loggedIn, isError, message } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (message && message.includes('401')) {
-      toast.error(
-        'The email and/or password you provided is incorrect. Please try again.'
-      );
+    if (isError && message) {
+      toast.error(message);
     }
     if (message && message.includes('500')) {
       toast.error(
         'There was a problem communicating with the server. Please try again later.'
       );
     }
-  }, [message]);
+  }, [isError, message]);
 
   useEffect(() => {
     if (loggedIn) {
